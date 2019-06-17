@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs",
+	"version": "${version}",
+	"name": "Amecs",
+	"description": "Makes keybindings actually useful",
+	"authors": [
+		"Siphalor"
+	],
+	"contact": {
+		"homepage": "https://github.com/siphalor/minecraft-amecs",
+		"sources": "https://github.com/siphalor/minecraft-amecs"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/amecs/icon.png",
+	"environment": "*",
+	"mixins": [
+		"amecs.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.4.0"
+	}
+}

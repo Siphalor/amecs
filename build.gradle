@@ -1,0 +1,127 @@
+plugins {
+    id "java"
+    id "idea"
+    id "maven-publish"
+    id "fabric-loom" version "0.2.4-SNAPSHOT"
+    id "com.github.ben-manes.versions" version "0.21.0"
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.matthewprenger.cursegradle" version "1.2.0"
+}
+
+repositories {
+    maven {
+        url = "http://maven.fabricmc.net/"
+        name = "Fabric"
+    }
+    maven {
+        url = "https://minecraft.curseforge.com/api/maven"
+        name = "CurseForge"
+    }
+    jcenter()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+minecraft {
+}
+
+dependencies {
+    //to change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}"
+    modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+
+processResources {
+    inputs.properties "version": project.version,
+            "archives_base_name": project.archives_base_name
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand "version": project.version,
+                "archives_base_name": project.archives_base_name
+    }
+}
+
+// ensure that the encoding is set to UTF-8, no matter what the system default is
+// this fixes some edge cases with special characters not displaying correctly
+// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+// if it is present.
+// If you remove this task, sources will not be generated.
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+jar {
+    from "LICENSE"
+}
+
+// Configure shadowing
+shadowJar {
+    // Needed to override the jar output and be used by Loom's remapJar
+    // Loom sets the jar classifier to dev and uses the default classifier for the output
+    archiveClassifier.set("dev")
+    configurations = [project.configurations.shadow]
+    //relocate "some.library", "my.mod.shadowed.some.library"
+}
+jar.finalizedBy shadowJar
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            // add all the jars that should be included when publishing to maven
+            artifact(jar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    // select the repositories you want to publish to
+    repositories {
+        // uncomment to publish to the local maven
+        // mavenLocal()
+    }
+}
+
+// Configure CurseForge publishing
+/*curseforge {
+    // Stored in ~/.gradle/gradle.properties
+    apiKey = project.curseApiKey
+
+    project {
+        id = project.curseforge_id
+        releaseType = "alpha"
+        addGameVersion "1.14.2"
+        mainArtifact(jar) {
+            displayName = "$archives_base_name-$project.version"
+            relations {
+                requiredDependency "fabric"
+            }
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+    }
+}
+
+afterEvaluate {
+    // CurseGradle generates tasks in afterEvaluate for each project
+    // There isn't really any other way to make it depend on a task unless it is an AbstractArchiveTask
+    tasks.getByName("curseforge${project.curseforge_id}").dependsOn publish
+    tasks.getByName("curseforge${project.curseforge_id}").dependsOn remapJar
+}*/
