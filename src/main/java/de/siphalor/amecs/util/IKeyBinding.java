@@ -1,16 +1,15 @@
 package de.siphalor.amecs.util;
 
-import de.siphalor.amecs.AmecsKeyBinding;
+import de.siphalor.amecs.api.KeyModifiers;
 import net.minecraft.client.util.InputUtil;
 
 public interface IKeyBinding {
-	InputUtil.KeyCode getKeyCode();
+	InputUtil.KeyCode amecs$getKeyCode();
 
 	int amecs$getTimesPressed();
 	void amecs$setTimesPressed(int timesPressed);
 
 	void amecs$setPressed(boolean pressed);
 
-	AmecsKeyBinding amecs$getAmecsKeyBinding();
-	void amecs$setAmecsKeyBinding(AmecsKeyBinding amecsKeyBinding);
+	KeyModifiers amecs$getKeyModifiers();
 }

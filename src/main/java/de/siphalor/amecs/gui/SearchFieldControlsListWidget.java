@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.controls.ControlsListWidget;
 import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 
 						String lastCat = null;
 						for(ControlsListWidget.KeyBindingEntry entry : entries) {
-							if(!((IKeyBindingEntry) entry).amecs$getBindingName().contains(text)) continue;
+							if(!StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), text)) continue;
 							final String cat = ((IKeyBindingEntry) entry).amecs$getKeyBinding().getCategory();
 							if(!Objects.equals(lastCat, cat)) {
 								controlsListWidget.children().add(controlsListWidget.new CategoryEntry(cat));

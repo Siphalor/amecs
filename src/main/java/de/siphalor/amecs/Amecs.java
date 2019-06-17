@@ -1,33 +1,36 @@
 package de.siphalor.amecs;
 
+import de.siphalor.amecs.api.KeyModifiers;
 import net.minecraft.client.options.KeyBinding;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+/**
+ * Main class of Amecs (Alt-Meta-Escape-Control-Shift)
+ */
 public class Amecs {
+    /**
+     * The mod id of Amecs
+     */
     public static final String MOD_ID = "amecs";
+    /**
+     * The prefix used in the <code>options.txt</code>
+     */
     public static final String KEY_MODIFIER_GAME_OPTION = MOD_ID + "$key_modifier$";
 
-    static Map<String, KeyBinding> idToKeyBindingMap;
+    /**
+     * Defines the current pressed key modifiers
+     */
+    public static final KeyModifiers CURRENT_MODIFIERS = new KeyModifiers();
 
-    public static boolean isShiftKey(int keyCode) {
-        return keyCode == 340 || keyCode == 344;
-    }
+    private static Map<String, KeyBinding> idToKeyBindingMap;
 
-    public static boolean isControlKey(int keyCode) {
-        return keyCode == 341 || keyCode == 345;
-    }
-
-    public static boolean isAltKey(int keyCode) {
-        return keyCode == 342 || keyCode == 346;
-    }
-
-    public static boolean isModifier(int keyCode) {
-        return isShiftKey(keyCode) || isControlKey(keyCode) || isAltKey(keyCode);
-    }
-
+    /**
+     * Gets the "official" idToKeys map
+     * @return the map (use with care)
+     */
     public static Map<String, KeyBinding> getIdToKeyBindingMap() {
         if(idToKeyBindingMap == null) {
             try {
@@ -41,5 +44,14 @@ public class Amecs {
             }
         }
         return idToKeyBindingMap;
+    }
+
+    /**
+     * Unregisters a keybinding with the given id
+     */
+    @SuppressWarnings("unused")
+    public static void unregisterKeyBinding(String id) {
+        getIdToKeyBindingMap().remove(id);
+        KeyBinding.updateKeysByCode();
     }
 }

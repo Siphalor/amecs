@@ -1,7 +1,6 @@
 package de.siphalor.amecs.mixin;
 
 import de.siphalor.amecs.Amecs;
-import de.siphalor.amecs.AmecsKeyBinding;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
@@ -34,10 +33,7 @@ public class MixinGameOptions {
 		locals = LocalCapture.CAPTURE_FAILSOFT
 	)
 	public void onKeyBindingWritten(CallbackInfo callbackInfo, PrintWriter printWriter, KeyBinding[] keyBindings, int keyBindingsCount, int index, KeyBinding keyBinding) {
-		AmecsKeyBinding amecsKeyBinding = ((IKeyBinding) keyBinding).amecs$getAmecsKeyBinding();
-		if(amecsKeyBinding != null) {
-			printWriter.println(Amecs.KEY_MODIFIER_GAME_OPTION + keyBinding.getId() + ":" + (int) amecsKeyBinding.getModifiers());
-		}
+		printWriter.println(Amecs.KEY_MODIFIER_GAME_OPTION + keyBinding.getId() + ":" + (int) ((IKeyBinding) keyBinding).amecs$getKeyModifiers().getValue());
 	}
 
 	@Inject(
@@ -49,8 +45,8 @@ public class MixinGameOptions {
         if(key.startsWith(Amecs.KEY_MODIFIER_GAME_OPTION)) {
 			key = key.substring(Amecs.KEY_MODIFIER_GAME_OPTION.length());
 			KeyBinding keyBinding = Amecs.getIdToKeyBindingMap().get(key);
-			if(keyBinding != null && ((IKeyBinding) keyBinding).amecs$getAmecsKeyBinding() != null) {
-				((IKeyBinding) keyBinding).amecs$getAmecsKeyBinding().setModifiers((char) Integer.parseInt(value));
+			if(keyBinding != null) {
+				((IKeyBinding) keyBinding).amecs$getKeyModifiers().setValue((char) Integer.parseInt(value));
 			}
 		}
 	}

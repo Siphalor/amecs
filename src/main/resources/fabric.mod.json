@@ -12,7 +12,7 @@
 		"sources": "https://github.com/siphalor/minecraft-amecs"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/amecs/icon.png",
+	"icon": "assets/amecs/logo.png",
 	"environment": "*",
 	"mixins": [
 		"amecs.mixins.json"

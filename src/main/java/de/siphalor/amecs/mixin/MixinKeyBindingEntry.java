@@ -1,6 +1,6 @@
 package de.siphalor.amecs.mixin;
 
-import de.siphalor.amecs.AmecsKeyBinding;
+import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.util.IKeyBinding;
 import de.siphalor.amecs.util.IKeyBindingEntry;
 import net.minecraft.client.gui.screen.controls.ControlsListWidget;
@@ -24,23 +24,14 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	@SuppressWarnings("UnresolvedMixinReference")
 	@Inject(method = "method_19870", at = @At("RETURN"))
 	public void onResetButtonClicked(KeyBinding keyBinding, ButtonWidget buttonWidget, CallbackInfo callbackInfo) {
-		AmecsKeyBinding amecsKeyBinding = ((IKeyBinding) binding).amecs$getAmecsKeyBinding();
-		if(amecsKeyBinding != null) {
-			amecsKeyBinding.setAlt(false);
-			amecsKeyBinding.setControl(false);
-			amecsKeyBinding.setShift(false);
-		}
+		((IKeyBinding) binding).amecs$getKeyModifiers().unset();
+		if(binding instanceof AmecsKeyBinding) ((AmecsKeyBinding) binding).resetKeyBinding();
 	}
 
 	@SuppressWarnings("UnresolvedMixinReference")
 	@Inject(method = "method_19871", at = @At("RETURN"))
 	public void onEditButtonClicked(KeyBinding keyBinding, ButtonWidget buttonWidget, CallbackInfo callbackInfo) {
-		AmecsKeyBinding amecsKeyBinding = ((IKeyBinding) binding).amecs$getAmecsKeyBinding();
-		if(amecsKeyBinding != null) {
-			amecsKeyBinding.setControl(false);
-			amecsKeyBinding.setAlt(false);
-			amecsKeyBinding.setShift(false);
-		}
+		((IKeyBinding) binding).amecs$getKeyModifiers().unset();
         binding.setKeyCode(InputUtil.UNKNOWN_KEYCODE);
 	}
 
