@@ -36,9 +36,9 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modCompile "net.fabricmc.fabric-api:fabric-api-base:+"
+	modImplementation "net.fabricmc.fabric-api:fabric-api-base:+"
 	include "net.fabricmc.fabric-api:fabric-api-base:+"
-	modCompile "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
+	modImplementation "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
 	include "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
 }
 
@@ -78,6 +78,11 @@ task("apiJar", type: Jar) {
 	include("de/siphalor/amecs/api/**")
 }
 
+task("apiSourcesJar", type: Jar, dependsOn: classes) {
+	archiveClassifier.set("api-sources")
+	from apiJar.source
+}
+
 // Configure shadowing
 shadowJar {
 	// Needed to override the jar output and be used by Loom's remapJar
@@ -93,13 +98,21 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			// add all the jars that should be included when publishing to maven
-			artifact(jar) {
+			artifact(jar.archiveFile) {
 				builtBy remapJar
 			}
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
-			artifact(apiJar)
+		}
+		mavenApi(MavenPublication) {
+			artifactId = "amecs-api"
+			artifact(apiJar) {
+				classifier ""
+			}
+			artifact(apiSourcesJar) {
+				classifier "sources"
+			}
 		}
 	}
 
