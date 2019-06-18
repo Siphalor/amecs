@@ -6,7 +6,7 @@
 ![logo](src/main/resources/assets/amecs/logo.png?raw=true)
 
 ## API
-If you want to use the api provided by this mod you'll either want to shadow this mod.
+If you want to use the api provided by this mod you'll want to implement and include this mod:
 
 ```groovy
 repositories {
@@ -14,9 +14,12 @@ repositories {
 }
 
 dependencies {
-    shadow "com.github.siphalor:amecs-api:+"
+    modImplementation "com.github.siphalor:amecs:+"
+    include "com.github.siphalor:amecs:+"
 }
 ```
+
+If you don't want to shadow this whole mod you may just want to copy the relevant interfaces/classes from `de.siphalor.amecs.api`.
 
 ## License
 
