@@ -6,9 +6,11 @@
 		"MixinControlsOptionsScreen",
 		"MixinElementListWidget",
 		"MixinGameOptions",
+		"MixinInputUtilType",
 		"MixinKeyBinding",
 		"MixinKeyBindingEntry",
-		"MixinKeyboard"
+		"MixinKeyboard",
+		"MixinMouse"
 	],
 	"injectors": {
 		"defaultRequire": 1

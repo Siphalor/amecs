@@ -1,7 +1,7 @@
 package de.siphalor.amecs.mixin;
 
+import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.api.Utils;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
 import net.minecraft.client.options.GameOptions;
@@ -30,9 +30,7 @@ public class MixinControlsOptionsScreen {
 		KeyModifiers keyModifiers = ((IKeyBinding) focusedBinding).amecs$getKeyModifiers();
 		if(keyCode != InputUtil.UNKNOWN_KEYCODE) {
 			int keyCodeCode = keyCode.getKeyCode();
-			if(Utils.isAltKey(keyCodeCode)) keyModifiers.setAlt(true);
-			if(Utils.isControlKey(keyCodeCode)) keyModifiers.setControl(true);
-			if(Utils.isShiftKey(keyCodeCode)) keyModifiers.setShift(true);
+			keyModifiers.set(KeyModifier.fromKeyCode(keyCodeCode), true);
 		}
 	}
 
@@ -49,15 +47,13 @@ public class MixinControlsOptionsScreen {
 		} else {
 			int mainKeyCode = ((IKeyBinding) focusedBinding).amecs$getKeyCode().getKeyCode();
 			KeyModifiers keyModifiers = ((IKeyBinding) focusedBinding).amecs$getKeyModifiers();
-			if (Utils.isModifier(mainKeyCode) && !Utils.isModifier(keyCode)) {
+			KeyModifier mainKeyModifier = KeyModifier.fromKeyCode(mainKeyCode);
+			KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
+			if (mainKeyModifier != KeyModifier.NONE && keyModifier == KeyModifier.NONE) {
+				keyModifiers.set(mainKeyModifier, true);
 				options.setKeyCode(focusedBinding, InputUtil.getKeyCode(keyCode, scanCode));
-				if (Utils.isShiftKey(mainKeyCode)) keyModifiers.setShift(true);
-				if (Utils.isControlKey(mainKeyCode)) keyModifiers.setControl(true);
-				if (Utils.isAltKey(mainKeyCode)) keyModifiers.setAlt(true);
 			} else {
-				if (Utils.isShiftKey(keyCode)) keyModifiers.setShift(true);
-				if (Utils.isControlKey(keyCode)) keyModifiers.setControl(true);
-				if (Utils.isAltKey(keyCode)) keyModifiers.setAlt(true);
+				keyModifiers.set(keyModifier, true);
 				keyModifiers.cleanup(focusedBinding);
 			}
 		}

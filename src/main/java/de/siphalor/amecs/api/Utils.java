@@ -47,7 +47,9 @@ public class Utils {
 	 * Decides whether a key code belongs to a shift key
 	 * @param keyCode the key code
 	 * @return whether it's a shift key
+	 * @deprecated Use {@link KeyModifier#matches(int)} ()} instead
 	 */
+	@Deprecated
 	public static boolean isShiftKey(int keyCode) {
 		return keyCode == 340 || keyCode == 344;
 	}
@@ -56,7 +58,9 @@ public class Utils {
 	 * Decides whether a key code belongs to a control key
 	 * @param keyCode the key code
 	 * @return whether it's a control key
+	 * @deprecated Use {@link KeyModifier#matches(int)} instead
 	 */
+	@Deprecated
 	public static boolean isControlKey(int keyCode) {
 		return keyCode == 341 || keyCode == 345;
 	}
@@ -65,7 +69,9 @@ public class Utils {
 	 * Decides whether a key code belongs to an alt key
 	 * @param keyCode the key code
 	 * @return whether it's an alt key
+	 * @deprecated Use {@link KeyModifier#matches(int)} instead
 	 */
+	@Deprecated
 	public static boolean isAltKey(int keyCode) {
 		return keyCode == 342 || keyCode == 346;
 	}
@@ -74,7 +80,9 @@ public class Utils {
 	 * Decides whether a key code is a valid modifier key
 	 * @param keyCode the key code
 	 * @return whether it's a modifier key
+	 * @deprecated Use {@link KeyModifier#fromKeyCode(int)} instead
 	 */
+	@Deprecated
 	public static boolean isModifier(int keyCode) {
 		return isShiftKey(keyCode) || isControlKey(keyCode) || isAltKey(keyCode);
 	}

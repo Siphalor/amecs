@@ -19,9 +19,10 @@ public class AmecsKeyBinding extends FabricKeyBinding {
 	 * @param category the id of the category which should include this keybinding
 	 * @param defaultModifiers the default modifiers
 	 */
-	protected AmecsKeyBinding(Identifier id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
+	public AmecsKeyBinding(Identifier id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
 		super(id, type, code, category);
 		this.defaultModifiers = defaultModifiers;
+		((IKeyBinding) this).amecs$getKeyModifiers().setValue(defaultModifiers.getValue());
 	}
 
 	/**

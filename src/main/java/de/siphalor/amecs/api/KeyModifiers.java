@@ -7,21 +7,9 @@ import net.minecraft.client.options.KeyBinding;
 /**
  * Defines modifiers for a key binding
  */
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class KeyModifiers {
 	private char value;
-
-	/**
-	 * Flag for the alt key
-	 */
-	public static final char ALT = 0b1;
-	/**
-	 * Flag for the control key
-	 */
-	public static final char CONTROL = 0b10;
-	/**
-	 * Flag for the shift key
-	 */
-	public static final char SHIFT = 0b100;
 
 	/**
 	 * Constructs new object with no modifiers set
@@ -45,7 +33,10 @@ public class KeyModifiers {
 	 * @param shift sets whether the shift flag should be set
 	 */
 	public KeyModifiers(boolean alt, boolean control, boolean shift) {
-		this((char) ((alt ? ALT : 0) | (control ? CONTROL : 0) | (shift ? SHIFT : 0)));
+		this();
+		setAlt(alt);
+		setControl(control);
+		setShift(shift);
 	}
 
 	/**
@@ -60,8 +51,9 @@ public class KeyModifiers {
 	 * Sets the raw value
 	 * @param value the value with flags set
 	 */
-	public void setValue(char value) {
+	public KeyModifiers setValue(char value) {
 		this.value = value;
+		return this;
 	}
 
 	/**
@@ -76,8 +68,9 @@ public class KeyModifiers {
 	 * Sets the alt flag
 	 * @param value whether the alt flag should be activated or not
 	 */
-	public void setAlt(boolean value) {
-		this.value = Utils.setFlag(this.value, ALT, value);
+	public KeyModifiers setAlt(boolean value) {
+		this.value = Utils.setFlag(this.value, KeyModifier.ALT.flag, value);
+		return this;
 	}
 
 	/**
@@ -85,15 +78,16 @@ public class KeyModifiers {
 	 * @return whether the alt key needs to be pressed
 	 */
 	public boolean getAlt() {
-		return Utils.getFlag(value, ALT);
+		return Utils.getFlag(value, KeyModifier.ALT.flag);
 	}
 
 	/**
 	 * Sets the control flag
 	 * @param value whether the control flag should be activated or not
 	 */
-	public void setControl(boolean value) {
-		this.value = Utils.setFlag(this.value, CONTROL, value);
+	public KeyModifiers setControl(boolean value) {
+		this.value = Utils.setFlag(this.value, KeyModifier.CONTROL.flag, value);
+		return this;
 	}
 
 	/**
@@ -101,15 +95,16 @@ public class KeyModifiers {
 	 * @return whether the control key needs to be pressed
 	 */
 	public boolean getControl() {
-		return Utils.getFlag(value, CONTROL);
+		return Utils.getFlag(value, KeyModifier.CONTROL.flag);
 	}
 
 	/**
 	 * Sets the shift flag
 	 * @param value whether the shift flag should be activated or not
 	 */
-	public void setShift(boolean value) {
-		this.value = Utils.setFlag(this.value, SHIFT, value);
+	public KeyModifiers setShift(boolean value) {
+		this.value = Utils.setFlag(this.value, KeyModifier.SHIFT.flag, value);
+		return this;
 	}
 
 	/**
@@ -117,7 +112,15 @@ public class KeyModifiers {
 	 * @return whether the shift key needs to be pressed
 	 */
 	public boolean getShift() {
-		return Utils.getFlag(value, SHIFT);
+		return Utils.getFlag(value, KeyModifier.SHIFT.flag);
+	}
+
+	public void set(KeyModifier keyModifier, boolean value) {
+		this.value = Utils.setFlag(this.value, keyModifier.flag, value);
+	}
+
+	public boolean get(KeyModifier keyModifier) {
+		return Utils.getFlag(this.value, keyModifier.flag);
 	}
 
 	/**
@@ -141,13 +144,7 @@ public class KeyModifiers {
 	 */
 	public void cleanup(KeyBinding keyBinding) {
 		int keyCode = ((IKeyBinding) keyBinding).amecs$getKeyCode().getKeyCode();
-		if(Utils.isAltKey(keyCode)) {
-			value = Utils.removeFlag(value, ALT);
-		} else if(Utils.isControlKey(keyCode)) {
-			value = Utils.removeFlag(value, CONTROL);
-		} else if(Utils.isShiftKey(keyCode)) {
-			value = Utils.removeFlag(value, SHIFT);
-		}
+		set(KeyModifier.fromKeyCode(keyCode), false);
 	}
 
 	/**
@@ -158,4 +155,5 @@ public class KeyModifiers {
 	public boolean equals(KeyModifiers other) {
 		return value == other.value;
 	}
+
 }

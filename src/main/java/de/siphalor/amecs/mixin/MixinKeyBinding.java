@@ -1,9 +1,9 @@
 package de.siphalor.amecs.mixin;
 
 import de.siphalor.amecs.Amecs;
+import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.api.ListeningKeyBinding;
-import de.siphalor.amecs.api.Utils;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
@@ -124,13 +124,7 @@ public class MixinKeyBinding implements IKeyBinding {
 
 	@Inject(method = "setKeyPressed", at = @At("HEAD"))
 	private static void setKeyPressed(InputUtil.KeyCode keyCode, boolean pressed, CallbackInfo callbackInfo) {
-		if (Utils.isShiftKey(keyCode.getKeyCode())) {
-			Amecs.CURRENT_MODIFIERS.setShift(pressed);
-		} else if(Utils.isControlKey(keyCode.getKeyCode())) {
-            Amecs.CURRENT_MODIFIERS.setShift(pressed);
-		} else if(Utils.isAltKey(keyCode.getKeyCode())) {
-            Amecs.CURRENT_MODIFIERS.setAlt(pressed);
-		}
+		Amecs.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(keyCode.getKeyCode()), pressed);
 
 		Collection<KeyBinding> amecsKeyBindings = amecs$keysById.get(keyCode);
 		if(amecsKeyBindings == null) return;

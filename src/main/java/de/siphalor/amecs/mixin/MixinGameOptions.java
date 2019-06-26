@@ -1,6 +1,7 @@
 package de.siphalor.amecs.mixin;
 
 import de.siphalor.amecs.Amecs;
+import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
@@ -44,7 +45,7 @@ public class MixinGameOptions {
 	public void onLoad(CallbackInfo callbackInfo, List list, CompoundTag compoundTag, Iterator iterator, String key, String value) {
         if(key.startsWith(Amecs.KEY_MODIFIER_GAME_OPTION)) {
 			key = key.substring(Amecs.KEY_MODIFIER_GAME_OPTION.length());
-			KeyBinding keyBinding = Amecs.getIdToKeyBindingMap().get(key);
+			KeyBinding keyBinding = KeyBindingUtils.getIdToKeyBindingMap().get(key);
 			if(keyBinding != null) {
 				((IKeyBinding) keyBinding).amecs$getKeyModifiers().setValue((char) Integer.parseInt(value));
 			}

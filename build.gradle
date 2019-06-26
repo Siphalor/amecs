@@ -40,6 +40,8 @@ dependencies {
 	include "net.fabricmc.fabric-api:fabric-api-base:+"
 	modImplementation "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
 	include "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
+	modImplementation "net.fabricmc.fabric-api:fabric-resource-loader-v0:+"
+	include "net.fabricmc.fabric-api:fabric-resource-loader-v0:+"
 }
 
 processResources {
@@ -64,6 +66,7 @@ tasks.withType(JavaCompile) {
 // if it is present.
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
+	//noinspection GroovyAssignabilityCheck
 	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
 }
@@ -73,12 +76,14 @@ jar {
 }
 
 task("apiJar", type: Jar) {
+	//noinspection GroovyAssignabilityCheck
 	archiveClassifier.set("api")
     from(file("src/main/java"))
 	include("de/siphalor/amecs/api/**")
 }
 
 task("apiSourcesJar", type: Jar, dependsOn: classes) {
+	//noinspection GroovyAssignabilityCheck
 	archiveClassifier.set("api-sources")
 	from apiJar.source
 }
@@ -87,6 +92,7 @@ task("apiSourcesJar", type: Jar, dependsOn: classes) {
 shadowJar {
 	// Needed to override the jar output and be used by Loom's remapJar
 	// Loom sets the jar classifier to dev and uses the default classifier for the output
+	//noinspection GroovyAssignabilityCheck
 	archiveClassifier.set("dev")
 	configurations = [project.configurations.shadow]
 	//relocate "some.library", "my.mod.shadowed.some.library"
