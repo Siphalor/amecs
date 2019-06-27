@@ -43,7 +43,7 @@ public class KeyModifiers {
 	 * Compares this object with the current pressed keys
 	 * @return whether the modifiers match in the current context
 	 */
-	public boolean matches() {
+	public boolean match() {
 		return equals(Amecs.CURRENT_MODIFIERS);
 	}
 

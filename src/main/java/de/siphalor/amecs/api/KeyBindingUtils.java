@@ -14,6 +14,7 @@ public class KeyBindingUtils {
 	public static final int MOUSE_SCROLL_DOWN = 513;
 
 	private static float lastScrollAmount = 0.0F;
+	private static boolean eventPropagationCanceled = false;
 	private static Map<String, KeyBinding> idToKeyBindingMap;
 
 	/**
@@ -30,6 +31,14 @@ public class KeyBindingUtils {
 	 */
 	public static void setLastScrollAmount(float lastScrollAmount) {
 		KeyBindingUtils.lastScrollAmount = lastScrollAmount;
+	}
+
+	public static boolean isEventPropagationCanceled() {
+		return eventPropagationCanceled;
+	}
+
+	public static void setEventPropagationCanceled(boolean eventPropagationCanceled) {
+		KeyBindingUtils.eventPropagationCanceled = eventPropagationCanceled;
 	}
 
 	/**

@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class MixinMouse {
 	@Shadow @Final private MinecraftClient client;
 
-	@Inject(method = "onMouseScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
+	@Inject(method = "onMouseScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, double deltaY) {
 		InputUtil.KeyCode keyCode = InputUtil.Type.MOUSE.createFromCode(deltaY > 0 ? KeyBindingUtils.MOUSE_SCROLL_DOWN : KeyBindingUtils.MOUSE_SCROLL_UP);
 		if(client.currentScreen instanceof ControlsOptionsScreen) {
@@ -38,7 +38,7 @@ public class MixinMouse {
 				return;
 			}
 		}
-		KeyBinding.onKeyPressed(keyCode);
 		KeyBindingUtils.setLastScrollAmount((float) deltaY);
+		KeyBinding.onKeyPressed(keyCode);
 	}
 }
