@@ -75,19 +75,6 @@ jar {
 	from "LICENSE"
 }
 
-task("apiJar", type: Jar) {
-	//noinspection GroovyAssignabilityCheck
-	archiveClassifier.set("api")
-    from(file("src/main/java"))
-	include("de/siphalor/amecs/api/**")
-}
-
-task("apiSourcesJar", type: Jar, dependsOn: classes) {
-	//noinspection GroovyAssignabilityCheck
-	archiveClassifier.set("api-sources")
-	from apiJar.source
-}
-
 // Configure shadowing
 shadowJar {
 	// Needed to override the jar output and be used by Loom's remapJar
@@ -109,15 +96,6 @@ publishing {
 			}
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
-			}
-		}
-		mavenApi(MavenPublication) {
-			artifactId = "amecs-api"
-			artifact(apiJar) {
-				classifier ""
-			}
-			artifact(apiSourcesJar) {
-				classifier "sources"
 			}
 		}
 	}

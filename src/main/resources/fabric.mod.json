@@ -8,8 +8,9 @@
 		"Siphalor"
 	],
 	"contact": {
-		"homepage": "https://github.com/siphalor/minecraft-amecs",
-		"sources": "https://github.com/siphalor/minecraft-amecs"
+		"homepage": "https://github.com/Siphalor/amecs",
+		"issues": "https://github.com/Siphalor/amecs/issues",
+		"sources": "https://github.com/Siphalor/amecs"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/amecs/logo.png",
@@ -19,5 +20,12 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.4.0"
+	},
+	"conflicts": {
+		"fabriccontrolling": "*",
+		"optifabric": "*"
+	},
+	"custom": {
+		"modmenu:clientsideOnly": true
 	}
 }

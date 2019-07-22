@@ -4,6 +4,7 @@ import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.api.ListeningKeyBinding;
+import de.siphalor.amecs.api.PriorityKeyBinding;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
@@ -27,7 +28,9 @@ public class KeyBindingManager {
 	}
 
 	public static Stream<KeyBinding> getMatchingKeyBindings(InputUtil.KeyCode keyCode) {
-		Stream<KeyBinding> result = keysById.get(keyCode).stream().filter(keyBinding -> ((IKeyBinding) keyBinding).amecs$getKeyModifiers().match());
+		Queue<KeyBinding> keyBindingQueue = keysById.get(keyCode);
+		if(keyBindingQueue == null) return Stream.empty();
+		Stream<KeyBinding> result = keyBindingQueue.stream().filter(keyBinding -> ((IKeyBinding) keyBinding).amecs$getKeyModifiers().match());
 		Set<KeyBinding> keyBindings = result.collect(Collectors.toSet());
 		if(keyBindings.isEmpty())
 			return keysById.get(keyCode).stream().filter(keyBinding -> ((IKeyBinding) keyBinding).amecs$getKeyModifiers().isUnset());
@@ -35,20 +38,12 @@ public class KeyBindingManager {
 	}
 
 	public static void onKeyPressed(InputUtil.KeyCode keyCode) {
-		Collection<KeyBinding> keyBindings = KeyBindingManager.keysById.get(keyCode);
-		if(keyBindings == null) return;
-		KeyBindingManager.getMatchingKeyBindings(keyCode).forEach(keyBinding -> {
-			((IKeyBinding) keyBinding).amecs$setTimesPressed(((IKeyBinding) keyBinding).amecs$getTimesPressed() + 1);
-			if(keyBinding instanceof ListeningKeyBinding) ((ListeningKeyBinding) keyBinding).onPressed();
+		getMatchingKeyBindings(keyCode).filter(keyBinding -> !(keyBinding instanceof PriorityKeyBinding)).forEach(keyBinding -> {
+			if(keyBinding instanceof ListeningKeyBinding)
+				((ListeningKeyBinding) keyBinding).onPressed();
+			else
+				((IKeyBinding) keyBinding).amecs$setTimesPressed(((IKeyBinding) keyBinding).amecs$getTimesPressed() + 1);
 		});
-	}
-
-	public static void setKeyPressed(InputUtil.KeyCode keyCode, boolean pressed) {
-		Amecs.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(keyCode.getKeyCode()), pressed);
-
-		Collection<KeyBinding> keyBindings = KeyBindingManager.keysById.get(keyCode);
-		if(keyBindings == null) return;
-		KeyBindingManager.getMatchingKeyBindings(keyCode).forEach(keyBinding -> ((IKeyBinding) keyBinding).amecs$setPressed(pressed));
 	}
 
 	public static void updatePressedStates() {
@@ -66,5 +61,21 @@ public class KeyBindingManager {
 
 	public static void unpressAll() {
 		KeyBindingUtils.getIdToKeyBindingMap().values().forEach(keyBinding -> ((IKeyBinding) keyBinding).amecs$setPressed(false));
+	}
+
+	public static boolean onKeyPressedPriority(InputUtil.KeyCode keyCode) {
+		Set<KeyBinding> keyBindings = getMatchingKeyBindings(keyCode).filter(keyBinding -> keyBinding instanceof PriorityKeyBinding).collect(Collectors.toSet());
+		for(KeyBinding keyBinding : keyBindings) {
+			if(((PriorityKeyBinding) keyBinding).onPressed()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static void setKeyPressed(InputUtil.KeyCode keyCode, boolean pressed) {
+		Amecs.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(keyCode.getKeyCode()), pressed);
+
+		getMatchingKeyBindings(keyCode).forEach(keyBinding -> ((IKeyBinding) keyBinding).amecs$setPressed(pressed));
 	}
 }
