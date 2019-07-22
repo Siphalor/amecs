@@ -3,7 +3,6 @@ package de.siphalor.amecs.mixin;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.impl.KeyBindingManager;
 import de.siphalor.amecs.util.IKeyBinding;
-import de.siphalor.amecs.util.StaticContainer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
@@ -97,18 +96,12 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
 	@Inject(method = "onKeyPressed", at = @At("HEAD"))
 	private static void onKeyPressed(InputUtil.KeyCode keyCode, CallbackInfo callbackInfo) {
-		if(!StaticContainer.ignoreKeyBindingMethod) {
-			KeyBindingManager.onKeyPressed(keyCode);
-		}
-		StaticContainer.ignoreKeyBindingMethod = false;
+		KeyBindingManager.onKeyPressed(keyCode);
 	}
 
 	@Inject(method = "setKeyPressed", at = @At("HEAD"))
 	private static void setKeyPressed(InputUtil.KeyCode keyCode, boolean pressed, CallbackInfo callbackInfo) {
-		if(!StaticContainer.ignoreKeyBindingMethod) {
-			KeyBindingManager.setKeyPressed(keyCode, pressed);
-		}
-		StaticContainer.ignoreKeyBindingMethod = false;
+		KeyBindingManager.setKeyPressed(keyCode, pressed);
 	}
 
 	@Inject(method = "updatePressedStates", at = @At("HEAD"), cancellable = true)
