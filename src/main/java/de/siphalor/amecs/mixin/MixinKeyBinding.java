@@ -1,9 +1,7 @@
 package de.siphalor.amecs.mixin;
 
-import de.siphalor.amecs.Amecs;
-import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.api.ListeningKeyBinding;
+import de.siphalor.amecs.impl.KeyBindingManager;
 import de.siphalor.amecs.util.IKeyBinding;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
@@ -18,10 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 @Mixin(KeyBinding.class)
@@ -35,8 +32,6 @@ public class MixinKeyBinding implements IKeyBinding {
 	@Shadow @Final private static Map<InputUtil.KeyCode, KeyBinding> keysByCode;
 
 	@Shadow @Final private static Map<String, KeyBinding> keysById;
-
-	private static Map<InputUtil.KeyCode, ConcurrentLinkedQueue<KeyBinding>> amecs$keysById = new HashMap<>();
 
 	private KeyModifiers amecs$keyModifiers = new KeyModifiers();
 
@@ -68,7 +63,7 @@ public class MixinKeyBinding implements IKeyBinding {
 	@Inject(method = "<init>(Ljava/lang/String;Lnet/minecraft/client/util/InputUtil$Type;ILjava/lang/String;)V", at = @At("RETURN"))
 	private void onConstructed(String id, InputUtil.Type type, int defaultCode, String category, CallbackInfo callbackInfo) {
 		keysByCode.remove(keyCode);
-		amecs$register((KeyBinding)(Object) this);
+		KeyBindingManager.register((KeyBinding)(Object) this);
 	}
 
 	@Inject(method = "getLocalizedName()Ljava/lang/String;", at = @At("TAIL"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
@@ -95,45 +90,19 @@ public class MixinKeyBinding implements IKeyBinding {
         if(!amecs$keyModifiers.equals(((IKeyBinding) other).amecs$getKeyModifiers())) callbackInfoReturnable.setReturnValue(false);
 	}
 
-	private static void amecs$register(KeyBinding keyBinding) {
-		InputUtil.KeyCode keyCode = ((IKeyBinding) keyBinding).amecs$getKeyCode();
-        if(amecs$keysById.containsKey(keyCode)) {
-        	amecs$keysById.get(keyCode).add(keyBinding);
-		} else {
-        	amecs$keysById.put(keyCode, new ConcurrentLinkedQueue<>(Collections.singleton(keyBinding)));
-		}
-	}
-
-	private static Stream<KeyBinding> amecs$getMatchingKeyBindings(InputUtil.KeyCode keyCode) {
-		Stream<KeyBinding> result = amecs$keysById.get(keyCode).stream().filter(keyBinding -> ((IKeyBinding) keyBinding).amecs$getKeyModifiers().matches());
-		Set<KeyBinding> keyBindings = result.collect(Collectors.toSet());
-		if(keyBindings.isEmpty())
-			return amecs$keysById.get(keyCode).stream().filter(keyBinding -> ((IKeyBinding) keyBinding).amecs$getKeyModifiers().isUnset());
-		return keyBindings.stream();
-	}
-
 	@Inject(method = "onKeyPressed", at = @At("HEAD"))
 	private static void onKeyPressed(InputUtil.KeyCode keyCode, CallbackInfo callbackInfo) {
-		Collection<KeyBinding> keyBindings = amecs$keysById.get(keyCode);
-		if(keyBindings == null) return;
-		amecs$getMatchingKeyBindings(keyCode).forEach(keyBinding -> {
-			((IKeyBinding) keyBinding).amecs$setTimesPressed(((IKeyBinding) keyBinding).amecs$getTimesPressed() + 1);
-			if(keyBinding instanceof ListeningKeyBinding) ((ListeningKeyBinding) keyBinding).onPressed();
-		});
+		KeyBindingManager.onKeyPressed(keyCode);
 	}
 
 	@Inject(method = "setKeyPressed", at = @At("HEAD"))
 	private static void setKeyPressed(InputUtil.KeyCode keyCode, boolean pressed, CallbackInfo callbackInfo) {
-		Amecs.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(keyCode.getKeyCode()), pressed);
-
-		Collection<KeyBinding> amecsKeyBindings = amecs$keysById.get(keyCode);
-		if(amecsKeyBindings == null) return;
-		amecs$getMatchingKeyBindings(keyCode).forEach(keyBinding -> ((IKeyBinding) keyBinding).amecs$setPressed(pressed));
+		KeyBindingManager.setKeyPressed(keyCode, pressed);
 	}
 
 	@Inject(method = "updatePressedStates", at = @At("HEAD"), cancellable = true)
 	private static void updatePressedStates(CallbackInfo callbackInfo) {
-		Collection<KeyBinding> keyBindings = amecs$keysById.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
+		Collection<KeyBinding> keyBindings = KeyBindingManager.keysById.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
 		for(KeyBinding keyBinding : keyBindings) {
 			boolean pressed = !keyBinding.isNotBound() && ((IKeyBinding) keyBinding).amecs$getKeyCode().getCategory() == InputUtil.Type.KEYSYM && InputUtil.isKeyPressed(MinecraftClient.getInstance().window.getHandle(), ((IKeyBinding) keyBinding).amecs$getKeyCode().getKeyCode());
 			((IKeyBinding) keyBinding).amecs$setPressed(pressed);
@@ -143,8 +112,8 @@ public class MixinKeyBinding implements IKeyBinding {
 
 	@Inject(method = "updateKeysByCode", at = @At("HEAD"), cancellable = true)
 	private static void updateKeyBindings(CallbackInfo callbackInfo) {
-		amecs$keysById.clear();
-        keysById.values().forEach(MixinKeyBinding::amecs$register);
+		KeyBindingManager.keysById.clear();
+        keysById.values().forEach(KeyBindingManager::register);
 		callbackInfo.cancel();
 	}
 
@@ -154,6 +123,7 @@ public class MixinKeyBinding implements IKeyBinding {
 		callbackInfo.cancel();
 	}
 
+	@SuppressWarnings("unused")
 	private static Map<String, KeyBinding> amecs$getIdToKeyBindingMap() {
 		return keysById;
 	}
