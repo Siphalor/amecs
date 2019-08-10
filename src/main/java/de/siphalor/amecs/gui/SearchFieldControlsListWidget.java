@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.controls.ControlsListWidget;
 import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.resource.language.I18n;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -29,21 +30,29 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 				for(Element child : minecraftClient.currentScreen.children()) {
 					if(child instanceof ControlsListWidget) {
 						ControlsListWidget controlsListWidget = (ControlsListWidget) child;
+						controlsListWidget.setScrollAmount(0);
 
-						entries.addAll(controlsListWidget.children().stream().filter(entry -> entry instanceof ControlsListWidget.KeyBindingEntry).map(entry -> (ControlsListWidget.KeyBindingEntry) entry).collect(Collectors.toSet()));
+						if(entries.size() <= 0)
+							entries.addAll(controlsListWidget.children().stream().filter(entry -> entry instanceof ControlsListWidget.KeyBindingEntry).map(entry -> (ControlsListWidget.KeyBindingEntry) entry).collect(Collectors.toSet()));
+
 						controlsListWidget.children().clear();
 
 						controlsListWidget.children().add(this);
 
 						String lastCat = null;
+						boolean includeCat = false;
 						for(ControlsListWidget.KeyBindingEntry entry : entries) {
-							if(!StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), text)) continue;
 							final String cat = ((IKeyBindingEntry) entry).amecs$getKeyBinding().getCategory();
-							if(!Objects.equals(lastCat, cat)) {
-								controlsListWidget.children().add(controlsListWidget.new CategoryEntry(cat));
-								lastCat = cat;
+							if(!cat.equals(lastCat)) {
+								includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), text);
 							}
-							controlsListWidget.children().add(entry);
+							if(includeCat || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), text)) {
+								if(!cat.equals(lastCat)) {
+									controlsListWidget.children().add(controlsListWidget.new CategoryEntry(cat));
+									lastCat = cat;
+								}
+								controlsListWidget.children().add(entry);
+							}
 						}
 					}
 				}

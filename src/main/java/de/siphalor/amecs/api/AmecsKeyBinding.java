@@ -31,4 +31,9 @@ public class AmecsKeyBinding extends FabricKeyBinding {
 	public void resetKeyBinding() {
 		((IKeyBinding) this).amecs$getKeyModifiers().setValue(defaultModifiers.getValue());
 	}
+
+	@Override
+	public boolean isDefault() {
+		return defaultModifiers.equals(((IKeyBinding) this).amecs$getKeyModifiers()) && super.isDefault();
+	}
 }
