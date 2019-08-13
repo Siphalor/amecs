@@ -2,6 +2,7 @@ package de.siphalor.amecs.api;
 
 import de.siphalor.amecs.util.IKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
@@ -35,5 +36,10 @@ public class AmecsKeyBinding extends FabricKeyBinding {
 	@Override
 	public boolean isDefault() {
 		return defaultModifiers.equals(((IKeyBinding) this).amecs$getKeyModifiers()) && super.isDefault();
+	}
+
+	@Override
+	public int compareTo(KeyBinding o) {
+		return method_1430(o);
 	}
 }

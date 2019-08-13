@@ -1,4 +1,18 @@
 {
 	"amecs.key.mouse.scroll.up": "Scroll Up",
-	"amecs.key.mouse.scroll.down": "Scroll Down"
+	"amecs.key.mouse.scroll.down": "Scroll Down",
+
+	"amecs.key.categories.skin_layers": "Skin Layers",
+	"key.amecs.toggle_auto_jump": "Toggle Auto Jump",
+	"key.amecs.toggle_cape": "Toggle Cape",
+	"key.amecs.toggle_hat": "Toggle Hat",
+	"key.amecs.toggle_jacket": "Toggle Jacket",
+	"key.amecs.toggle_left_pants_leg": "Toggle Left Pants Leg",
+	"key.amecs.toggle_left_sleeve": "Toggle Left Sleeve",
+	"key.amecs.toggle_right_pants_leg": "Toggle Left Pants Leg",
+	"key.amecs.toggle_right_sleeve": "Toggle Left Sleeve",
+
+	"amecs.toggled.on": "Enabled %s",
+	"amecs.toggled.off": "Disabled %s",
+	"amecs.toggled.auto_jump": "Auto Jump"
 }
