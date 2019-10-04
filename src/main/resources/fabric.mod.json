@@ -14,12 +14,12 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/amecs/logo.png",
-	"environment": "*",
+	"environment": "client",
 	"mixins": [
 		"amecs.mixins.json"
 	],
 	"entrypoints": {
-		"main": [
+		"client": [
 			"de.siphalor.amecs.Amecs"
 		]
 	},
