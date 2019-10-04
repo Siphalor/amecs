@@ -3,7 +3,7 @@ package de.siphalor.amecs;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.impl.keybindings.SkinLayerKeyBinding;
 import de.siphalor.amecs.impl.keybindings.ToggleAutoJumpKeyBinding;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
 import net.minecraft.client.render.entity.PlayerModelPart;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 /**
  * Main class of Amecs (Alt-Meta-Escape-Control-Shift)
  */
-public class Amecs implements ModInitializer {
+public class Amecs implements ClientModInitializer {
     /**
      * The mod id of Amecs
      */
@@ -37,7 +37,7 @@ public class Amecs implements ModInitializer {
     private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
 
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         KeyBindingRegistry.INSTANCE.addCategory(SKIN_LAYER_CATEGORY);
 
         KeyBindingRegistry.INSTANCE.register(new ToggleAutoJumpKeyBinding(new Identifier(MOD_ID, "toggle_auto_jump"), InputUtil.Type.KEYSYM, 66, "key.categories.movement", new KeyModifiers()));
