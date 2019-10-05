@@ -11,6 +11,8 @@ import net.minecraft.client.options.KeyBinding;
 public class KeyModifiers {
 	private char value;
 
+	public static final KeyModifiers NONE = new KeyModifiers();
+
 	/**
 	 * Constructs new object with no modifiers set
 	 */

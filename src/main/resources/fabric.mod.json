@@ -24,7 +24,10 @@
 		]
 	},
 	"depends": {
-		"fabricloader": ">=0.4.0"
+		"fabricloader": ">=0.4.0",
+		"fabric-keybindings-v0": "*",
+		"fabric-resource-loader-v0": "*",
+		"fabric-api-base": "*"
 	},
 	"conflicts": {
 		"fabriccontrolling": "*",

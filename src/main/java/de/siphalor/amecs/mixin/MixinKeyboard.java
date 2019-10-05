@@ -19,7 +19,7 @@ public class MixinKeyboard {
 
 	@Shadow private boolean repeatEvents;
 
-	@Inject(method = "onKey", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;method_20315()Z", ordinal = 0))
+	@Inject(method = "onKey", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;hasControlDown()Z", ordinal = 1, shift = At.Shift.BEFORE), cancellable = true)
 	private void onKeyPriority(long window, int int_1, int int_2, int int_3, int int_4, CallbackInfo callbackInfo) {
 		if(int_3 == 1 || (int_3 == 2 && repeatEvents)) {
 			if(KeyBindingManager.onKeyPressedPriority(InputUtil.getKeyCode(int_1, int_2)))
