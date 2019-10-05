@@ -108,7 +108,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	private static void updatePressedStates(CallbackInfo callbackInfo) {
 		Collection<KeyBinding> keyBindings = KeyBindingManager.keysById.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
 		for(KeyBinding keyBinding : keyBindings) {
-			boolean pressed = !keyBinding.isNotBound() && ((IKeyBinding) keyBinding).amecs$getKeyCode().getCategory() == InputUtil.Type.KEYSYM && InputUtil.isKeyPressed(MinecraftClient.getInstance().window.getHandle(), ((IKeyBinding) keyBinding).amecs$getKeyCode().getKeyCode());
+			boolean pressed = !keyBinding.isNotBound() && ((IKeyBinding) keyBinding).amecs$getKeyCode().getCategory() == InputUtil.Type.KEYSYM && InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((IKeyBinding) keyBinding).amecs$getKeyCode().getKeyCode());
 			((IKeyBinding) keyBinding).amecs$setPressed(pressed);
 		}
 		callbackInfo.cancel();
