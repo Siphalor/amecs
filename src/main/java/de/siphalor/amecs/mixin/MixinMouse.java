@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(Mouse.class)
+// TODO: Fix the priority when Mixin 0.8 is a thing and try again (-> MaLiLib causes incompatibilities)
+@Mixin(value = Mouse.class, priority = -2000)
 public class MixinMouse {
 	@Shadow @Final private MinecraftClient client;
 
