@@ -5,9 +5,9 @@ import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.impl.KeyBindingManager;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
+import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.SystemUtil;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +34,7 @@ public class MixinKeyboard {
 			ControlsOptionsScreen screen = (ControlsOptionsScreen) MinecraftClient.getInstance().currentScreen;
 
 			screen.focusedBinding = null;
-            screen.time = SystemUtil.getMeasuringTimeMs();
+            screen.time = Util.getMeasuringTimeMs();
 		}
 
 		Amecs.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(InputUtil.getKeyCode(int_1, int_2).getKeyCode()), int_3 != 0);

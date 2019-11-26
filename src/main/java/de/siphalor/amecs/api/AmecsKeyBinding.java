@@ -37,9 +37,4 @@ public class AmecsKeyBinding extends FabricKeyBinding {
 	public boolean isDefault() {
 		return defaultModifiers.equals(((IKeyBinding) this).amecs$getKeyModifiers()) && super.isDefault();
 	}
-
-	@Override
-	public int compareTo(KeyBinding o) {
-		return method_1430(o);
-	}
 }

@@ -3,7 +3,7 @@ package de.siphalor.amecs.mixin;
 import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.util.IKeyBinding;
 import de.siphalor.amecs.util.IKeyBindingEntry;
-import net.minecraft.client.gui.screen.controls.ControlsListWidget;
+import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;

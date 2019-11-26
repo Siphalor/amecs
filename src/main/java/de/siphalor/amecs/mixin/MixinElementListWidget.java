@@ -2,7 +2,7 @@ package de.siphalor.amecs.mixin;
 
 import de.siphalor.amecs.gui.SearchFieldControlsListWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.controls.ControlsListWidget;
+import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import org.spongepowered.asm.mixin.Mixin;
