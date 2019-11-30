@@ -1,0 +1,18 @@
+{
+	"amecs.key.mouse.scroll.up": "Üleskerimine",
+	"amecs.key.mouse.scroll.down": "Allakerimine",
+
+	"amecs.key.categories.skin_layers": "Välimuse kihid",
+	"key.amecs.toggle_auto_jump": "Lülita automaatset hüpet",
+	"key.amecs.toggle_cape": "Lülita keepi",
+	"key.amecs.toggle_hat": "Lülita mütsi",
+	"key.amecs.toggle_jacket": "Lülita jopet",
+	"key.amecs.toggle_left_pants_leg": "Lülita vasakut püksisäärt",
+	"key.amecs.toggle_left_sleeve": "Lülita vasakut varrukat",
+	"key.amecs.toggle_right_pants_leg": "Lülita paremat püksisäärt",
+	"key.amecs.toggle_right_sleeve": "Lülita paremat varrukat",
+
+	"amecs.toggled.on": "%s lubatud",
+	"amecs.toggled.off": "%s keelatud",
+	"amecs.toggled.auto_jump": "Automaatne hüpe"
+}
