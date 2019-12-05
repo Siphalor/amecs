@@ -9,8 +9,8 @@
 	"key.amecs.toggle_jacket": "Toggle Jacket",
 	"key.amecs.toggle_left_pants_leg": "Toggle Left Pants Leg",
 	"key.amecs.toggle_left_sleeve": "Toggle Left Sleeve",
-	"key.amecs.toggle_right_pants_leg": "Toggle Left Pants Leg",
-	"key.amecs.toggle_right_sleeve": "Toggle Left Sleeve",
+	"key.amecs.toggle_right_pants_leg": "Toggle Right Pants Leg",
+	"key.amecs.toggle_right_sleeve": "Toggle Right Sleeve",
 
 	"amecs.toggled.on": "Enabled %s",
 	"amecs.toggled.off": "Disabled %s",
