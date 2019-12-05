@@ -25,8 +25,9 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
 		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, "");
-		textFieldWidget.setChangedListener(text -> {
+		textFieldWidget.setChangedListener(searchText -> {
 			if(minecraftClient.currentScreen instanceof ControlsOptionsScreen) {
+				searchText = searchText.trim();
 				for(Element child : minecraftClient.currentScreen.children()) {
 					if(child instanceof ControlsListWidget) {
 						ControlsListWidget controlsListWidget = (ControlsListWidget) child;
@@ -39,14 +40,30 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 
 						controlsListWidget.children().add(this);
 
+						String keyFilter = null;
+						int keyDelimiterPos = searchText.indexOf('=');
+						if(keyDelimiterPos == 0) {
+							keyFilter = searchText.substring(1).trim();
+							searchText = null;
+						} else if(keyDelimiterPos > 0) {
+							keyFilter = searchText.substring(keyDelimiterPos + 1).trim();
+							searchText = searchText.substring(0, keyDelimiterPos).trim();
+						}
+
 						String lastCat = null;
 						boolean includeCat = false;
 						for(ControlsListWidget.KeyBindingEntry entry : entries) {
 							final String cat = ((IKeyBindingEntry) entry).amecs$getKeyBinding().getCategory();
 							if(!cat.equals(lastCat)) {
-								includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), text);
+								includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), searchText);
 							}
-							if(includeCat || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), text)) {
+							if(
+								includeCat
+								|| (
+									(searchText == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), searchText))
+									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getLocalizedName(), keyFilter))
+								)
+							) {
 								if(!cat.equals(lastCat)) {
 									controlsListWidget.children().add(controlsListWidget.new CategoryEntry(cat));
 									lastCat = cat;
