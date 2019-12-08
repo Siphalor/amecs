@@ -2,7 +2,6 @@ package de.siphalor.amecs.api;
 
 import de.siphalor.amecs.util.IKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
-import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
@@ -25,6 +24,25 @@ public class AmecsKeyBinding extends FabricKeyBinding {
 		this.defaultModifiers = defaultModifiers;
 		((IKeyBinding) this).amecs$getKeyModifiers().setValue(defaultModifiers.getValue());
 	}
+
+	@Override
+	public void setPressed(boolean pressed) {
+		super.setPressed(pressed);
+		if(pressed)
+			onPressed();
+		else
+			onReleased();
+	}
+
+	/**
+	 * A convenience method which gets fired when the keybinding is used
+	 */
+	public void onPressed() {}
+
+	/**
+	 * A convenience method which gets fired when the keybinding is stopped being used
+	 */
+	public void onReleased() {}
 
 	/**
 	 * Resets this keybinding (triggered when the user clicks on the "Reset" button).

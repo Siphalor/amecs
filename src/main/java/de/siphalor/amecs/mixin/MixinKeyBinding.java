@@ -3,7 +3,6 @@ package de.siphalor.amecs.mixin;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.impl.KeyBindingManager;
 import de.siphalor.amecs.util.IKeyBinding;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
@@ -16,9 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 @Mixin(KeyBinding.class)
@@ -50,11 +47,6 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	@Override
 	public void amecs$setTimesPressed(int timesPressed) {
         this.timesPressed = timesPressed;
-	}
-
-	@Override
-	public void amecs$setPressed(boolean pressed) {
-		this.pressed = pressed;
 	}
 
 	@Override
@@ -106,11 +98,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
 	@Inject(method = "updatePressedStates", at = @At("HEAD"), cancellable = true)
 	private static void updatePressedStates(CallbackInfo callbackInfo) {
-		Collection<KeyBinding> keyBindings = KeyBindingManager.keysById.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
-		for(KeyBinding keyBinding : keyBindings) {
-			boolean pressed = !keyBinding.isNotBound() && ((IKeyBinding) keyBinding).amecs$getKeyCode().getCategory() == InputUtil.Type.KEYSYM && InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), ((IKeyBinding) keyBinding).amecs$getKeyCode().getKeyCode());
-			((IKeyBinding) keyBinding).amecs$setPressed(pressed);
-		}
+		KeyBindingManager.updatePressedStates();
 		callbackInfo.cancel();
 	}
 
