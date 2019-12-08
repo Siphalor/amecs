@@ -66,7 +66,7 @@ public class KeyBindingManager {
 	public static boolean onKeyPressedPriority(InputUtil.KeyCode keyCode) {
 		Set<KeyBinding> keyBindings = getMatchingKeyBindings(keyCode).filter(keyBinding -> keyBinding instanceof PriorityKeyBinding).collect(Collectors.toSet());
 		for(KeyBinding keyBinding : keyBindings) {
-			if(((PriorityKeyBinding) keyBinding).onPressed()) {
+			if(((PriorityKeyBinding) keyBinding).onPressedPriority()) {
 				return true;
 			}
 		}

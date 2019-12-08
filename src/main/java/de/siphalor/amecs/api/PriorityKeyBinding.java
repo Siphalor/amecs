@@ -10,5 +10,5 @@ public interface PriorityKeyBinding {
 	 * Since there are no other checks before the invocation you need to check yourself for possible open screens.
 	 * @return Return true to cancel propagation of this event. Return false for normal evaluation.
 	 */
-	boolean onPressed();
+	boolean onPressedPriority();
 }
