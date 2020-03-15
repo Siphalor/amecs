@@ -1,4 +1,4 @@
-package de.siphalor.amecs.impl.keybindings;
+package de.siphalor.amecs.keybindings;
 
 import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.api.AmecsKeyBinding;

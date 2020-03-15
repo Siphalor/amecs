@@ -3,37 +3,29 @@
 	"id": "amecs",
 	"version": "${version}",
 	"name": "Amecs",
-	"description": "Makes keybindings actually useful",
+	"description": "A lot of keybind utilities",
 	"authors": [
 		"Siphalor"
 	],
+	"contributors": [],
 	"contact": {
-		"homepage": "https://github.com/Siphalor/amecs",
-		"issues": "https://github.com/Siphalor/amecs/issues",
 		"sources": "https://github.com/Siphalor/amecs"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/amecs/logo.png",
-	"environment": "client",
+	"environment": "*",
+	"entrypoints": {
+		"main": [],
+		"client": [
+			"de.siphalor.amecs.Amecs"
+		],
+		"server": []
+	},
 	"mixins": [
 		"amecs.mixins.json"
 	],
-	"entrypoints": {
-		"client": [
-			"de.siphalor.amecs.Amecs"
-		]
-	},
 	"depends": {
 		"fabricloader": ">=0.4.0",
-		"fabric-keybindings-v0": "*",
-		"fabric-resource-loader-v0": "*",
-		"fabric-api-base": "*"
-	},
-	"conflicts": {
-		"fabriccontrolling": "*",
-		"optifabric": "*"
-	},
-	"custom": {
-		"modmenu:clientsideOnly": true
+		"fabric": "*"
 	}
 }

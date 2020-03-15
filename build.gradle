@@ -1,55 +1,47 @@
 plugins {
-	id "java"
-	id "idea"
-	id "maven-publish"
-	id "fabric-loom" version "0.2.6-SNAPSHOT"
-	id "com.github.ben-manes.versions" version "0.21.0"
-	id "com.github.johnrengelman.shadow" version "5.0.0"
-	id "com.matthewprenger.cursegradle" version "1.2.0"
-}
-
-repositories {
-	maven {
-		url = "http://maven.fabricmc.net/"
-		name = "Fabric"
-	}
-	maven {
-		url = "https://minecraft.curseforge.com/api/maven"
-		name = "CurseForge"
-	}
-	jcenter()
+	id 'fabric-loom' version '0.2.6-SNAPSHOT'
+	id 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = "${mod_version}+${minecraft_version}"
-group = maven_group
+version = "${project.mod_version}+mc.${project.minecraft_version}"
+group = project.maven_group
 
 minecraft {
-	refmapName = "${project.mod_id}-refmap.json"
+}
+
+repositories {
+	maven {
+		url "https://jitpack.io/"
+		name "JitPack"
+	}
 }
 
 dependencies {
 	//to change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings "net.fabricmc:yarn:${minecraft_version}+build.${yarn_mappings}"
-	modCompile "net.fabricmc:fabric-loader:${loader_version}"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modApi "net.fabricmc.fabric-api:fabric-api-base:+"
-	modApi "net.fabricmc.fabric-api:fabric-keybindings-v0:+"
-	modApi "net.fabricmc.fabric-api:fabric-resource-loader-v0:+"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modImplementation "com.github.siphalor:amecs-api:master-SNAPSHOT"
+	include "com.github.siphalor:amecs-api:master-SNAPSHOT"
 }
 
 processResources {
-	inputs.properties "version": project.version,
-			"archives_base_name": project.archives_base_name
+	inputs.property "version", project.version
 
 	from(sourceSets.main.resources.srcDirs) {
 		include "fabric.mod.json"
-		expand "version": project.version,
-				"archives_base_name": project.archives_base_name
+		expand "version": project.version
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "fabric.mod.json"
 	}
 }
 
@@ -64,8 +56,7 @@ tasks.withType(JavaCompile) {
 // if it is present.
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
-	//noinspection GroovyAssignabilityCheck
-	archiveClassifier.set("sources")
+	classifier = "sources"
 	from sourceSets.main.allSource
 }
 
@@ -73,23 +64,15 @@ jar {
 	from "LICENSE"
 }
 
-// Configure shadowing
-shadowJar {
-	// Needed to override the jar output and be used by Loom's remapJar
-	// Loom sets the jar classifier to dev and uses the default classifier for the output
-	//noinspection GroovyAssignabilityCheck
-	archiveClassifier.set("dev")
-	configurations = [project.configurations.shadow]
-	//relocate "some.library", "my.mod.shadowed.some.library"
-}
-jar.finalizedBy shadowJar
-
 // configure the maven publication
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			// add all the jars that should be included when publishing to maven
-			artifact(jar.archiveFile) {
+			artifact(jar) {
+				builtBy remapJar
+			}
+			artifact("${project.buildDir.absolutePath}/libs/${archivesBaseName}-${project.version}.jar"){
 				builtBy remapJar
 			}
 			artifact(sourcesJar) {

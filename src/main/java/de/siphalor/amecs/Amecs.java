@@ -1,9 +1,11 @@
 package de.siphalor.amecs;
 
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.impl.keybindings.SkinLayerKeyBinding;
-import de.siphalor.amecs.impl.keybindings.ToggleAutoJumpKeyBinding;
+import de.siphalor.amecs.keybindings.SkinLayerKeyBinding;
+import de.siphalor.amecs.keybindings.ToggleAutoJumpKeyBinding;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
 import net.minecraft.client.render.entity.PlayerModelPart;
@@ -18,21 +20,13 @@ import java.util.Arrays;
 /**
  * Main class of Amecs (Alt-Meta-Escape-Control-Shift)
  */
+@Environment(EnvType.CLIENT)
 public class Amecs implements ClientModInitializer {
     /**
      * The mod id of Amecs
      */
     @SuppressWarnings("WeakerAccess")
     public static final String MOD_ID = "amecs";
-    /**
-     * The prefix used in the <code>options.txt</code>
-     */
-    public static final String KEY_MODIFIER_GAME_OPTION = MOD_ID + "$key_modifier$";
-
-    /**
-     * Defines the current pressed key modifiers
-     */
-    public static final KeyModifiers CURRENT_MODIFIERS = new KeyModifiers();
 
     private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
 
@@ -47,6 +41,6 @@ public class Amecs implements ClientModInitializer {
     }
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
-        playerEntity.addChatMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+        playerEntity.addMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
     }
 }

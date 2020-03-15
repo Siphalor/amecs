@@ -1,6 +1,6 @@
 package de.siphalor.amecs.gui;
 
-import de.siphalor.amecs.util.IKeyBindingEntry;
+import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
