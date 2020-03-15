@@ -8,18 +8,7 @@
 ## API
 If you want to use the api provided by this mod you'll want to implement and include this mod:
 
-```groovy
-repositories {
-    maven { url "https://jitpack.io/" }
-}
-
-dependencies {
-    modImplementation "com.github.siphalor:amecs:+"
-    include "com.github.siphalor:amecs:+"
-}
-```
-
-If you don't want to shadow this whole mod you may just want to copy the relevant interfaces/classes from `de.siphalor.amecs.api`.
+[See here 😜](https://github.com/Siphalor/amecs-api)
 
 ## License
 
