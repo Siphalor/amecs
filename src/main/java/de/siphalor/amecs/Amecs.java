@@ -41,6 +41,6 @@ public class Amecs implements ClientModInitializer {
     }
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
-        playerEntity.addMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+        playerEntity.sendMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
     }
 }

@@ -28,8 +28,8 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation "com.github.siphalor:amecs-api:master-SNAPSHOT"
-	include "com.github.siphalor:amecs-api:master-SNAPSHOT"
+	modImplementation "com.github.siphalor:amecs-api:1.16-SNAPSHOT"
+	include "com.github.siphalor:amecs-api:1.16-SNAPSHOT"
 }
 
 processResources {
