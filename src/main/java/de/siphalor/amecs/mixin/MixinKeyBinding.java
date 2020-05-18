@@ -35,7 +35,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
 	@Shadow protected abstract void reset();
 
-	private KeyModifiers amecs$keyModifiers = new KeyModifiers();
+	private final KeyModifiers amecs$keyModifiers = new KeyModifiers();
 
 	@Override
 	public InputUtil.KeyCode amecs$getKeyCode() {
@@ -80,13 +80,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	@Inject(method = "matchesKey", at = @At("RETURN"), cancellable = true)
 	public void matchesKey(int keyCode, int scanCode, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
 		if(!amecs$keyModifiers.isUnset() && !amecs$keyModifiers.match()) callbackInfoReturnable.setReturnValue(false);
-        timesPressed = 0;
 	}
 
 	@Inject(method = "matchesMouse", at = @At("RETURN"), cancellable = true)
 	public void matchesMouse(int mouse, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if(!amecs$keyModifiers.isUnset() && !amecs$keyModifiers.match()) callbackInfoReturnable.setReturnValue(false);
-        timesPressed = 0;
 	}
 
 	@Inject(method = "equals", at = @At("RETURN"), cancellable = true)
@@ -94,9 +92,10 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         if(!amecs$keyModifiers.equals(((IKeyBinding) other).amecs$getKeyModifiers())) callbackInfoReturnable.setReturnValue(false);
 	}
 
-	@Inject(method = "onKeyPressed", at = @At("HEAD"))
+	@Inject(method = "onKeyPressed", at = @At("HEAD"), cancellable = true)
 	private static void onKeyPressed(InputUtil.KeyCode keyCode, CallbackInfo callbackInfo) {
 		KeyBindingManager.onKeyPressed(keyCode);
+		callbackInfo.cancel();
 	}
 
 	@Inject(method = "setKeyPressed", at = @At("HEAD"))
