@@ -6,8 +6,8 @@ import de.siphalor.amecs.keybindings.ToggleAutoJumpKeyBinding;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
-import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,15 +32,14 @@ public class Amecs implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBindingRegistry.INSTANCE.addCategory(SKIN_LAYER_CATEGORY);
+        KeyBindingHelper.registerKeyBinding(new ToggleAutoJumpKeyBinding(new Identifier(MOD_ID, "toggle_auto_jump"), InputUtil.Type.KEYSYM, 66,
+                                             "key.categories.movement", new KeyModifiers()));
 
-        KeyBindingRegistry.INSTANCE.register(new ToggleAutoJumpKeyBinding(new Identifier(MOD_ID, "toggle_auto_jump"), InputUtil.Type.KEYSYM, 66, "key.categories.movement", new KeyModifiers()));
-
-        FabricKeyBinding[] skinLayerKeyBindings = Arrays.stream(PlayerModelPart.values()).map(playerModelPart -> new SkinLayerKeyBinding(new Identifier(MOD_ID, "toggle_" + playerModelPart.getName()), InputUtil.Type.KEYSYM, -1, SKIN_LAYER_CATEGORY, playerModelPart)).toArray(FabricKeyBinding[]::new);
-        Arrays.stream(skinLayerKeyBindings).forEach(KeyBindingRegistry.INSTANCE::register);
+        KeyBinding[] skinLayerKeyBindings = Arrays.stream(PlayerModelPart.values()).map(playerModelPart -> new SkinLayerKeyBinding(new Identifier(MOD_ID, "toggle_" + playerModelPart.getName()), InputUtil.Type.KEYSYM, -1, SKIN_LAYER_CATEGORY, playerModelPart)).toArray(KeyBinding[]::new);
+        Arrays.stream(skinLayerKeyBindings).forEach(KeyBindingHelper::registerKeyBinding);
     }
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
-        playerEntity.addMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+        playerEntity.sendMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
     }
 }

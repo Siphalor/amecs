@@ -5,9 +5,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
+import net.minecraft.client.gui.screen.options.ControlsListWidget.CategoryEntry;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -24,7 +28,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		minecraft = minecraftClient;
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
-		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, "");
+		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, new LiteralText(""));
 		textFieldWidget.setChangedListener(searchText -> {
 			if(minecraftClient.currentScreen instanceof ControlsOptionsScreen) {
 				searchText = searchText.trim();
@@ -61,11 +65,11 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 								includeCat
 								|| (
 									(searchText == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), searchText))
-									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getLocalizedName(), keyFilter))
+									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().asString(), keyFilter))
 								)
 							) {
 								if(!cat.equals(lastCat)) {
-									controlsListWidget.children().add(controlsListWidget.new CategoryEntry(cat));
+									controlsListWidget.children().add(controlsListWidget.new CategoryEntry(new TranslatableText(cat)));
 									lastCat = cat;
 								}
 								controlsListWidget.children().add(entry);
@@ -108,8 +112,8 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	}
 
 	@Override
-	public void render(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, float var9) {
+	public void render(MatrixStack matrices, int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, float var9) {
 		textFieldWidget.y = var2;
-		textFieldWidget.render(var6, var7, var9);
+		textFieldWidget.render(matrices, var6, var7, var9);
 	}
 }
