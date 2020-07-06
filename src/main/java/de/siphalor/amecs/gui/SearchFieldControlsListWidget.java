@@ -64,8 +64,8 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 							if(
 								includeCat
 								|| (
-									(searchText == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getBindingName(), searchText))
-									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().asString(), keyFilter))
+									(searchText == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslationKey(), searchText))
+									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyTranslationKey(), keyFilter))
 								)
 							) {
 								if(!cat.equals(lastCat)) {
