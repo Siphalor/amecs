@@ -28,8 +28,15 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
 		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, new LiteralText(""));
+		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
 		textFieldWidget.setChangedListener(searchText -> {
-			if(minecraftClient.currentScreen instanceof ControlsOptionsScreen) {
+			if (searchText.isEmpty()) {
+				textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
+			} else {
+				textFieldWidget.setSuggestion("");
+			}
+
+			if (minecraftClient.currentScreen instanceof ControlsOptionsScreen) {
 				searchText = searchText.trim();
 				for(Element child : minecraftClient.currentScreen.children()) {
 					if(child instanceof ControlsListWidget) {
@@ -64,7 +71,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 								includeCat
 								|| (
 									(searchText == null || StringUtils.containsIgnoreCase(I18n.translate(((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslationKey()), searchText))
-									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().asString(), keyFilter))
+									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().getString(), keyFilter))
 								)
 							) {
 								if(!cat.equals(lastCat)) {

@@ -15,8 +15,8 @@ minecraft {
 
 repositories {
 	maven {
-		url "https://jitpack.io/"
-		name "JitPack"
+		url "https://maven.siphalor.de"
+		name "Siphalor's Maven"
 	}
 }
 
@@ -28,8 +28,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation "com.github.siphalor:amecs-api:1.16-SNAPSHOT"
-	include "com.github.siphalor:amecs-api:1.16-SNAPSHOT"
+	modImplementation("de.siphalor:amecsapi-1.16:1+") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	include "de.siphalor:amecsapi-1.16:1+"
 }
 
 processResources {
