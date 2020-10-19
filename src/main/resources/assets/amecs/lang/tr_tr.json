@@ -1,0 +1,17 @@
+{
+	"amecs.key.categories.skin_layers": "Amecs Cilt Katmanları",
+	"key.amecs.toggle_auto_jump": "Otomatik Zıplamayı Aç/Kapa",
+	"key.amecs.toggle_cape": "Pelerini Aç/Kapa",
+	"key.amecs.toggle_hat": "Şapkayı Aç/Kapa",
+	"key.amecs.toggle_jacket": "Ceketi Aç/Kapa",
+	"key.amecs.toggle_left_pants_leg": "Sol Ayak Katmanını Aç/Kapa",
+	"key.amecs.toggle_left_sleeve": "Sol Kol Katmanını Aç/Kapa",
+	"key.amecs.toggle_right_pants_leg": "Sağ Ayak Katmanını Aç/Kapa",
+	"key.amecs.toggle_right_sleeve": "Sağ Kol Katmanını Aç/Kapa",
+
+	"amecs.toggled.on": "%s Etkin",
+	"amecs.toggled.off": "%s Devre Dışı",
+	"amecs.toggled.auto_jump": "Otomatik Zıplama",
+
+	"amecs.search.placeholder": "Ara... (Tuşa göre arama '=')"
+}
