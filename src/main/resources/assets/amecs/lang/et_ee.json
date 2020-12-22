@@ -1,5 +1,5 @@
 {
-	"amecs.key.categories.skin_layers": "Välimuse kihid",
+	"amecs.key.categories.skin_layers": "Amecsi välimusekihid",
 	"key.amecs.toggle_auto_jump": "Lülita automaatset hüpet",
 	"key.amecs.toggle_cape": "Lülita keepi",
 	"key.amecs.toggle_hat": "Lülita mütsi",
@@ -11,5 +11,7 @@
 
 	"amecs.toggled.on": "%s lubatud",
 	"amecs.toggled.off": "%s keelatud",
-	"amecs.toggled.auto_jump": "Automaatne hüpe"
+	"amecs.toggled.auto_jump": "Automaatne hüpe",
+	
+	"amecs.search.placeholder": "Otsi... (= klahvi järgi otsimiseks)"
 }
