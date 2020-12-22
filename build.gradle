@@ -28,10 +28,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation("de.siphalor:amecsapi-1.16:1+") {
+	modImplementation("de.siphalor:amecsapi-1.17:1+") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
-	include "de.siphalor:amecsapi-1.16:1.1+"
+	include "de.siphalor:amecsapi-1.17:1.1+"
 }
 
 processResources {
