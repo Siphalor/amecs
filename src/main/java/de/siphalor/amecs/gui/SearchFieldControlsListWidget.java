@@ -1,27 +1,35 @@
 package de.siphalor.amecs.gui;
 
+import de.siphalor.amecs.Amecs;
+import de.siphalor.amecs.compat.NMUKProxy;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	protected MinecraftClient minecraft;
 
-	private TextFieldWidget textFieldWidget;
+	private final TextFieldWidget textFieldWidget;
 
-	private Set<ControlsListWidget.KeyBindingEntry> entries = new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
+	private int lastEntryCount = 0;
+	private final Set<ControlsListWidget.KeyBindingEntry> entries = new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
 	public SearchFieldControlsListWidget(MinecraftClient minecraftClient) {
 		minecraft = minecraftClient;
@@ -43,14 +51,53 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 						ControlsListWidget controlsListWidget = (ControlsListWidget) child;
 						controlsListWidget.setScrollAmount(0);
 
-						if(entries.size() <= 0)
-							entries.addAll(controlsListWidget.children().stream().filter(entry -> entry instanceof ControlsListWidget.KeyBindingEntry).map(entry -> (ControlsListWidget.KeyBindingEntry) entry).collect(Collectors.toSet()));
+						List<ControlsListWidget.Entry> children = controlsListWidget.children();
+						if (entries.isEmpty()) {
+							for (ControlsListWidget.Entry entry : children) {
+								if (entry instanceof ControlsListWidget.KeyBindingEntry) {
+									entries.add((ControlsListWidget.KeyBindingEntry) entry);
+								}
+							}
+							lastEntryCount = children.size();
+						}
+						int childrenCount = children.size();
+						if (childrenCount != lastEntryCount) {
+							Amecs.log(Level.INFO, "Controls search results changed externally - recompiling the list!");
+							try {
+								//noinspection JavaReflectionMemberAccess
+								Constructor<ControlsListWidget.KeyBindingEntry> c = ControlsListWidget.KeyBindingEntry.class.getDeclaredConstructor(
+										ControlsListWidget.class, KeyBinding.class, Text.class
+								);
+								c.setAccessible(true);
+								entries.clear();
+								KeyBinding[] keyBindings = minecraftClient.options.keysAll.clone();
+								Arrays.sort(keyBindings);
+								String lastCat = null;
+								ControlsListWidget.KeyBindingEntry entry;
+								lastEntryCount = 1;
+								for (KeyBinding keyBinding : keyBindings) {
+									if (!Objects.equals(lastCat, keyBinding.getCategory())) {
+										lastCat = keyBinding.getCategory();
+										children.add(controlsListWidget.new CategoryEntry(new TranslatableText(keyBinding.getCategory())));
+										lastEntryCount++;
+									}
+									entry = c.newInstance(controlsListWidget, keyBinding, new TranslatableText(keyBinding.getTranslationKey()));
+									children.add(entry);
+									entries.add(entry);
+									lastEntryCount++;
+								}
+							} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+								Amecs.log(Level.ERROR, "An unexpected exception occured during recompilation of controls list!");
+								e.printStackTrace();
+							}
+						}
 
-						controlsListWidget.children().clear();
+						children.clear();
 
-						controlsListWidget.children().add(this);
+						children.add(this);
 
 						String keyFilter = null;
+						//noinspection ConstantConditions
 						int keyDelimiterPos = searchText.indexOf('=');
 						if(keyDelimiterPos == 0) {
 							keyFilter = searchText.substring(1).trim();
@@ -60,10 +107,20 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 							searchText = searchText.substring(0, keyDelimiterPos).trim();
 						}
 
+						final boolean nmuk = FabricLoader.getInstance().isModLoaded("nmuk");
 						String lastCat = null;
+						boolean lastMatched = false;
 						boolean includeCat = false;
+						lastEntryCount = 1;
 						for(ControlsListWidget.KeyBindingEntry entry : entries) {
-							final String cat = ((IKeyBindingEntry) entry).amecs$getKeyBinding().getCategory();
+							KeyBinding binding = ((IKeyBindingEntry) entry).amecs$getKeyBinding();
+							if (nmuk && lastMatched && NMUKProxy.isAlternative(binding)) {
+								children.add(entry);
+								lastEntryCount++;
+								continue;
+							}
+
+							final String cat = binding.getCategory();
 							if(!cat.equals(lastCat)) {
 								includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), searchText);
 							}
@@ -75,10 +132,15 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 								)
 							) {
 								if(!cat.equals(lastCat)) {
-									controlsListWidget.children().add(controlsListWidget.new CategoryEntry(new TranslatableText(cat)));
+									children.add(controlsListWidget.new CategoryEntry(new TranslatableText(cat)));
 									lastCat = cat;
+									lastEntryCount++;
 								}
-								controlsListWidget.children().add(entry);
+								children.add(entry);
+								lastEntryCount++;
+								lastMatched = true;
+							} else {
+								lastMatched = false;
 							}
 						}
 					}
