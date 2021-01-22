@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "amecstestmod",
+	"version": "${version}",
+	"name": "Amecs Test Mod",
+	"description": "A test mod for Amecs",
+	"authors": [
+		"Siphalor"
+	],
+	"contributors": [],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/amecs",
+		"issues": "https://github.com/Siphalor/amecs/issues",
+		"sources": "https://github.com/Siphalor/amecs"
+	},
+	"license": "CC0-1.0",
+	"environment": "*",
+	"entrypoints": {
+		"main": [],
+		"client": [
+			"de.siphalor.amecstestmod.AmecsTestMod"
+		],
+		"server": []
+	},
+	"depends": {
+		"fabricloader": ">=0.4.0",
+		"fabric": "*"
+	}
+}
