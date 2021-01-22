@@ -13,6 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -27,6 +30,10 @@ public class Amecs implements ClientModInitializer {
      */
     @SuppressWarnings("WeakerAccess")
     public static final String MOD_ID = "amecs";
+    public static final String MOD_NAME_SHORT = "Amecs";
+
+    private static final String LOGGER_PREFIX = "[" + MOD_NAME_SHORT + "] ";
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
 
@@ -41,5 +48,9 @@ public class Amecs implements ClientModInitializer {
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
         playerEntity.sendMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+    }
+
+    public static void log(Level level, String message) {
+        LOGGER.log(level, LOGGER_PREFIX + message);
     }
 }
