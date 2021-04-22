@@ -3,6 +3,7 @@ package de.siphalor.amecs.gui;
 import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.compat.NMUKProxy;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
+import de.siphalor.amecs.mixin.ControlsListWidgetKeyBindingEntryAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -15,7 +16,9 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -121,17 +124,17 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 							}
 
 							final String cat = binding.getCategory();
-							if(!cat.equals(lastCat)) {
+							if (!cat.equals(lastCat)) {
 								includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), searchText);
 							}
-							if(
-								includeCat
-								|| (
-									(searchText == null || StringUtils.containsIgnoreCase(I18n.translate(((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslationKey()), searchText))
-									&& (keyFilter == null || StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().getString(), keyFilter))
-								)
+							if (
+									(
+											includeCat
+													|| searchText == null
+													|| StringUtils.containsIgnoreCase(I18n.translate(((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslationKey()), searchText)
+									) && Amecs.entryKeyMatches(entry, keyFilter)
 							) {
-								if(!cat.equals(lastCat)) {
+								if (!cat.equals(lastCat)) {
 									children.add(controlsListWidget.new CategoryEntry(new TranslatableText(cat)));
 									lastCat = cat;
 									lastEntryCount++;

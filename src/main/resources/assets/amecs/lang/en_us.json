@@ -13,5 +13,5 @@
 	"amecs.toggled.off": "Disabled %s",
 	"amecs.toggled.auto_jump": "Auto Jump",
 
-	"amecs.search.placeholder": "Search... (= to search by key)"
+	"amecs.search.placeholder": "Search... (= to search by key, =% for conflicts)"
 }
