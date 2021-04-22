@@ -1,18 +1,25 @@
 package de.siphalor.amecs;
 
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.keybindings.SkinLayerKeyBinding;
-import de.siphalor.amecs.keybindings.ToggleAutoJumpKeyBinding;
+import de.siphalor.amecs.gui.SearchFieldControlsListWidget;
+import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
+import de.siphalor.amecs.keybinding.SkinLayerKeyBinding;
+import de.siphalor.amecs.keybinding.ToggleAutoJumpKeyBinding;
+import de.siphalor.amecs.mixin.ControlsListWidgetKeyBindingEntryAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.gui.screen.options.ControlsListWidget;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +55,20 @@ public class Amecs implements ClientModInitializer {
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
         playerEntity.sendMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+    }
+
+    public static boolean entryKeyMatches(ControlsListWidget.KeyBindingEntry entry, String keyFilter) {
+        if (keyFilter == null) {
+            return true;
+        }
+        switch (keyFilter) {
+            case "":
+                return ((IKeyBindingEntry) entry).amecs$getKeyBinding().isUnbound();
+            case "%":
+                return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getEditButton().getMessage().getStyle().getColor() == TextColor.fromFormatting(Formatting.RED);
+            default:
+                return StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().getString(), keyFilter);
+        }
     }
 
     public static void log(Level level, String message) {
