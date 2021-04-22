@@ -12,9 +12,11 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.BaseText;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -30,8 +32,8 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	private int lastEntryCount = 0;
 	private final Set<ControlsListWidget.KeyBindingEntry> entries = new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
-	public SearchFieldControlsListWidget(MinecraftClient minecraftClient) {
-		minecraft = minecraftClient;
+	public SearchFieldControlsListWidget(MinecraftClient client) {
+		minecraft = client;
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
 
@@ -39,7 +41,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
 		textFieldWidget.setChangedListener(searchText -> {
 			ControlsListWidget listWidget = null;
-			for (Element child : minecraftClient.currentScreen.children()) {
+			for (Element child : client.currentScreen.children()) {
 				if (child instanceof ControlsListWidget) {
 					listWidget = (ControlsListWidget) child;
 					break;
@@ -75,7 +77,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 					);
 					c.setAccessible(true);
 					entries.clear();
-					KeyBinding[] keyBindings = minecraftClient.options.keysAll.clone();
+					KeyBinding[] keyBindings = client.options.keysAll.clone();
 					Arrays.sort(keyBindings);
 					String lastCat = null;
 					ControlsListWidget.KeyBindingEntry entry;
@@ -148,7 +150,9 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 				}
 			}
 			if (lastEntryCount <= 1) {
-				children.add(listWidget.new CategoryEntry(new TranslatableText(Amecs.MOD_ID + ".search.no_results")));
+				BaseText noResultsText = new TranslatableText(Amecs.MOD_ID + ".search.no_results");
+				noResultsText.setStyle(noResultsText.getStyle().withColor(Formatting.GRAY));
+				children.add(listWidget.new CategoryEntry(noResultsText));
 			}
 		});
 	}
