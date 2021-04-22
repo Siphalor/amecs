@@ -1,8 +1,8 @@
 package de.siphalor.amecs;
 
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.keybindings.SkinLayerKeyBinding;
-import de.siphalor.amecs.keybindings.ToggleAutoJumpKeyBinding;
+import de.siphalor.amecs.keybinding.SkinLayerKeyBinding;
+import de.siphalor.amecs.keybinding.ToggleAutoJumpKeyBinding;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
