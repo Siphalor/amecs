@@ -35,12 +35,11 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation("de.siphalor:amecsapi-1.17:1+") {
+	include(modImplementation("de.siphalor:amecsapi-1.17:1.1.4+mc21w16a") {
 		exclude group: "net.fabricmc.fabric-api"
-	}
-	include "de.siphalor:amecsapi-1.17:1.1.4+"
+	})
 
-	modImplementation("de.siphalor:nmuk-1.17:1.0+") {
+	modImplementation("de.siphalor:nmuk-1.17:1.0.0+mc21w16a") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 

@@ -18,8 +18,8 @@ public class SkinLayerKeyBinding extends AmecsKeyBinding {
 
 	@Override
 	public void onPressed() {
-		MinecraftClient minecraftClient = MinecraftClient.getInstance();
-		minecraftClient.options.togglePlayerModelPart(playerModelPart);
-		Amecs.sendToggleMessage(minecraftClient.player, minecraftClient.options.getEnabledPlayerModelParts().contains(playerModelPart), playerModelPart.getOptionName());
+		MinecraftClient client = MinecraftClient.getInstance();
+		client.options.togglePlayerModelPart(playerModelPart, !client.options.isPlayerModelPartEnabled(playerModelPart));
+		Amecs.sendToggleMessage(client.player, client.options.isPlayerModelPartEnabled(playerModelPart), playerModelPart.getOptionName());
 	}
 }
