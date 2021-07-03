@@ -25,6 +25,8 @@ repositories {
 		url "https://maven.siphalor.de"
 		name "Siphalor's Maven"
 	}
+	maven { url "https://jitpack.io" }
+	mavenLocal()
 }
 
 dependencies {
@@ -35,27 +37,29 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	include(modImplementation("de.siphalor:amecsapi-1.17:1.1.4+mc21w16a") {
+	include(modImplementation("de.siphalor:amecsapi-1.17:1.1.5+mc21w16a") {
 		exclude group: "net.fabricmc.fabric-api"
+		exclude module: "nmuk-1.17"
 	})
 
-	modImplementation("de.siphalor:nmuk-1.17:1.0.0+mc21w16a") {
+	modImplementation("de.siphalor:nmuk-1.17:1.0.1+mc1.17") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	testmodCompile sourceSets.main.output
+	modRuntime("com.github.astei:lazydfu:master-SNAPSHOT")
+
+	testmodImplementation sourceSets.main.output
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", version
 
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
-		expand "version": project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
+	afterEvaluate {
+		from(sourceSets.main.resources.srcDirs) {
+			include "fabric.mod.json"
+			expand "version": version
+			duplicatesStrategy DuplicatesStrategy.INCLUDE
+		}
 	}
 }
 

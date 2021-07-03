@@ -7,8 +7,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.gui.screen.option.ControlsListWidget.CategoryEntry;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
@@ -192,5 +192,10 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	public void render(MatrixStack matrixStack, int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, float var9) {
 		textFieldWidget.y = var2;
 		textFieldWidget.render(matrixStack, var6, var7, var9);
+	}
+
+	@Override
+	public List<? extends Selectable> method_37025() {
+		return Collections.singletonList(textFieldWidget);
 	}
 }
