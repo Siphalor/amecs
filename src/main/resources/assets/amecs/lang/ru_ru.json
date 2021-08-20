@@ -1,4 +1,7 @@
 {
+	"amecs.key.mouse.scroll.up": "Прокрутка вверх",
+	"amecs.key.mouse.scroll.down": "Прокрутка вниз",
+	
 	"amecs.key.categories.skin_layers": "Слои скина Amecs",
 	"key.amecs.toggle_auto_jump": "Переключить автопрыжок",
 	"key.amecs.toggle_cape": "Переключить плащ",
