@@ -6,10 +6,9 @@ import de.siphalor.amecs.api.KeyModifiers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 
 public class ToggleAutoJumpKeyBinding extends AmecsKeyBinding {
-	public ToggleAutoJumpKeyBinding(Identifier id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
+	public ToggleAutoJumpKeyBinding(String id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
 		super(id, type, code, category, defaultModifiers);
 	}
 
