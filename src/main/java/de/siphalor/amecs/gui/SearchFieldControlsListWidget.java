@@ -1,5 +1,12 @@
 package de.siphalor.amecs.gui;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
+
 import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.compat.NMUKProxy;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
@@ -9,6 +16,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
+import net.minecraft.client.gui.screen.option.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
@@ -18,31 +26,45 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 
 public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
-	protected MinecraftClient minecraft;
+	private static final Constructor<ControlsListWidget.KeyBindingEntry> KeyBindingEntry_contructor;
+	
+	static {
+		Constructor<ControlsListWidget.KeyBindingEntry> local_KeyBindingEntry_contructor = null;
+		try {
+			//noinspection JavaReflectionMemberAccess
+			local_KeyBindingEntry_contructor = ControlsListWidget.KeyBindingEntry.class.getDeclaredConstructor(
+				ControlsListWidget.class, KeyBinding.class, Text.class);
+			local_KeyBindingEntry_contructor.setAccessible(true);
+		} catch(NoSuchMethodException | SecurityException e) {
+			Amecs.log(Level.ERROR, "Failed to load constructor from class \"KeyBindingEntry\" with reflection");
+			e.printStackTrace();
+		}
+		
+		KeyBindingEntry_contructor = local_KeyBindingEntry_contructor;
+	}
+	
+	// we do not need them to be saved in this object
+//	protected ControlsOptionsScreen parent;
+//	protected MinecraftClient client;
 
-	private final TextFieldWidget textFieldWidget;
+	public final TextFieldWidget textFieldWidget;
 
 	private int lastEntryCount = 0;
 	private final Set<ControlsListWidget.KeyBindingEntry> entries = new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
-	public SearchFieldControlsListWidget(MinecraftClient client) {
-		minecraft = client;
-		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-		assert minecraft.currentScreen != null;
+	public SearchFieldControlsListWidget(ControlsOptionsScreen parent, MinecraftClient client) {
+//		this.parent = parent;
+//		this.client = client;
+		TextRenderer textRenderer = client.textRenderer;
+		assert parent != null;
 
-		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, new LiteralText(""));
+		textFieldWidget = new TextFieldWidget(textRenderer, parent.width / 2 - 100, 0, 200, 20, new LiteralText(""));
 		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
 		textFieldWidget.setChangedListener(searchText -> {
 			ControlsListWidget listWidget = null;
-			for (Element child : client.currentScreen.children()) {
+			for (Element child : parent.children()) {
 				if (child instanceof ControlsListWidget) {
 					listWidget = (ControlsListWidget) child;
 					break;
@@ -72,11 +94,6 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 			if (childrenCount != lastEntryCount) {
 				Amecs.log(Level.INFO, "Controls search results changed externally - recompiling the list!");
 				try {
-					//noinspection JavaReflectionMemberAccess
-					Constructor<ControlsListWidget.KeyBindingEntry> c = ControlsListWidget.KeyBindingEntry.class.getDeclaredConstructor(
-							ControlsListWidget.class, KeyBinding.class, Text.class
-					);
-					c.setAccessible(true);
 					entries.clear();
 					KeyBinding[] keyBindings = client.options.keysAll.clone();
 					Arrays.sort(keyBindings);
@@ -89,12 +106,12 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 							children.add(listWidget.new CategoryEntry(new TranslatableText(keyBinding.getCategory())));
 							lastEntryCount++;
 						}
-						entry = c.newInstance(listWidget, keyBinding, new TranslatableText(keyBinding.getTranslationKey()));
+						entry = KeyBindingEntry_contructor.newInstance(listWidget, keyBinding, new TranslatableText(keyBinding.getTranslationKey()));
 						children.add(entry);
 						entries.add(entry);
 						lastEntryCount++;
 					}
-				} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 					Amecs.log(Level.ERROR, "An unexpected exception occured during recompilation of controls list!");
 					e.printStackTrace();
 				}

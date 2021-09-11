@@ -3,10 +3,12 @@
 	"package": "de.siphalor.amecs.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"ControlsListWidgetKeyBindingEntryAccessor"
 	],
 	"client": [
-		"MixinEntryListWidget"
+		"ControlsListWidgetKeyBindingEntryAccessor",
+		"ControlsOptionsScreenAccessor",
+		"MixinControlsOptionsScreen",
+		"MixinScreen"
 	],
 	"server": [],
 	"injectors": {
