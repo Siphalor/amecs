@@ -1,0 +1,18 @@
+{
+	"amecs.key.categories.skin_layers": "Amecs Skin Schichten",
+	"key.amecs.toggle_auto_jump": "Auto Jump umschalten",
+	"key.amecs.toggle_cape": "Umhang umschalten",
+	"key.amecs.toggle_hat": "Hut umschalten",
+	"key.amecs.toggle_jacket": "Jacke umschalten",
+	"key.amecs.toggle_left_pants_leg": "Linkes Hosenbein umschalten",
+	"key.amecs.toggle_left_sleeve": "Linker Ärmel umschalten",
+	"key.amecs.toggle_right_pants_leg": "Rechtes Hosenbein umschalten",
+	"key.amecs.toggle_right_sleeve": "Rechter Ärmel umschalten",
+
+	"amecs.toggled.on": "%s aktiviert",
+	"amecs.toggled.off": "%s deaktiviert",
+	"amecs.toggled.auto_jump": "Automatisch springen",
+
+	"amecs.search.placeholder": "Suchen... (= für Taste, =%% für Konflikte)",
+	"amecs.search.no_results": "Keine Ergebnisse gefunden"
+}
