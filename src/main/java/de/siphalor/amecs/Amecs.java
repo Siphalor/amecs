@@ -86,7 +86,17 @@ public class Amecs implements ClientModInitializer {
 		//we do not check whether the the last category is the same as the current before we check if it contains
 		//because checking the quality is not really cheaper and check both if they are not equal is overhead
 		boolean categoryContains = StringUtils.containsIgnoreCase(I18n.translate(binding.getCategory()), filterSettings.searchText);
-		boolean keyNameContains = filterSettings.searchText == null || StringUtils.containsIgnoreCase(I18n.translate(binding.getTranslationKey()), filterSettings.searchText);
+		
+		
+    	String entryName = ((ControlsListWidgetKeyBindingEntryAccessor) entry).getBindingName().asString();
+    	//this fixes alternative keybindings from nmuk
+    	//without this they are searched by their untranslateable translation key
+    	//we could also search alternatives by thei parent but this way you can search for only alternatives
+    	//in order to know to which binding they belong the filter method is changed
+    	if(!entryName.equals("    ->")) {
+    		entryName = I18n.translate(binding.getTranslationKey());
+    	}
+		boolean keyNameContains = filterSettings.searchText == null || StringUtils.containsIgnoreCase(entryName, filterSettings.searchText);
 		
 		return (categoryContains || keyNameContains);
     }

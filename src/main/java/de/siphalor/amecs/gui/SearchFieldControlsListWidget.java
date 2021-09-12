@@ -83,9 +83,12 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		final boolean nmuk = FabricLoader.getInstance().isModLoaded("nmuk");
 		String lastCat = null;
 		boolean lastMatched = false;
+		ControlsListWidget.Entry lastBaseEntry = null;
+		boolean lastBaseEntryAdded = false;
 		for (ControlsListWidget.KeyBindingEntry entry : entries) {
 			KeyBinding binding = ((IKeyBindingEntry) entry).amecs$getKeyBinding();
-			if (nmuk && lastMatched && NMUKProxy.isAlternative(binding)) {
+			//only add the alternatives of a base if the base was matched itself
+			if (nmuk && lastMatched && !lastBaseEntryAdded && NMUKProxy.isAlternative(binding)) {
 				children.add(entry);
 				continue;
 			}
@@ -100,8 +103,23 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 				
 				//TODO: update maxKeyNameLength? Or is it irritating if the screen layout changes, when filtering?
 				
+				//if we found an alternative make sure we also add the base
+				if(NMUKProxy.isAlternative(binding)) {
+					if(lastBaseEntry != null && !lastBaseEntryAdded) {
+						children.add(lastBaseEntry);
+						lastBaseEntryAdded = true;
+					}
+				}
+				
 				children.add(entry);
 			}
+			
+			KeyBinding base = NMUKProxy.getBase(binding);
+			if(base == null && (lastBaseEntry == null || binding != ((IKeyBindingEntry) lastBaseEntry).amecs$getKeyBinding())) {
+				lastBaseEntry = entry;
+				lastBaseEntryAdded = false;
+			}
+			
 		}
 	}
 

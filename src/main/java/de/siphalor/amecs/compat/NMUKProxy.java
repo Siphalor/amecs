@@ -1,7 +1,8 @@
 package de.siphalor.amecs.compat;
 
-import de.siphalor.nmuk.api.NMUKAlternatives;
 import java.util.List;
+
+import de.siphalor.nmuk.api.NMUKAlternatives;
 import net.minecraft.client.option.KeyBinding;
 
 public class NMUKProxy {
@@ -10,5 +11,8 @@ public class NMUKProxy {
 	}
 	public static List<KeyBinding> getAlternatives(KeyBinding binding) {
 		return NMUKAlternatives.getAlternatives(binding);
+	}
+	public static KeyBinding getBase(KeyBinding binding) {
+		return NMUKAlternatives.getBase(binding);
 	}
 }
