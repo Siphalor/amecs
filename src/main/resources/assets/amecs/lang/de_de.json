@@ -1,4 +1,7 @@
 {
+	"key.amecsapi.hotbar.scroll.up": "Schnellzugriff auf",
+	"key.amecsapi.hotbar.scroll.down": "Schnellzugriff ab",
+
 	"amecs.key.categories.skin_layers": "Amecs Skin Schichten",
 	"key.amecs.toggle_auto_jump": "Auto Jump umschalten",
 	"key.amecs.toggle_cape": "Umhang umschalten",

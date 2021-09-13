@@ -8,6 +8,7 @@
 		"ControlsListWidgetKeyBindingEntryAccessor",
 		"ControlsOptionsScreenAccessor",
 		"MixinControlsOptionsScreen",
+		"MixinPlayerInventory",
 		"MixinScreen"
 	],
 	"server": [],

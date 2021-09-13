@@ -5,7 +5,8 @@
 	"name": "Amecs",
 	"description": "A lot of keybind utilities",
 	"authors": [
-		"Siphalor"
+		"Siphalor",
+		"Klotzi111"
 	],
 	"contributors": [],
 	"contact": {
@@ -28,6 +29,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.4.0",
-		"fabric": "*"
+		"fabric": "*",
+		"amecsapi": ">=1.1.5"
 	}
 }
