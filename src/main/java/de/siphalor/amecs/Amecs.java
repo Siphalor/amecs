@@ -61,6 +61,8 @@ public class Amecs implements ClientModInitializer {
 
 		KeyBindingHelper.registerKeyBinding(AmecsAPI.KEYBINDING_SCROLL_UP);
 		KeyBindingHelper.registerKeyBinding(AmecsAPI.KEYBINDING_SCROLL_DOWN);
+
+		KeyBindingHelper.registerKeyBinding(AmecsAPI.KEYBINDING_DROP_STACK);
 	}
 
 	public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
