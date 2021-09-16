@@ -14,8 +14,8 @@ public class ToggleAutoJumpKeyBinding extends AmecsKeyBinding {
 
 	@Override
 	public void onPressed() {
-		MinecraftClient minecraftClient = MinecraftClient.getInstance();
-		minecraftClient.options.autoJump = !minecraftClient.options.autoJump;
-		Amecs.sendToggleMessage(minecraftClient.player, minecraftClient.options.autoJump, new TranslatableText("amecs.toggled.auto_jump"));
+		MinecraftClient client = MinecraftClient.getInstance();
+		client.options.autoJump = !client.options.autoJump;
+		Amecs.sendToggleMessage(client.player, client.options.autoJump, new TranslatableText("amecs.toggled.auto_jump"));
 	}
 }

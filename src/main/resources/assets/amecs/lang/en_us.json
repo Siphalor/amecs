@@ -1,7 +1,7 @@
 {
-	"key.amecsapi.hotbar.scroll.up": "Hotbar Up",
-	"key.amecsapi.hotbar.scroll.down": "Hotbar Down",
-	"key.amecsapi.drop.stack": "Drop Stack",
+	"key.amecs.hotbar.scroll.up": "Hotbar Up",
+	"key.amecs.hotbar.scroll.down": "Hotbar Down",
+	"key.amecs.drop.stack": "Drop Stack",
 
 	"amecs.key.categories.skin_layers": "Amecs Skin Layers",
 	"key.amecs.toggle_auto_jump": "Toggle Auto Jump",

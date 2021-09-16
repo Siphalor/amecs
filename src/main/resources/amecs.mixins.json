@@ -2,12 +2,12 @@
 	"required": true,
 	"package": "de.siphalor.amecs.mixin",
 	"compatibilityLevel": "JAVA_8",
-	"mixins": [
-	],
+	"mixins": [],
 	"client": [
 		"ControlsListWidgetKeyBindingEntryAccessor",
 		"ControlsOptionsScreenAccessor",
 		"MixinControlsOptionsScreen",
+		"MixinMinecraftClient",
 		"MixinPlayerInventory",
 		"MixinScreen"
 	],
