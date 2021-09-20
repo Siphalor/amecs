@@ -8,6 +8,7 @@
 		"ControlsOptionsScreenAccessor",
 		"MixinControlsOptionsScreen",
 		"MixinMinecraftClient",
+		"MixinMouse",
 		"MixinPlayerInventory",
 		"MixinScreen"
 	],

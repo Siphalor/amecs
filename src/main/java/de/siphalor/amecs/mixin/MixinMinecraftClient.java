@@ -24,7 +24,7 @@ public abstract class MixinMinecraftClient {
 	private boolean justDroppedStack = false;
 
 	// we add in the dropEntireStack logic before keyDrop is checked
-	@Inject(method = "handleInputEvents()V", at = @At(value = "FIELD", shift = Shift.BEFORE, opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/option/GameOptions;keyDrop:Lnet/minecraft/client/option/KeyBinding;", ordinal = 0))
+	@Inject(method = "handleInputEvents()V", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, shift = Shift.BY, by = -2, target = "Lnet/minecraft/client/option/GameOptions;keyDrop:Lnet/minecraft/client/option/KeyBinding;", ordinal = 0))
 	private void addIn_dropEntireStack(CallbackInfo ci) {
 		justDroppedStack = Amecs.KEYBINDING_DROP_STACK.handleDropItemStackEvent((MinecraftClient) (Object) this);
 	}
