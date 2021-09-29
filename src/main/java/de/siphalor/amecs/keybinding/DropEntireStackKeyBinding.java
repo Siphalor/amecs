@@ -1,5 +1,11 @@
 package de.siphalor.amecs.keybinding;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.apache.logging.log4j.Level;
+
+import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.VersionedLogicMethodHelper.ReflectionExceptionProxiedMethod;
 import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.api.KeyModifiers;
@@ -16,6 +22,21 @@ public class DropEntireStackKeyBinding extends AmecsKeyBinding implements DropIt
 	private static final String Method_dropEntireStackLogic_PREFIX = "dropEntireStackLogic$";
 	private static ReflectionExceptionProxiedMethod Method_dropEntireStackLogic;
 
+	private static final Method ClientPlayerEntity_dropSelectedItem;
+
+	static {
+		Method local_ClientPlayerEntity_dropSelectedItem = null;
+		try {
+			local_ClientPlayerEntity_dropSelectedItem = ClientPlayerEntity.class.getDeclaredMethod("method_7290", boolean.class);
+			local_ClientPlayerEntity_dropSelectedItem.setAccessible(true);
+		} catch (NoSuchMethodException | SecurityException e) {
+			Amecs.log(Level.ERROR, "Failed to load method \"dropSelectedItem\" from class \"ClientPlayerEntity\" with reflection");
+			e.printStackTrace();
+		}
+
+		ClientPlayerEntity_dropSelectedItem = local_ClientPlayerEntity_dropSelectedItem;
+	}
+
 	public DropEntireStackKeyBinding(String id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
 		super(id, type, code, category, defaultModifiers);
 	}
@@ -30,8 +51,17 @@ public class DropEntireStackKeyBinding extends AmecsKeyBinding implements DropIt
 
 		if (!player.isSpectator()) {
 			// true to always drop an entire stack
+
 			// in 1.14 this method returns 'ItemStack' but it is always null anyways
-			player.dropSelectedItem(true);
+			// but because the method signature changed we need to call it via reflection
+			// player.dropSelectedItem(true);
+			try {
+				ClientPlayerEntity_dropSelectedItem.invoke(player, true);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				Amecs.log(Level.ERROR, "Failed to call method \"dropSelectedItem\"");
+				e.printStackTrace();
+				return false;
+			}
 			return true;
 		}
 		return false;
