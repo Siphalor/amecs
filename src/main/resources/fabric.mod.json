@@ -5,7 +5,8 @@
 	"name": "Amecs",
 	"description": "A lot of keybind utilities",
 	"authors": [
-		"Siphalor"
+		"Siphalor",
+		"Klotzi111"
 	],
 	"contributors": [],
 	"contact": {
@@ -15,7 +16,7 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/amecs/logo.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [],
 		"client": [
@@ -28,6 +29,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.4.0",
-		"fabric": "*"
+		"fabric": "*",
+		"amecsapi": ">=1.2.1"
 	}
 }

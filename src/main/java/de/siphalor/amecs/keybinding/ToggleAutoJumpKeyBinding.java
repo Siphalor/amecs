@@ -6,17 +6,16 @@ import de.siphalor.amecs.api.KeyModifiers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 
 public class ToggleAutoJumpKeyBinding extends AmecsKeyBinding {
-	public ToggleAutoJumpKeyBinding(Identifier id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
+	public ToggleAutoJumpKeyBinding(String id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers) {
 		super(id, type, code, category, defaultModifiers);
 	}
 
 	@Override
 	public void onPressed() {
-		MinecraftClient minecraftClient = MinecraftClient.getInstance();
-		minecraftClient.options.autoJump = !minecraftClient.options.autoJump;
-		Amecs.sendToggleMessage(minecraftClient.player, minecraftClient.options.autoJump, new TranslatableText("amecs.toggled.auto_jump"));
+		MinecraftClient client = MinecraftClient.getInstance();
+		client.options.autoJump = !client.options.autoJump;
+		Amecs.sendToggleMessage(client.player, client.options.autoJump, new TranslatableText("amecs.toggled.auto_jump"));
 	}
 }
