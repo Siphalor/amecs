@@ -20,10 +20,25 @@ public class DropEntireStackKeyBinding extends AmecsKeyBinding implements DropIt
 		super(id, type, code, category, defaultModifiers);
 	}
 
-	// TODO: check if it is really equal for all versions between 1.8 - 1.17.1
 	// from minecraft code: MinecraftClient with feedback addition
+
+	// only version 1.14 and above because we do not have mappings for lower versions of minecraft and fabric anyways
+	// the logic changed in 1.14 (compared to the newer versions)
 	@SuppressWarnings("unused") // used via reflection
-	private boolean dropEntireStackLogic$1_8(MinecraftClient client) {
+	private boolean dropEntireStackLogic$1_14(MinecraftClient client) {
+		ClientPlayerEntity player = client.player;
+
+		if (!player.isSpectator()) {
+			// true to always drop an entire stack
+			// in 1.14 this method returns 'ItemStack' but it is always null anyways
+			player.dropSelectedItem(true);
+			return true;
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unused") // used via reflection
+	private boolean dropEntireStackLogic$1_15(MinecraftClient client) {
 		ClientPlayerEntity player = client.player;
 
 		// true to always drop an entire stack

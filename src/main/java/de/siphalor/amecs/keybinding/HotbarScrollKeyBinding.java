@@ -29,10 +29,11 @@ public class HotbarScrollKeyBinding extends AmecsKeyBinding implements InputEven
 		this.scrollUp = scrollUp;
 	}
 
-	// TODO: check if it is really equal for all versions between 1.8 - 1.17.1
 	// from minecraft code: Mouse
+
+	// only version 1.14 and above because we do not have mappings for lower versions of minecraft and fabric anyways
 	@SuppressWarnings("unused") // used via reflection
-	private void scrollLogic$1_8(MinecraftClient client, int scrollCount) {
+	private void scrollLogic$1_14(MinecraftClient client, int scrollCount) {
 		if (client.player.isSpectator()) {
 			if (client.inGameHud.getSpectatorHud().isOpen()) {
 				client.inGameHud.getSpectatorHud().cycleSlot(-scrollCount);
