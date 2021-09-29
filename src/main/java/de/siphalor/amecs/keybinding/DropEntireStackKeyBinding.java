@@ -27,7 +27,12 @@ public class DropEntireStackKeyBinding extends AmecsKeyBinding implements DropIt
 	static {
 		Method local_ClientPlayerEntity_dropSelectedItem = null;
 		try {
-			local_ClientPlayerEntity_dropSelectedItem = ClientPlayerEntity.class.getDeclaredMethod("method_7290", boolean.class);
+			try {
+				local_ClientPlayerEntity_dropSelectedItem = ClientPlayerEntity.class.getDeclaredMethod("dropSelectedItem", boolean.class);
+			} catch (NoSuchMethodException | SecurityException e) {
+				// try with unified name
+				local_ClientPlayerEntity_dropSelectedItem = ClientPlayerEntity.class.getDeclaredMethod("method_7290", boolean.class);
+			}
 			local_ClientPlayerEntity_dropSelectedItem.setAccessible(true);
 		} catch (NoSuchMethodException | SecurityException e) {
 			Amecs.log(Level.ERROR, "Failed to load method \"dropSelectedItem\" from class \"ClientPlayerEntity\" with reflection");
