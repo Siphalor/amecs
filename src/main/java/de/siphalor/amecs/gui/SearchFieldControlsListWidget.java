@@ -9,6 +9,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
+import net.minecraft.client.gui.screen.option.ControlsListWidget.CategoryEntry;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
@@ -195,7 +196,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	}
 
 	@Override
-	public List<? extends Selectable> method_37025() {
+	public List<? extends Selectable> selectableChildren() {
 		return Collections.singletonList(textFieldWidget);
 	}
 }
