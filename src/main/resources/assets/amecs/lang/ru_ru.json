@@ -1,0 +1,18 @@
+{
+	"amecs.key.categories.skin_layers": "Слои скина Amecs",
+	"key.amecs.toggle_auto_jump": "Переключить автопрыжок",
+	"key.amecs.toggle_cape": "Переключить плащ",
+	"key.amecs.toggle_hat": "Переключить головной убор",
+	"key.amecs.toggle_jacket": "Переключить куртку",
+	"key.amecs.toggle_left_pants_leg": "Переключить левую штанину",
+	"key.amecs.toggle_left_sleeve": "Переключить левый рукав",
+	"key.amecs.toggle_right_pants_leg": "Переключить правую штанину",
+	"key.amecs.toggle_right_sleeve": "Переключить правый рукав",
+
+	"amecs.toggled.on": "%s включён",
+	"amecs.toggled.off": "%s выключен",
+	"amecs.toggled.auto_jump": "Автопрыжок",
+
+	"amecs.search.placeholder": "Поиск... (= для поиска клавиши)",
+	"amecs.search.no_results": "Результатов не найдено"
+}
