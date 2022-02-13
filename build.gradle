@@ -88,10 +88,17 @@ publishing {
 		}
 	}
 
-	// select the repositories you want to publish to
 	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
+		if (project.hasProperty("siphalorMavenUser")) {
+			maven {
+				name = "Siphalor"
+				url = "https://maven.siphalor.de/upload.php"
+				credentials {
+					username = siphalorMavenUser
+					password = siphalorMavenPassword
+				}
+			}
+		}
 	}
 }
 
