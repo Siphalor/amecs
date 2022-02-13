@@ -1,6 +1,9 @@
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
+	id 'com.matthewprenger.cursegradle' version '1.4.0'
+	id 'com.modrinth.minotaur' version '1.2.1'
+	id "com.github.breadmoirai.github-release" version "2.2.12"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -10,7 +13,7 @@ archivesBaseName = project.archives_base_name
 version = "${project.mod_version}+mc.${project.minecraft_version}"
 group = project.maven_group
 
-minecraft {
+loom {
 }
 
 sourceSets {
@@ -40,19 +43,18 @@ dependencies {
 	}
 	include "de.siphalor:amecsapi-1.16:1.1.4+"
 
-	testmodCompile sourceSets.main.output
+	testmodImplementation sourceSets.main.output
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", version
 
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
-		expand "version": project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
+	afterEvaluate {
+		from(sourceSets.main.resources.srcDirs) {
+			include "fabric.mod.json"
+			expand "version": version
+			duplicatesStrategy DuplicatesStrategy.INCLUDE
+		}
 	}
 }
 
@@ -67,7 +69,7 @@ tasks.withType(JavaCompile) {
 // if it is present.
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = "sources"
+	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
 }
 
@@ -79,16 +81,10 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(jar) {
-				builtBy remapJar
-			}
-			artifact("${project.buildDir.absolutePath}/libs/${archivesBaseName}-${project.version}.jar"){
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			artifactId = "${project.archives_base_name}-${project.minecraft_major_version}"
+
+			from components.java
+			java.withSourcesJar()
 		}
 	}
 
@@ -97,4 +93,73 @@ publishing {
 		// uncomment to publish to the local maven
 		// mavenLocal()
 	}
+}
+
+// Mod sites
+
+static def getChangelog() {
+	return 'git log -1 --format=format:##%x20%s%n%n%b%nRelease%x20by%x20%an --grep Version'.execute().text.trim()
+}
+
+task uploadToModSites {
+	dependsOn build
+	group = "upload"
+}
+
+if (project.hasProperty("siphalorCurseForgeApi")) {
+	curseforge {
+		apiKey project.siphalorCurseForgeApi
+		project {
+			id = "324564"
+			releaseType = project.mod_release
+			changelogType = "markdown"
+			changelog = getChangelog()
+			addGameVersion("Fabric")
+			for (version in ((String) project.mod_mc_versions).split(";")) {
+				addGameVersion(version)
+			}
+			relations {
+				embeddedLibrary "fabric-api"
+				optionalDependency "roughly-enough-items"
+			}
+			mainArtifact(remapJar) {
+				displayName = "[${project.mod_mc_version_specifier}] ${project.mod_version}"
+			}
+		}
+	}
+	uploadToModSites.finalizedBy(tasks.curseforge)
+}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+if (project.hasProperty("siphalorModrinthApi")) {
+	task modrinth (type: TaskModrinthUpload) {
+		group = "upload"
+		dependsOn(build)
+
+		token = project.siphalorModrinthApi
+		projectId = "rcLriA4v"
+		versionNumber = version
+		versionName = "[${project.mod_mc_version_specifier}] ${project.mod_version}"
+		changelog = getChangelog()
+		uploadFile = remapJar
+		versionType = project.mod_release
+		for (version in ((String) project.mod_mc_versions).split(";")) {
+			addGameVersion(version)
+		}
+		addLoader("fabric")
+	}
+	uploadToModSites.finalizedBy(tasks.modrinth)
+}
+
+if (project.hasProperty("siphalorGitHubToken")) {
+	githubRelease {
+		token siphalorGitHubToken
+		targetCommitish.set(minecraft_major_version)
+		releaseName.set("Version $mod_version")
+		body.set(getChangelog())
+		releaseAssets remapJar.getArchiveFile()
+		prerelease.set(mod_release != "release")
+		overwrite.set(true)
+	}
+	uploadToModSites.finalizedBy(tasks.githubRelease)
 }
