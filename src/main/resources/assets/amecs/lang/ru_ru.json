@@ -13,6 +13,6 @@
 	"amecs.toggled.off": "%s выключен",
 	"amecs.toggled.auto_jump": "Автопрыжок",
 
-	"amecs.search.placeholder": "Поиск... (= для поиска клавиши)",
+	"amecs.search.placeholder": "Поиск... (= - клавиши, =%% - конфликты)",
 	"amecs.search.no_results": "Результатов не найдено"
 }

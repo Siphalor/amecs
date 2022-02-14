@@ -39,7 +39,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
 
-		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 100, 0, 200, 20, new LiteralText(""));
+		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 125, 0, 250, 20, new LiteralText(""));
 		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
 		textFieldWidget.setChangedListener(searchText -> {
 			ControlsListWidget listWidget = null;
