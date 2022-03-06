@@ -79,7 +79,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 					);
 					c.setAccessible(true);
 					entries.clear();
-					KeyBinding[] keyBindings = client.options.keysAll.clone();
+					KeyBinding[] keyBindings = client.options.allKeys;
 					Arrays.sort(keyBindings);
 					String lastCat = null;
 					ControlsListWidget.KeyBindingEntry entry;
