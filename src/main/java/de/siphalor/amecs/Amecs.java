@@ -16,7 +16,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +54,7 @@ public class Amecs implements ClientModInitializer {
     }
 
     public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
-        playerEntity.sendMessage(new TranslatableText("amecs.toggled." + (value ? "on" : "off"), option), true);
+        playerEntity.sendMessage(Text.translatable("amecs.toggled." + (value ? "on" : "off"), option), true);
     }
 
     public static boolean entryKeyMatches(ControlsListWidget.KeyBindingEntry entry, String keyFilter) {

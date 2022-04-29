@@ -9,15 +9,12 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.gui.screen.option.ControlsListWidget.CategoryEntry;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.BaseText;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -39,7 +36,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 		assert minecraft.currentScreen != null;
 
-		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 125, 0, 250, 20, new LiteralText(""));
+		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 125, 0, 250, 20, Text.empty());
 		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
 		textFieldWidget.setChangedListener(searchText -> {
 			ControlsListWidget listWidget = null;
@@ -87,10 +84,10 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 					for (KeyBinding keyBinding : keyBindings) {
 						if (!Objects.equals(lastCat, keyBinding.getCategory())) {
 							lastCat = keyBinding.getCategory();
-							children.add(listWidget.new CategoryEntry(new TranslatableText(keyBinding.getCategory())));
+							children.add(listWidget.new CategoryEntry(Text.translatable(keyBinding.getCategory())));
 							lastEntryCount++;
 						}
-						entry = c.newInstance(listWidget, keyBinding, new TranslatableText(keyBinding.getTranslationKey()));
+						entry = c.newInstance(listWidget, keyBinding, Text.translatable(keyBinding.getTranslationKey()));
 						children.add(entry);
 						entries.add(entry);
 						lastEntryCount++;
@@ -140,7 +137,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 						) && Amecs.entryKeyMatches(entry, keyFilter)
 				) {
 					if (!cat.equals(lastCat)) {
-						children.add(listWidget.new CategoryEntry(new TranslatableText(cat)));
+						children.add(listWidget.new CategoryEntry(Text.translatable(cat)));
 						lastCat = cat;
 						lastEntryCount++;
 					}
@@ -152,7 +149,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 				}
 			}
 			if (lastEntryCount <= 1) {
-				BaseText noResultsText = new TranslatableText(Amecs.MOD_ID + ".search.no_results");
+				MutableText noResultsText = Text.translatable(Amecs.MOD_ID + ".search.no_results");
 				noResultsText.setStyle(noResultsText.getStyle().withColor(Formatting.GRAY));
 				children.add(listWidget.new CategoryEntry(noResultsText));
 			}
