@@ -3,7 +3,8 @@
 	"package": "de.siphalor.amecs.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"ControlsListWidgetKeyBindingEntryAccessor"
+		"ControlsListWidgetKeyBindingEntryAccessor",
+		"MixinKeyboard"
 	],
 	"client": [
 		"MixinEntryListWidget"
