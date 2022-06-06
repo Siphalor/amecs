@@ -1,7 +1,7 @@
 package de.siphalor.amecs;
 
+import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.api.KeyModifiers;
-import de.siphalor.amecs.gui.SearchFieldControlsListWidget;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
 import de.siphalor.amecs.keybinding.SkinLayerKeyBinding;
 import de.siphalor.amecs.keybinding.ToggleAutoJumpKeyBinding;
@@ -11,6 +11,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.gui.screen.options.ControlsListWidget;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,6 +44,8 @@ public class Amecs implements ClientModInitializer {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
+
+	public static final KeyBinding ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyBinding(new Identifier(MOD_ID, "alternative_escape"), InputUtil.Type.KEYSYM, -1, "key.categories.ui", new KeyModifiers()));
 
     @Override
     public void onInitializeClient() {
