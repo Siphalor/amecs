@@ -165,7 +165,8 @@ if (project.hasProperty("siphalorModrinthApi")) {
 if (project.hasProperty("siphalorGitHubToken")) {
 	githubRelease {
 		token siphalorGitHubToken
-		targetCommitish.set(minecraft_major_version)
+		// targetCommitish.set(minecraft_major_version)
+		targetCommitish.set("unstable")
 		releaseName.set("Version $mod_version")
 		body.set(getChangelog())
 		releaseAssets remapJar.getArchiveFile()
