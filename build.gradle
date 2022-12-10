@@ -39,10 +39,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation(include("de.siphalor:amecsapi-$minecraft_major_version:1.3.6+mc22w17a")) {
+	modImplementation(include("de.siphalor:amecsapi-$minecraft_major_version:1.3.6+mc1.19.3")) {
 		exclude group: "net.fabricmc.fabric-api"
 	}
-	modImplementation("de.siphalor:nmuk-$minecraft_major_version:1.0.1+")
+	modImplementation("de.siphalor:nmuk-$minecraft_major_version:1.0.1+mc1.19.3")
 
 	modRuntimeOnly("com.github.astei:lazydfu:master-SNAPSHOT")
 

@@ -188,7 +188,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 
 	@Override
 	public void render(MatrixStack matrixStack, int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, float var9) {
-		textFieldWidget.y = var2;
+		textFieldWidget.setY(var2);
 		textFieldWidget.render(matrixStack, var6, var7, var9);
 	}
 
