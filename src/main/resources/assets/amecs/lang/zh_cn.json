@@ -1,15 +1,19 @@
 {
-	"amecs.key.categories.skin_layers": "皮肤覆盖层",
+	"amecs.key.categories.skin_layers": "Amecs 皮肤覆盖层",
 	"key.amecs.toggle_auto_jump": "切换自动跳跃",
-	"key.amecs.toggle_cape": "切换斗篷",
+	"key.amecs.toggle_cape": "切换披风",
 	"key.amecs.toggle_hat": "切换帽子",
 	"key.amecs.toggle_jacket": "切换衣服",
 	"key.amecs.toggle_left_pants_leg": "切换左腿裤子",
 	"key.amecs.toggle_left_sleeve": "切换左手袖子",
 	"key.amecs.toggle_right_pants_leg": "切换右腿裤子",
 	"key.amecs.toggle_right_sleeve": "切换右手袖子",
+	"key.amecs.alternative_escape": "Escape （备用键）",
 
 	"amecs.toggled.on": "启用 %s",
 	"amecs.toggled.off": "禁用 %s",
-	"amecs.toggled.auto_jump": "自动跳跃"
+	"amecs.toggled.auto_jump": "自动跳跃",
+
+	"amecs.search.placeholder": "搜索… （= 为按关键词搜索，=%% 为冲突搜索）",
+	"amecs.search.no_results": "未发现结果"
 }
