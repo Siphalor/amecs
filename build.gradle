@@ -2,7 +2,7 @@ plugins {
 	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
-	id 'com.modrinth.minotaur' version '1.2.1'
+	id 'com.modrinth.minotaur' version '2.7.5'
 	id "com.github.breadmoirai.github-release" version "2.2.12"
 }
 
@@ -40,12 +40,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation(include("de.siphalor:amecsapi-$minecraft_major_version:1.3.9+mc1.19.4")) {
+	modImplementation(include("de.siphalor:amecsapi-$minecraft_major_version:$amecs_api_version")) {
 		exclude group: "net.fabricmc.fabric-api"
 	}
-	modImplementation("de.siphalor:nmuk-$minecraft_major_version:1.0.1+mc1.19.3")
-
-	modRuntimeOnly("com.github.astei:lazydfu:master-SNAPSHOT")
+    modCompileOnly(modLocalRuntime("de.siphalor:nmuk-$minecraft_major_version:$nmuk_version"))
 
 	testmodImplementation sourceSets.main.output
 }
@@ -65,14 +63,15 @@ processResources {
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 // if it is present.
 // If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+	dependsOn classes
 	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
 }
@@ -84,7 +83,7 @@ jar {
 // configure the maven publication
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+        create("mavenJava", MavenPublication) {
 			artifactId = "${project.archives_base_name}-${project.minecraft_major_version}"
 
 			from components.java
@@ -112,9 +111,9 @@ static def getChangelog() {
 	return 'git log -1 --format=format:##%x20%s%n%n%b%nRelease%x20by%x20%an --grep Version'.execute().text.trim()
 }
 
-task uploadToModSites {
-	dependsOn build
-	group = "upload"
+tasks.register('uploadToModSites') {
+    dependsOn build
+    group = "upload"
 }
 
 if (project.hasProperty("siphalorCurseForgeApi")) {
@@ -141,26 +140,21 @@ if (project.hasProperty("siphalorCurseForgeApi")) {
 	uploadToModSites.finalizedBy(tasks.curseforge)
 }
 
-import com.modrinth.minotaur.TaskModrinthUpload
-if (project.hasProperty("siphalorModrinthApi")) {
-	task modrinth (type: TaskModrinthUpload) {
-		group = "upload"
-		dependsOn(build)
+modrinth {
+    if (project.hasProperty("modrinthToken")) {
+        token = project.modrinthToken
+        uploadToModSites.finalizedBy(tasks.modrinth)
+    }
 
-		token = project.siphalorModrinthApi
-		projectId = "rcLriA4v"
-		versionNumber = version
-		versionName = "[${project.mod_mc_version_specifier}] ${project.mod_version}"
-		changelog = getChangelog()
-		uploadFile = remapJar
-		versionType = project.mod_release
-		for (version in ((String) project.mod_mc_versions).split(";")) {
-			addGameVersion(version)
-		}
-		addLoader("fabric")
-	}
-	uploadToModSites.finalizedBy(tasks.modrinth)
+    projectId = "rcLriA4v"
+    versionName = "[${project.mod_mc_version_specifier}] ${project.mod_version}"
+    versionType = project.mod_release
+    changelog = project.getChangelog()
+    uploadFile = remapJar
+    gameVersions.set(project.mod_mc_versions.split(";") as List<String>)
+    loaders.set(["fabric"])
 }
+tasks.modrinth.group = "upload"
 
 if (project.hasProperty("siphalorGitHubToken")) {
 	githubRelease {
