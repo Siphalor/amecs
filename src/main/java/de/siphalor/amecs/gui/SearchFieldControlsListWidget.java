@@ -3,6 +3,8 @@ package de.siphalor.amecs.gui;
 import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.compat.NMUKProxy;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -23,6 +25,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+@Environment(EnvType.CLIENT)
 public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	protected MinecraftClient minecraft;
 
@@ -182,8 +185,8 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	}
 
 	@Override
-	public boolean changeFocus(boolean boolean_1) {
-		return textFieldWidget.changeFocus(boolean_1);
+	public void setFocused(boolean boolean_1) {
+		textFieldWidget.setFocused(boolean_1);
 	}
 
 	@Override
@@ -196,4 +199,7 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 	public List<? extends Selectable> selectableChildren() {
 		return Collections.singletonList(textFieldWidget);
 	}
+
+	@Override
+	protected void update() {}
 }
