@@ -125,7 +125,8 @@ if (project.hasProperty("siphalorCurseForgeApi")) {
 			changelogType = "markdown"
 			changelog = getChangelog()
 			addGameVersion("Fabric")
-			for (version in ((String) project.mod_mc_versions).split(";")) {
+            String mcVersions = project.hasProperty("curseforge_mc_versions") ? project.property("curseforge_mc_versions") : project.mod_mc_versions
+			for (version in mcVersions.split(";")) {
 				addGameVersion(version)
 			}
 			relations {
