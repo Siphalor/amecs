@@ -8,11 +8,15 @@
 	"key.amecs.toggle_left_sleeve": "Переключить левый рукав",
 	"key.amecs.toggle_right_pants_leg": "Переключить правую штанину",
 	"key.amecs.toggle_right_sleeve": "Переключить правый рукав",
+	"key.amecs.alternative_escape": "Возврат (резервная клавиша)",
 
 	"amecs.toggled.on": "%s включён",
 	"amecs.toggled.off": "%s выключен",
 	"amecs.toggled.auto_jump": "Автопрыжок",
 
 	"amecs.search.placeholder": "Поиск... (= - клавиши, =%% - конфликты)",
-	"amecs.search.no_results": "Результатов не найдено"
+	"amecs.search.no_results": "Результатов не найдено",
+
+	"modmenu.summaryTranslation.amecs": "Множество улучшений в управлении клавишами.",
+	"modmenu.descriptionTranslation.amecs": "Улучшения в настройке клавиш и управления в целом за счёт добавления возможности назначить несколько действий на одну клавишу или их сочетание."
 }
