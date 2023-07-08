@@ -15,7 +15,7 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/amecs/logo.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [],
 		"client": [
@@ -29,5 +29,8 @@
 	"depends": {
 		"fabricloader": ">=0.4.0",
 		"fabric": "*"
+	},
+	"custom": {
+		"modmenu:clientsideOnly": true
 	}
 }
