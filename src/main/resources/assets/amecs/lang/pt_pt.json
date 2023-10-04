@@ -1,0 +1,17 @@
+{
+    "amecs.key.categories.skin_layers": "Camadas de Pele Amecs",
+    "key.amecs.toggle_auto_jump": "Ligar/Desligar Pulo Automático",
+    "key.amecs.toggle_cape": "Ligar/Desligar Capa",
+    "key.amecs.toggle_hat": "Ligar/Desligar Chapéu",
+    "key.amecs.toggle_jacket": "Ligar/Desligar Jaqueta",
+    "key.amecs.toggle_left_pants_leg": "Ligar/Desligar Calças da Perna Esquerda",
+    "key.amecs.toggle_left_sleeve": "Ligar/Desligar Manga Esquerda",
+    "key.amecs.toggle_right_pants_leg": "Ligar/Desligar Calças da Perna Direita",
+    "key.amecs.toggle_right_sleeve": "Ligar/Desligar Manga Direita",
+    "key.amecs.alternative_escape": "Escape (Tecla Alternativa)",
+    "amecs.toggled.on": "Habilitado %s",
+    "amecs.toggled.off": "Desabilitado %s",
+    "amecs.toggled.auto_jump": "Pulo Automático",
+    "amecs.search.placeholder": "Pesquisar... (= para pesquisar por tecla, =%% para conflitos)",
+    "amecs.search.no_results": "Nenhum resultado encontrado"
+}
