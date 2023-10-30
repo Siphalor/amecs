@@ -1,0 +1,21 @@
+{
+  "modmenu.descriptionTranslation.amecs": "Күп төймә билгеләү файдалыклары",
+  
+	"amecs.key.categories.skin_layers": "Amecs кыяфәт катламнары",
+	"key.amecs.toggle_auto_jump": "Автосикерүне күчерү",
+	"key.amecs.toggle_cape": "Япманы күчерү",
+	"key.amecs.toggle_hat": "Эшләпәне күчерү",
+	"key.amecs.toggle_jacket": "Күлмәкне күчерү",
+	"key.amecs.toggle_left_pants_leg": "Сул балакны күчерү",
+	"key.amecs.toggle_left_sleeve": "Сул җиң күчерү",
+	"key.amecs.toggle_right_pants_leg": "Уң балакны күчерү",
+	"key.amecs.toggle_right_sleeve": "Уң җиң күчерү",
+	"key.amecs.alternative_escape": "Escape (альтернатив төймә)",
+
+	"amecs.toggled.on": "%s кушылды",
+	"amecs.toggled.off": "%s сүндерелде",
+	"amecs.toggled.auto_jump": "Автосикерү",
+
+	"amecs.search.placeholder": "Эзләү... (Төймә буенча эзләү өчен — =, бәхәсләр өчен — =%%)",
+	"amecs.search.no_results": "Нәтиҗәләр юк"
+}
