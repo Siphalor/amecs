@@ -1,5 +1,6 @@
 {
-  "modmenu.descriptionTranslation.amecs": "Күп төймә билгеләү файдалыклары",
+  	"modmenu.summaryTranslation.amecs": "Төймә билгеләү өчен күп файдалыклары",
+  	"modmenu.descriptionTranslation.amecs": "Төймә билгеләүне һәм идарә итүне гомумән яңарту өчен, бер төймәгә берничә гамәлне яки аларның тезмәсен билгеләү мөмкинлеген өсти",	
   
 	"amecs.key.categories.skin_layers": "Amecs кыяфәт катламнары",
 	"key.amecs.toggle_auto_jump": "Автосикерүне күчерү",
