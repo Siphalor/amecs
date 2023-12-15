@@ -18,9 +18,9 @@ public abstract class MixinEntryListWidget {
 	@Shadow protected abstract int addEntry(EntryListWidget.Entry<?> entry);
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	public void onConstruct(MinecraftClient minecraftClient, int i, int j, int k, int l, int m, CallbackInfo callbackInfo) {
+	public void onConstruct(MinecraftClient client, int width, int height, int y, int itemHeight, CallbackInfo ci) {
 		if (getClass().equals(ControlsListWidget.class)) {
-			this.addEntry((new SearchFieldControlsListWidget(minecraftClient)));
+			this.addEntry((new SearchFieldControlsListWidget(client)));
 		}
 	}
 }
