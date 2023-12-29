@@ -1,1 +1,15 @@
-{}
+{
+    "amecsapi.modifier.shift": "Shift",
+    "amecsapi.modifier.control": "Control",
+    "amecsapi.modifier.shift.tiny": "S",
+    "amecsapi.modifier.shift.short": "Shft",
+    "amecsapi.modifier.control.short": "Ctrl",
+    "amecsapi.modifier.control.tiny": "C",
+    "amecsapi.modifier.alt.short": "Alt",
+    "amecsapi.modifier.alt": "Alt",
+    "amecsapi.modifier.alt.tiny": "A",
+    "key.amecsapi.mouse.scroll.left": "Прогорнути ліворуч",
+    "key.amecsapi.mouse.scroll.down": "Прогорнути вниз",
+    "key.amecsapi.mouse.scroll.right": "Прогорнути праворуч",
+    "key.amecsapi.mouse.scroll.up": "Прогорнути вгору"
+}
