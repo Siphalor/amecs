@@ -1,0 +1,16 @@
+{
+    "amecs.key.mouse.scroll.up": "Прогорнути Вгору",
+    "amecs.key.categories.skin_layers": "Шари Скіну",
+    "amecs.key.mouse.scroll.down": "Прогорнути Вниз",
+    "key.amecs.toggle_right_sleeve": "Перемкнути Правий Рукав",
+    "amecs.toggled.on": "Увімкнено %s",
+    "key.amecs.toggle_cape": "Перемкнути Плащ",
+    "key.amecs.toggle_left_sleeve": "Перемкнути Лівий Рукав",
+    "key.amecs.toggle_hat": "Перемкнути Капелюх",
+    "key.amecs.toggle_auto_jump": "Перемкнути Автострибок",
+    "key.amecs.toggle_right_pants_leg": "Перемкнути Штани Правої Ноги",
+    "key.amecs.toggle_left_pants_leg": "Перемкнути Штани Лівої Ноги",
+    "amecs.toggled.auto_jump": "Автострибок",
+    "amecs.toggled.off": "Вимкнено %s",
+    "key.amecs.toggle_jacket": "Перемкнути Піджак"
+}
