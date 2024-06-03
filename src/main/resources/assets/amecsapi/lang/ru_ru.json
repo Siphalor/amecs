@@ -1,1 +1,15 @@
-{}
+{
+    "key.amecsapi.mouse.scroll.left": "Пролистать влево",
+    "key.amecsapi.mouse.scroll.right": "Пролистать вправо",
+    "amecsapi.modifier.alt": "Alt",
+    "amecsapi.modifier.alt.tiny": "A",
+    "amecsapi.modifier.alt.short": "Alt",
+    "amecsapi.modifier.control": "Control",
+    "amecsapi.modifier.control.short": "Ctrl",
+    "amecsapi.modifier.control.tiny": "C",
+    "amecsapi.modifier.shift": "Shift",
+    "amecsapi.modifier.shift.short": "Shft",
+    "amecsapi.modifier.shift.tiny": "S",
+    "key.amecsapi.mouse.scroll.up": "Пролистать вверх",
+    "key.amecsapi.mouse.scroll.down": "Пролистать вниз"
+}
