@@ -1,1 +1,15 @@
-{}
+{
+    "key.amecsapi.mouse.scroll.down": "Przewinięcie w dół",
+    "key.amecsapi.mouse.scroll.left": "Przewinięcie w lewo",
+    "key.amecsapi.mouse.scroll.right": "Przewinięcie w prawo",
+    "amecsapi.modifier.alt": "Alt",
+    "amecsapi.modifier.alt.short": "Alt",
+    "amecsapi.modifier.alt.tiny": "A",
+    "amecsapi.modifier.control": "Control",
+    "amecsapi.modifier.control.short": "Ctrl",
+    "amecsapi.modifier.control.tiny": "C",
+    "amecsapi.modifier.shift": "Shift",
+    "amecsapi.modifier.shift.short": "Shft",
+    "amecsapi.modifier.shift.tiny": "S",
+    "key.amecsapi.mouse.scroll.up": "Przewinięcie w górę"
+}
