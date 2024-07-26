@@ -1,0 +1,19 @@
+{
+	"amecs.key.categories.skin_layers": "Amecs 外觀層",
+	"key.amecs.toggle_auto_jump": "切換自動跳躍",
+	"key.amecs.toggle_cape": "切換披風",
+	"key.amecs.toggle_hat": "切換帽子",
+	"key.amecs.toggle_jacket": "切換外套",
+	"key.amecs.toggle_left_pants_leg": "切換左褲管",
+	"key.amecs.toggle_left_sleeve": "切換左袖子",
+	"key.amecs.toggle_right_pants_leg": "切換右褲管",
+	"key.amecs.toggle_right_sleeve": "切換右袖子",
+	"key.amecs.alternative_escape": "離開（備用按鍵）",
+
+	"amecs.toggled.on": "已啟用 %s",
+	"amecs.toggled.off": "已停用 %s",
+	"amecs.toggled.auto_jump": "自動跳躍",
+
+	"amecs.search.placeholder": "搜尋...（= 以關鍵字搜尋，=%% 以搜尋衝突）",
+	"amecs.search.no_results": "找不到結果"
+}
