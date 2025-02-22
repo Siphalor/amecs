@@ -9,5 +9,7 @@
     "amecsapi.modifier.control.tiny": "S",
     "amecsapi.modifier.shift": "Umschalt",
     "amecsapi.modifier.shift.short": "Umst",
-    "amecsapi.modifier.shift.tiny": "U"
+    "amecsapi.modifier.shift.tiny": "U",
+    "key.amecsapi.mouse.scroll.right": "Nach Rechts scrollen",
+    "key.amecsapi.mouse.scroll.left": "Nach Links scrollen"
 }
