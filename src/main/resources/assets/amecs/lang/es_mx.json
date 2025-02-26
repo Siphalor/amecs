@@ -1,0 +1,19 @@
+{
+	"amecs.key.categories.skin_layers": "Capas de Piel de Amecs",
+	"key.amecs.toggle_auto_jump": "Alternar Salto Automático",
+	"key.amecs.toggle_cape": "Alternar Capa",
+	"key.amecs.toggle_hat": "Alternar Sombrero",
+	"key.amecs.toggle_jacket": "Alternar Chaqueta",
+	"key.amecs.toggle_left_pants_leg": "Alternar Pierna Izquierda del Pantalón",
+	"key.amecs.toggle_left_sleeve": "Alternar Manga Izquierda",
+	"key.amecs.toggle_right_pants_leg": "Alternar Pierna Derecha del Pantalón",
+	"key.amecs.toggle_right_sleeve": "Alternar Manga Derecha",
+	"key.amecs.alternative_escape": "Escape (Tecla Alternativa)",
+
+	"amecs.toggled.on": "Habilitado %s",
+	"amecs.toggled.off": "Deshabilitado %s",
+	"amecs.toggled.auto_jump": "Salto Automático",
+
+	"amecs.search.placeholder": "Buscar... (= para buscar por clave, =%% para conflictos)",
+	"amecs.search.no_results": "No se encontraron resultados"
+}
