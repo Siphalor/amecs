@@ -1,1 +1,15 @@
-{}
+{
+    "key.amecsapi.mouse.scroll.down": "גלול למטה",
+    "key.amecsapi.mouse.scroll.right": "גלול לימין",
+    "amecsapi.modifier.alt": "טאב",
+    "amecsapi.modifier.alt.short": "אלט",
+    "amecsapi.modifier.alt.tiny": "ש",
+    "amecsapi.modifier.control": "קונטרול",
+    "amecsapi.modifier.control.tiny": "ב",
+    "amecsapi.modifier.shift": "שיפט",
+    "amecsapi.modifier.shift.short": "שיפט",
+    "amecsapi.modifier.shift.tiny": "ד",
+    "key.amecsapi.mouse.scroll.up": "גלול למלה",
+    "key.amecsapi.mouse.scroll.left": "גלול לשמאל",
+    "amecsapi.modifier.control.short": "קונטרול"
+}
