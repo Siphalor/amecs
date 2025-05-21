@@ -1,1 +1,12 @@
-{}
+{
+    "amecs.key.mouse.scroll.up": "위로 스크롤",
+    "amecs.key.categories.skin_layers": "스킨 레이어",
+    "key.amecs.toggle_auto_jump": "자동 점프 토글",
+    "key.amecs.toggle_cape": "망토 토글",
+    "key.amecs.toggle_hat": "모자 토글",
+    "key.amecs.toggle_jacket": "겉옷 토글",
+    "amecs.toggled.on": "%s 활성화",
+    "amecs.toggled.off": "%s 비활성화",
+    "amecs.toggled.auto_jump": "자동 점프",
+    "amecs.key.mouse.scroll.down": "아래로 스크롤"
+}
