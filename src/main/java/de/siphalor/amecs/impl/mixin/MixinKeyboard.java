@@ -16,48 +16,48 @@
 
 package de.siphalor.amecs.impl.mixin;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.impl.KeyBindingManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Keyboard;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.option.KeybindsScreen;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
+import net.minecraft.client.KeyboardHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
-@Mixin(Keyboard.class)
+@Mixin(KeyboardHandler.class)
 public class MixinKeyboard {
 
-	@Inject(method = "onKey", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
+	@Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
 	private void onKeyPriority(long window, int key, int scanCode, int action, int modifiers, CallbackInfo callbackInfo) {
 		if (action == 1) {
-			if (KeyBindingManager.onKeyPressedPriority(InputUtil.fromKeyCode(key, scanCode))) {
+			if (KeyBindingManager.onKeyPressedPriority(InputConstants.getKey(key, scanCode))) {
 				callbackInfo.cancel();
 			}
 		} else if (action == 0) {
-			if (KeyBindingManager.onKeyReleasedPriority(InputUtil.fromKeyCode(key, scanCode))) {
+			if (KeyBindingManager.onKeyReleasedPriority(InputConstants.getKey(key, scanCode))) {
 				callbackInfo.cancel();
 			}
 		}
 	}
 
-	@Inject(method = "onKey", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Keyboard;debugCrashStartTime:J", ordinal = 0))
+	@Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyboardHandler;debugCrashKeyTime:J", ordinal = 0))
 	private void onKey(long window, int key, int scanCode, int action, int modifiers, CallbackInfo callbackInfo) {
 		// Key released
-		if (action == 0 && MinecraftClient.getInstance().currentScreen instanceof KeybindsScreen) {
-			KeybindsScreen screen = (KeybindsScreen) MinecraftClient.getInstance().currentScreen;
+		if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen) {
+			KeyBindsScreen screen = (KeyBindsScreen) Minecraft.getInstance().screen;
 
-			screen.selectedKeyBinding = null;
-			screen.lastKeyCodeUpdateTime = Util.getMeasuringTimeMs();
+			screen.selectedKey = null;
+			screen.lastKeySelection = Util.getMillis();
 		}
 
-		AmecsAPI.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(InputUtil.fromKeyCode(key, scanCode).getCode()), action != 0);
+		AmecsAPI.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(InputConstants.getKey(key, scanCode).getValue()), action != 0);
 	}
 }

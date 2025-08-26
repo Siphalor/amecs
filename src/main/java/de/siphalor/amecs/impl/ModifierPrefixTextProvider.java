@@ -19,14 +19,14 @@ package de.siphalor.amecs.impl;
 import de.siphalor.amecs.api.KeyModifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 
 @Environment(EnvType.CLIENT)
 public class ModifierPrefixTextProvider {
-	private static final Text SUFFIX = Text.literal(" + ");
-	private static final Text COMPRESSED_SUFFIX = Text.literal("+");
+	private static final Component SUFFIX = Component.literal(" + ");
+	private static final Component COMPRESSED_SUFFIX = Component.literal("+");
 	private final String translationKey;
 
 	public ModifierPrefixTextProvider(KeyModifier modifier) {
@@ -37,12 +37,12 @@ public class ModifierPrefixTextProvider {
 		this.translationKey = translationKey;
 	}
 
-	protected MutableText getBaseText(Variation variation) {
-		return MutableText.of(variation.getTranslatableText(translationKey));
+	protected MutableComponent getBaseComponent(Variation variation) {
+		return MutableComponent.create(variation.getTranslatableComponent(translationKey));
 	}
 
-	public MutableText getText(Variation variation) {
-		MutableText text = getBaseText(variation);
+	public MutableComponent getComponent(Variation variation) {
+		MutableComponent text = getBaseComponent(variation);
 		if (variation == Variation.COMPRESSED) {
 			text.append(COMPRESSED_SUFFIX);
 		} else {
@@ -69,8 +69,8 @@ public class ModifierPrefixTextProvider {
 			this.translateKeySuffix = translateKeySuffix;
 		}
 
-		public TranslatableTextContent getTranslatableText(String translationKey) {
-			return new TranslatableTextContent(translationKey + translateKeySuffix, null, new Object[0]);
+		public TranslatableContents getTranslatableComponent(String translationKey) {
+			return new TranslatableContents(translationKey + translateKeySuffix, null, new Object[0]);
 		}
 
 		public Variation getNextVariation(int amount) {

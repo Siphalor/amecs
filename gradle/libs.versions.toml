@@ -1,0 +1,16 @@
+[versions]
+fabric-loader = "0.17.2"
+jcyo = "0.2.0"
+licenser = "0.6.1"
+lombok = "1.18.38"
+loom = "1.11-SNAPSHOT"
+
+[plugins]
+jcyo = { id = "de.siphalor.jcyo", version.ref = "jcyo" }
+licenser = { id = "org.cadixdev.licenser", version.ref = "licenser" }
+loom = { id = "fabric-loom", version.ref = "loom" }
+
+[libraries]
+fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+

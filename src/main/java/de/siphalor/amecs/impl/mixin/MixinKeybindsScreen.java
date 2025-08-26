@@ -16,8 +16,15 @@
 
 package de.siphalor.amecs.impl.mixin;
 
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.gui.screen.option.KeybindsScreen;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.Util;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.screens.OptionsSubScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,65 +36,58 @@ import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.impl.duck.IKeyBinding;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
-@Mixin(KeybindsScreen.class)
-public abstract class MixinKeybindsScreen extends GameOptionsScreen {
+@Mixin(KeyBindsScreen.class)
+public abstract class MixinKeybindsScreen extends OptionsSubScreen {
 	@Shadow
-	public KeyBinding selectedKeyBinding;
+	public KeyMapping selectedKey;
 
 	@Shadow
-	public long lastKeyCodeUpdateTime;
+	public long lastKeySelection;
 
-	@Shadow private ControlsListWidget controlsList;
+	@Shadow private KeyBindsList keyBindsList;
 
-	public MixinKeybindsScreen(Screen screen, GameOptions gameOptions, Text text) {
+	public MixinKeybindsScreen(Screen screen, Options gameOptions, Component text) {
 		super(screen, gameOptions, text);
 	}
 
-	@Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setKeyCode(Lnet/minecraft/client/option/KeyBinding;Lnet/minecraft/client/util/InputUtil$Key;)V"))
+	@Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V"))
 	public void onClicked(double x, double y, int type, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		InputUtil.Key key = ((IKeyBinding) selectedKeyBinding).amecs$getBoundKey();
-		KeyModifiers keyModifiers = ((IKeyBinding) selectedKeyBinding).amecs$getKeyModifiers();
-		if (!key.equals(InputUtil.UNKNOWN_KEY)) {
+		InputConstants.Key key = ((IKeyBinding) selectedKey).amecs$getBoundKey();
+		KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
+		if (!key.equals(InputConstants.UNKNOWN)) {
 			keyModifiers.set(KeyModifier.fromKey(key), true);
 		}
 	}
 
-	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setKeyCode(Lnet/minecraft/client/option/KeyBinding;Lnet/minecraft/client/util/InputUtil$Key;)V", ordinal = 0))
+	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V", ordinal = 0))
 	public void clearKeyBinding(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		((IKeyBinding) selectedKeyBinding).amecs$getKeyModifiers().unset();
+		((IKeyBinding) selectedKey).amecs$getKeyModifiers().unset();
 	}
 
-	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;setKeyCode(Lnet/minecraft/client/option/KeyBinding;Lnet/minecraft/client/util/InputUtil$Key;)V", ordinal = 1), cancellable = true)
+	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V", ordinal = 1), cancellable = true)
 	public void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		if (selectedKeyBinding.isUnbound()) {
-			gameOptions.setKeyCode(selectedKeyBinding, InputUtil.fromKeyCode(keyCode, scanCode));
+		if (selectedKey.isUnbound()) {
+			options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
 		} else {
-			InputUtil.Key mainKey = ((IKeyBinding) selectedKeyBinding).amecs$getBoundKey();
-			KeyModifiers keyModifiers = ((IKeyBinding) selectedKeyBinding).amecs$getKeyModifiers();
+			InputConstants.Key mainKey = ((IKeyBinding) selectedKey).amecs$getBoundKey();
+			KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
 			KeyModifier mainKeyModifier = KeyModifier.fromKey(mainKey);
 			KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
 			if (mainKeyModifier != KeyModifier.NONE && keyModifier == KeyModifier.NONE) {
 				keyModifiers.set(mainKeyModifier, true);
-				gameOptions.setKeyCode(selectedKeyBinding, InputUtil.fromKeyCode(keyCode, scanCode));
+				options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
 				return;
 			} else {
 				keyModifiers.set(keyModifier, true);
-				keyModifiers.cleanup(selectedKeyBinding);
+				keyModifiers.cleanup(selectedKey);
 			}
 		}
 
-		this.lastKeyCodeUpdateTime = Util.getMeasuringTimeMs();
-		this.controlsList.update();
+		this.lastKeySelection = Util.getMillis();
+		this.keyBindsList.resetMappingAndUpdateButtons();
 		callbackInfoReturnable.setReturnValue(true);
 	}
 }

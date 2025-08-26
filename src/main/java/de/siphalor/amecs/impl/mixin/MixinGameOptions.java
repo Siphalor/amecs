@@ -19,8 +19,8 @@ package de.siphalor.amecs.impl.mixin;
 import de.siphalor.amecs.impl.AmecsAPIOptions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,15 +30,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
-@Mixin(GameOptions.class)
+@Mixin(Options.class)
 public class MixinGameOptions {
 	@Shadow
 	@Final
-	public KeyBinding[] allKeys;
+	public KeyMapping[] keyMappings;
 
-	@Inject(method = "write", at = @At("RETURN"))
+	@Inject(method = "save", at = @At("RETURN"))
 	public void write(CallbackInfo callbackInfo) {
-		AmecsAPIOptions.write(allKeys);
+		AmecsAPIOptions.write(keyMappings);
 	}
 
 	@Inject(method = "load", at = @At("RETURN"))

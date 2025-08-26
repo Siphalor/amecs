@@ -1,4 +1,3 @@
-accessWidener	v1	named
-accessible	method	net/minecraft/client/util/InputUtil$Type	mapKey	(Lnet/minecraft/client/util/InputUtil$Type;Ljava/lang/String;I)V
-
-accessible	field	net/minecraft/client/util/InputUtil$Key	KEYS	Ljava/util/Map;
+accessWidener v1 named
+accessible method com/mojang/blaze3d/platform/InputConstants$Type addKey (Lcom/mojang/blaze3d/platform/InputConstants$Type;Ljava/lang/String;I)V
+accessible field com/mojang/blaze3d/platform/InputConstants$Key NAME_MAP Ljava/util/Map;

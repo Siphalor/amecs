@@ -18,7 +18,7 @@ package de.siphalor.amecs.api.input;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 /**
  * This interface is used for input event handling and is (un-)registered in {@link InputHandlerManager}
@@ -30,12 +30,10 @@ import net.minecraft.client.MinecraftClient;
 public interface InputEventHandler {
 
 	/**
-	 * This method is called from {@link InputHandlerManager#handleInputEvents(MinecraftClient)}
+	 * This method is called from {@link InputHandlerManager#handleInputEvents(Minecraft)}
 	 *
-	 * @see InputHandlerManager#handleInputEvents(MinecraftClient)
-	 *
-	 * @param client
+	 * @see InputHandlerManager#handleInputEvents(Minecraft)
 	 */
-	public void handleInput(MinecraftClient client);
+	void handleInput(Minecraft client);
 
 }

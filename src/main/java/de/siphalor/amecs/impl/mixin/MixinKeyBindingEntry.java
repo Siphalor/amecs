@@ -16,21 +16,20 @@
 
 package de.siphalor.amecs.impl.mixin;
 
-import de.siphalor.amecs.api.AmecsKeyBinding;
+import com.mojang.blaze3d.platform.InputConstants;
+import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.impl.duck.IKeyBinding;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,27 +44,27 @@ import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
-@Mixin(ControlsListWidget.KeyBindingEntry.class)
+@Mixin(KeyBindsList.KeyEntry.class)
 public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	private static final String DESCRIPTION_SUFFIX = "." + AmecsAPI.MOD_ID + ".description";
 	@Shadow
 	@Final
-	private KeyBinding binding;
+	private KeyMapping key;
 	@Shadow
 	@Final
-	private ButtonWidget editButton;
+	private Button changeButton;
 
 	@Unique
-	private List<Text> description;
+	private List<Component> description;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	public void onConstructed(ControlsListWidget parent, KeyBinding keyBinding, Text text, CallbackInfo callbackInfo) {
-		String descriptionKey = binding.getTranslationKey() + DESCRIPTION_SUFFIX;
-		if (I18n.hasTranslation(descriptionKey)) {
-			String[] lines = StringUtils.split(I18n.translate(descriptionKey), '\n');
+	public void onConstructed(KeyBindsList parent, KeyMapping keyBinding, Component text, CallbackInfo callbackInfo) {
+		String descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
+		if (I18n.exists(descriptionKey)) {
+			String[] lines = StringUtils.split(I18n.get(descriptionKey), '\n');
 			description = new ArrayList<>(lines.length);
 			for (String line : lines) {
-				description.add(Text.literal(line));
+				description.add(Component.literal(line));
 			}
 		} else {
 			description = null;
@@ -73,32 +72,28 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	}
 
 	@Inject(method = "render", at = @At("RETURN"))
-	public void onRendered(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-		if (description != null && mouseY >= y && mouseY < y + entryHeight && mouseX < editButton.getX()) {
-			context.drawTooltip(MinecraftClient.getInstance().textRenderer, description, mouseX, mouseY);
+	public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+		if (description != null && mouseY >= y && mouseY < y + entryHeight && mouseX < changeButton.getX()) {
+			context.renderComponentTooltip(Minecraft.getInstance().font, description, mouseX, mouseY);
 		}
 	}
 
-	@SuppressWarnings("UnresolvedMixinReference")
 	@Inject(
-			method = "method_19870(Lnet/minecraft/client/option/KeyBinding;Lnet/minecraft/client/gui/widget/ButtonWidget;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/option/ControlsListWidget;update()V")
+			method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/controls/KeyBindsList;resetMappingAndUpdateButtons()V")
 	)
-	public void onResetButtonClicked(KeyBinding keyBinding, ButtonWidget buttonWidget, CallbackInfo callbackInfo) {
-		((IKeyBinding) binding).amecs$getKeyModifiers().unset();
-		if (binding instanceof AmecsKeyBinding)
-			((AmecsKeyBinding) binding).resetKeyBinding();
+	public void onResetButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+		KeyBindingUtils.resetBoundModifiers(keyBinding);
 	}
 
-	@SuppressWarnings("UnresolvedMixinReference")
-	@Inject(method = "method_19871(Lnet/minecraft/client/option/KeyBinding;Lnet/minecraft/client/gui/widget/ButtonWidget;)V", at = @At("HEAD"))
-	public void onEditButtonClicked(KeyBinding keyBinding, ButtonWidget buttonWidget, CallbackInfo callbackInfo) {
-		((IKeyBinding) binding).amecs$getKeyModifiers().unset();
-		binding.setBoundKey(InputUtil.UNKNOWN_KEY);
+	@Inject(method = "method_19871(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V", at = @At("HEAD"))
+	public void onEditButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+		((IKeyBinding) key).amecs$getKeyModifiers().unset();
+		key.setKey(InputConstants.UNKNOWN);
 	}
 
 	@Override
-	public KeyBinding amecs$getKeyBinding() {
-		return binding;
+	public KeyMapping amecs$getKeyBinding() {
+		return key;
 	}
 }

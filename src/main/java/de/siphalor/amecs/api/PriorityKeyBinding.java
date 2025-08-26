@@ -20,7 +20,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * An interface to be used on {@link net.minecraft.client.option.KeyBinding}s.
+ * An interface to be used on {@link net.minecraft.client.KeyMapping}s.
  * <b>This key binding triggers without further conditions before any other checks or conditions.</b>
  */
 @Environment(EnvType.CLIENT)

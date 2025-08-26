@@ -16,14 +16,14 @@
 
 package de.siphalor.amecs.impl.duck;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.KeyModifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.util.InputUtil;
 
 @Environment(EnvType.CLIENT)
 public interface IKeyBinding {
-	InputUtil.Key amecs$getBoundKey();
+	InputConstants.Key amecs$getBoundKey();
 
 	int amecs$getTimesPressed();
 

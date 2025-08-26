@@ -16,11 +16,11 @@
 
 package de.siphalor.amecs.testmod;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.api.PriorityKeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BooleanSupplier;
 
@@ -28,7 +28,7 @@ public class TestPriorityKeybinding extends AmecsKeyBinding implements PriorityK
 	private final BooleanSupplier action;
 	private final BooleanSupplier releaseAction;
 
-	public TestPriorityKeybinding(Identifier id, InputUtil.Type type, int code, String category, KeyModifiers defaultModifiers, BooleanSupplier action, BooleanSupplier releaseAction) {
+	public TestPriorityKeybinding(ResourceLocation id, InputConstants.Type type, int code, String category, KeyModifiers defaultModifiers, BooleanSupplier action, BooleanSupplier releaseAction) {
 		super(id, type, code, category, defaultModifiers);
 		this.action = action;
 		this.releaseAction = releaseAction;

@@ -16,13 +16,12 @@
 
 package de.siphalor.amecs.api;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.impl.ModifierPrefixTextProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.util.InputUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
@@ -63,11 +62,11 @@ public enum KeyModifier {
 		return NONE;
 	}
 
-	public static KeyModifier fromKey(InputUtil.Key key) {
-		if (key == null || key.getCategory() != InputUtil.Type.KEYSYM) {
+	public static KeyModifier fromKey(InputConstants.Key key) {
+		if (key == null || key.getType() != InputConstants.Type.KEYSYM) {
 			return NONE;
 		}
-		return fromKeyCode(key.getCode());
+		return fromKeyCode(key.getValue());
 	}
 
 	public boolean matches(int keyCode) {

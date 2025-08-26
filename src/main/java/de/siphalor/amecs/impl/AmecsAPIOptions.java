@@ -22,8 +22,8 @@ import de.siphalor.amecs.impl.duck.IKeyBinding;
 import lombok.CustomLog;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.*;
@@ -36,13 +36,13 @@ import java.util.List;
 @CustomLog
 public class AmecsAPIOptions {
 	private static final String KEY_MODIFIERS_PREFIX = "key_modifiers_";
-	private static final File optionsFile = new File(MinecraftClient.getInstance().runDirectory, "options." + AmecsAPI.MOD_ID + ".txt");
+	private static final File optionsFile = new File(Minecraft.getInstance().gameDirectory, "options." + AmecsAPI.MOD_ID + ".txt");
 
 	private AmecsAPIOptions() {}
 
-	public static void write(KeyBinding[] allKeyBindings) {
-		List<KeyBinding> bindingsWithChangedModifiers = new ArrayList<>(allKeyBindings.length);
-		for (KeyBinding keyBinding : allKeyBindings) {
+	public static void write(KeyMapping[] allKeyBindings) {
+		List<KeyMapping> bindingsWithChangedModifiers = new ArrayList<>(allKeyBindings.length);
+		for (KeyMapping keyBinding : allKeyBindings) {
 			if (!KeyBindingUtils.getDefaultModifiers(keyBinding).equals(KeyBindingUtils.getBoundModifiers(keyBinding))) {
 				bindingsWithChangedModifiers.add(keyBinding);
 			}
@@ -61,9 +61,9 @@ public class AmecsAPIOptions {
 
 		try (PrintWriter writer = new PrintWriter(new FileOutputStream(optionsFile))) {
 			KeyModifiers modifiers;
-			for (KeyBinding binding : bindingsWithChangedModifiers) {
+			for (KeyMapping binding : bindingsWithChangedModifiers) {
 				modifiers = KeyBindingUtils.getBoundModifiers(binding);
-				writer.println(KEY_MODIFIERS_PREFIX + binding.getTranslationKey() + ":" + modifiers.serializeValue());
+				writer.println(KEY_MODIFIERS_PREFIX + binding.getName() + ":" + modifiers.serializeValue());
 			}
 		} catch (FileNotFoundException e) {
 			log.error("Failed to save Amecs API modifiers to options file", e);
@@ -97,7 +97,7 @@ public class AmecsAPIOptions {
 				return;
 			}
 			id = id.substring(KEY_MODIFIERS_PREFIX.length());
-			KeyBinding keyBinding = KeyBindingUtils.getIdToKeyBindingMap().get(id);
+			KeyMapping keyBinding = KeyBindingUtils.getIdToKeyBindingMap().get(id);
 			if (keyBinding == null) {
 				log.warn("Unknown keybinding identifier in Amecs API options file: {}", id);
 				return;

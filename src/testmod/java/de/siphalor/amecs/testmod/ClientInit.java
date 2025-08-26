@@ -16,22 +16,30 @@
 
 package de.siphalor.amecs.testmod;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.KeyModifiers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 public class ClientInit implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		KeyBindingHelper.registerKeyBinding(new TestPriorityKeybinding(new Identifier("amecsapi-testmod", "priority"), InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, "key.categories.misc", new KeyModifiers(), () -> {
-			System.out.println("priority");
-			return true;
-		}, () -> {
-			System.out.println("priority release");
-			return true;
-		}));
+		KeyBindingHelper.registerKeyBinding(new TestPriorityKeybinding(
+				new ResourceLocation("amecsapi-testmod", "priority"),
+				InputConstants.Type.KEYSYM,
+				GLFW.GLFW_KEY_Z,
+				"key.categories.misc",
+				new KeyModifiers(),
+				() -> {
+					System.out.println("priority");
+					return true;
+				},
+				() -> {
+					System.out.println("priority release");
+					return true;
+				}
+		));
 	}
 }
