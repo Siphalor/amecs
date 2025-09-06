@@ -32,6 +32,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.screens.Screen;
+//- import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -164,7 +165,11 @@ public class MixinMouse implements IMouse {
 		//# end
 
 		// check if we have scroll input for the options screen
+		//# if MC_VERSION_NUMBER >= 11800
 		if (minecraft.screen instanceof KeyBindsScreen) {
+		//# else
+		//- if (minecraft.screen instanceof ControlsScreen) {
+		//# end
 			if (handleScrollInKeybindsScreen(callbackInfo, primaryKeyCode)) return;
 		}
 
@@ -184,7 +189,11 @@ public class MixinMouse implements IMouse {
 	@Unique
 	private boolean handleScrollInKeybindsScreen(CallbackInfo callbackInfo, InputConstants.Key primaryKeyCode) {
 		assert minecraft.screen != null;
+		//# if MC_VERSION_NUMBER >= 11800
 		KeyMapping focusedBinding = ((KeyBindsScreen) minecraft.screen).selectedKey;
+		//# else
+		//- KeyMapping focusedBinding = ((ControlsScreen) minecraft.screen).selectedKey;
+		//# end
 		if (focusedBinding != null) {
 			if (!focusedBinding.isUnbound()) {
 				KeyModifiers keyModifiers = ((IKeyBinding) focusedBinding).amecs$getKeyModifiers();

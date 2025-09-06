@@ -28,9 +28,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+//- import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.KeyBindsList;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+//- import net.minecraft.network.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +47,11 @@ import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
+//# if MC_VERSION_NUMBER >= 11800
 @Mixin(KeyBindsList.KeyEntry.class)
+//# else
+//- @Mixin(ControlList.KeyEntry.class)
+//# end
 public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	@Unique
 	private static final String DESCRIPTION_SUFFIX = "." + AmecsAPI.MOD_ID + ".description";
@@ -61,13 +67,22 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	private List<Component> description;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	public void onConstructed(KeyBindsList parent, KeyMapping keyBinding, Component text, CallbackInfo callbackInfo) {
+	public void onConstructed(
+			/*# if MC_VERSION_NUMBER >= 11800 */KeyBindsList/*# else *//*- ControlList *//*# end */ parent,
+			KeyMapping keyBinding,
+			Component text,
+			CallbackInfo callbackInfo
+	) {
 		String descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
 		if (I18n.exists(descriptionKey)) {
 			String[] lines = StringUtils.split(I18n.get(descriptionKey), '\n');
 			description = new ArrayList<>(lines.length);
 			for (String line : lines) {
+				//# if MC_VERSION_NUMBER >= 11900
 				description.add(Component.literal(line));
+				//# else
+				//- description.add(new TextComponent(line));
+				//# end
 			}
 		} else {
 			description = null;

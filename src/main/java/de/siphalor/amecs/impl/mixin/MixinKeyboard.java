@@ -25,6 +25,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
+//- import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -51,8 +52,12 @@ public class MixinKeyboard {
 	@Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyboardHandler;debugCrashKeyTime:J", ordinal = 0))
 	private void onKey(long window, int key, int scanCode, int action, int modifiers, CallbackInfo callbackInfo) {
 		// Key released
-		if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen) {
-			KeyBindsScreen screen = (KeyBindsScreen) Minecraft.getInstance().screen;
+		//# if MC_VERSION_NUMBER >= 11800
+		if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen screen) {
+		//# else
+		//- if (action == 0 && Minecraft.getInstance().screen instanceof ControlsScreen) {
+		//- 	ControlsScreen screen = (ControlsScreen) Minecraft.getInstance().screen;
+		//# end
 
 			screen.selectedKey = null;
 			screen.lastKeySelection = Util.getMillis();

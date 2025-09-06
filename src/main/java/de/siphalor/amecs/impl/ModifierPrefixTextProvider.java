@@ -21,12 +21,19 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+//- import net.minecraft.network.chat.TextComponent;
+//- import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 
 @Environment(EnvType.CLIENT)
 public class ModifierPrefixTextProvider {
+	//# if MC_VERSION_NUMBER >= 11900
 	private static final Component SUFFIX = Component.literal(" + ");
 	private static final Component COMPRESSED_SUFFIX = Component.literal("+");
+	//# else
+	//- private static final Component SUFFIX = new TextComponent(" + ");
+	//- private static final Component COMPRESSED_SUFFIX = new TextComponent("+");
+	//# end
 	private final String translationKey;
 
 	public ModifierPrefixTextProvider(KeyModifier modifier) {
@@ -38,7 +45,11 @@ public class ModifierPrefixTextProvider {
 	}
 
 	protected MutableComponent getBaseComponent(Variation variation) {
+		//# if MC_VERSION_NUMBER >= 11900
 		return MutableComponent.create(variation.getTranslatableComponent(translationKey));
+		//# else
+		//- return variation.getTranslatableComponent(translationKey);
+		//# end
 	}
 
 	public MutableComponent getComponent(Variation variation) {
@@ -69,9 +80,15 @@ public class ModifierPrefixTextProvider {
 			this.translateKeySuffix = translateKeySuffix;
 		}
 
+		//# if MC_VERSION_NUMBER >= 11900
 		public TranslatableContents getTranslatableComponent(String translationKey) {
 			return new TranslatableContents(translationKey + translateKeySuffix, null, new Object[0]);
 		}
+		//# else
+		//- public TranslatableComponent getTranslatableComponent(String translationKey) {
+		//- 	return new TranslatableComponent(translationKey + translateKeySuffix, null, new Object[0]);
+		//- }
+		//# end
 
 		public Variation getNextVariation(int amount) {
 			int targetOrdinal = ordinal() + amount;

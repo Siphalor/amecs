@@ -22,6 +22,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
+//- import net.minecraft.client.gui.screens.controls.ControlList;
+//- import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.client.gui.screens.controls.KeyBindsList;
 import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
@@ -39,7 +41,11 @@ import net.fabricmc.api.Environment;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
+//# if MC_VERSION_NUMBER >= 11800
 @Mixin(KeyBindsScreen.class)
+//# else
+//- @Mixin(ControlsScreen.class)
+//# end
 public abstract class MixinKeybindsScreen extends OptionsSubScreen {
 	@Shadow
 	public KeyMapping selectedKey;
@@ -47,7 +53,9 @@ public abstract class MixinKeybindsScreen extends OptionsSubScreen {
 	@Shadow
 	public long lastKeySelection;
 
+	//# if MC_VERSION_NUMBER >= 11904
 	@Shadow private KeyBindsList keyBindsList;
+	//# end
 
 	public MixinKeybindsScreen(Screen screen, Options gameOptions, Component text) {
 		super(screen, gameOptions, text);
