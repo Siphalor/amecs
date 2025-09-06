@@ -130,7 +130,11 @@ public class KeyBindingManager {
 	}
 
 	public static void updatePressedStates() {
+		//# if MC_VERSION_NUMBER >= 11500
 		long windowHandle = Minecraft.getInstance().getWindow().getWindow();
+		//# else
+		//- long windowHandle = Minecraft.getInstance().window.getWindow();
+		//# end
 		forEachKeyBinding(keyBinding -> {
 			InputConstants.Key key = ((IKeyBinding) keyBinding).amecs$getBoundKey();
 			boolean pressed = !keyBinding.isUnbound() && key.getType() == InputConstants.Type.KEYSYM && InputConstants.isKeyDown(windowHandle, key.getValue());
@@ -168,7 +172,11 @@ public class KeyBindingManager {
 				pressedKeyBindings.remove(keyBinding);
 			}
 		}
+		//# if MC_VERSION_NUMBER >= 11500
 		keyBinding.setDown(pressed);
+		//# else
+		//- ((IKeyBinding) keyBinding).amecs$setDown(pressed);
+		//# end
 	}
 
 	public static void unpressAll() {
@@ -204,7 +212,11 @@ public class KeyBindingManager {
 		pressedKeyBindings.removeIf(pressedKeyBinding -> {
 			KeyModifiers boundModifiers = KeyBindingUtils.getBoundModifiers(pressedKeyBinding);
 			if (!AmecsAPI.CURRENT_MODIFIERS.contains(boundModifiers)) {
+				//# if MC_VERSION_NUMBER >= 11500
 				pressedKeyBinding.setDown(false);
+				//# else
+				//- ((IKeyBinding) pressedKeyBinding).amecs$setDown(false);
+				//# end
 				return true;
 			}
 			return false;

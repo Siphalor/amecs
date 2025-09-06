@@ -52,6 +52,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	@Shadow
 	private int clickCount;
 
+	//# if MC_VERSION_NUMBER < 11500
+	//- @Shadow
+	//- private boolean isDown;
+	//# end
+
 	@Shadow
 	@Final
 	private static Map<String, KeyMapping> ALL;
@@ -94,6 +99,13 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	public KeyModifiers amecs$getKeyModifiers() {
 		return keyModifiers;
 	}
+
+	//# if MC_VERSION_NUMBER < 11500
+	//- @Override
+	//- public void amecs$setDown(boolean pressed) {
+	//- 	isDown = pressed;
+	//- }
+	//# end
 
 	@Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at = @At("RETURN"))
 	private void onConstructed(String id, InputConstants.Type type, int defaultCode, String category, CallbackInfo callbackInfo) {

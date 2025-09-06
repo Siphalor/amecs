@@ -66,9 +66,15 @@ public class AmecsKeyBinding extends KeyMapping {
 		((IKeyBinding) this).amecs$getKeyModifiers().copyModifiers(this.defaultModifiers);
 	}
 
+	//# if MC_VERSION_NUMBER >= 11500
 	@Override
+	//# end
 	public void setDown(boolean pressed) {
+		//# if MC_VERSION_NUMBER >= 11500
 		super.setDown(pressed);
+		//# else
+		//- ((IKeyBinding) this).amecs$setDown(pressed);
+		//# end
 		if (pressed) {
 			onPressed();
 		} else {

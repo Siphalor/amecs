@@ -27,6 +27,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.KeyBindsList;
 import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
+//- import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -46,7 +47,8 @@ import net.fabricmc.api.Environment;
 //# else
 //- @Mixin(ControlsScreen.class)
 //# end
-public abstract class MixinKeybindsScreen extends OptionsSubScreen {
+public abstract class MixinKeybindsScreen
+		extends /*# if MC_VERSION_NUMBER >= 11500 */OptionsSubScreen/*# else *//*- Screen *//*# end */ {
 	@Shadow
 	public KeyMapping selectedKey;
 
@@ -57,9 +59,20 @@ public abstract class MixinKeybindsScreen extends OptionsSubScreen {
 	@Shadow private KeyBindsList keyBindsList;
 	//# end
 
+	//# if MC_VERSION_NUMBER < 11500
+	//- @Shadow @Final
+	//- private Options options;
+	//#end
+
+	//# if MC_VERSION_NUMBER >= 11500
 	public MixinKeybindsScreen(Screen screen, Options gameOptions, Component text) {
 		super(screen, gameOptions, text);
 	}
+	//# else
+	//- public MixinKeybindsScreen(Component title) {
+	//- 	super(title);
+	//- }
+	//# end
 
 	@Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V"))
 	public void onClicked(double x, double y, int type, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {

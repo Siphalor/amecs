@@ -34,4 +34,8 @@ public interface IKeyBinding {
 	void amecs$reset();
 
 	KeyModifiers amecs$getKeyModifiers();
+
+	//# if MC_VERSION_NUMBER < 11500
+	//- void amecs$setDown(boolean pressed);
+	//# end
 }
