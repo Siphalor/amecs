@@ -19,6 +19,7 @@ package de.siphalor.amecs.impl;
 import de.siphalor.amecs.api.KeyModifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//- import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 //- import net.minecraft.network.chat.TextComponent;
@@ -30,9 +31,12 @@ public class ModifierPrefixTextProvider {
 	//# if MC_VERSION_NUMBER >= 11900
 	private static final Component SUFFIX = Component.literal(" + ");
 	private static final Component COMPRESSED_SUFFIX = Component.literal("+");
-	//# else
+	//# elif MC_VERSION_NUMBER >= 11600
 	//- private static final Component SUFFIX = new TextComponent(" + ");
 	//- private static final Component COMPRESSED_SUFFIX = new TextComponent("+");
+	//# else
+	//- private static final String SUFFIX = " + ";
+	//- private static final String COMPRESSED_SUFFIX = "+";
 	//# end
 	private final String translationKey;
 
@@ -44,6 +48,7 @@ public class ModifierPrefixTextProvider {
 		this.translationKey = translationKey;
 	}
 
+	//# if MC_VERSION_NUMBER >= 11600
 	protected MutableComponent getBaseComponent(Variation variation) {
 		//# if MC_VERSION_NUMBER >= 11900
 		return MutableComponent.create(variation.getTranslatableComponent(translationKey));
@@ -61,6 +66,17 @@ public class ModifierPrefixTextProvider {
 		}
 		return text;
 	}
+	//# else
+	//- public String getTranslation(Variation variation) {
+	//- 	String text = variation.getTranslation(translationKey);
+	//- 	if (variation == Variation.COMPRESSED) {
+	//- 		text += COMPRESSED_SUFFIX;
+	//- 	} else {
+	//- 		text += SUFFIX;
+	//- 	}
+	//- 	return text;
+	//- }
+	//# end
 
 	public enum Variation {
 		COMPRESSED(".tiny"),
@@ -84,9 +100,13 @@ public class ModifierPrefixTextProvider {
 		public TranslatableContents getTranslatableComponent(String translationKey) {
 			return new TranslatableContents(translationKey + translateKeySuffix, null, new Object[0]);
 		}
-		//# else
+		//# elif MC_VERSION_NUMBER >= 11600
 		//- public TranslatableComponent getTranslatableComponent(String translationKey) {
 		//- 	return new TranslatableComponent(translationKey + translateKeySuffix, null, new Object[0]);
+		//- }
+		//# else
+		//- public String getTranslation(String translationKey) {
+		//- 	return I18n.get(translationKey + translateKeySuffix);
 		//- }
 		//# end
 

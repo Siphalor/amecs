@@ -23,6 +23,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+//- import net.minecraft.client.resources.language.I18n;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,6 +40,7 @@ import de.siphalor.amecs.impl.NOPMap;
 import de.siphalor.amecs.impl.duck.IKeyBinding;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//- import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
@@ -98,6 +100,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 		KeyBindingManager.register((KeyMapping) (Object) this);
 	}
 
+	//# if MC_VERSION_NUMBER >= 11600
 	@Inject(method = "getTranslatedKeyMessage", at = @At("TAIL"), cancellable = true)
 	public void getLocalizedName(CallbackInfoReturnable<Component> callbackInfoReturnable) {
 		Component name = key.getDisplayName();
@@ -119,6 +122,28 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
 		callbackInfoReturnable.setReturnValue(fullName);
 	}
+	//# else
+	//- @Inject(method = "getTranslatedKeyMessage", at = @At("TAIL"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
+	//- public void getLocalizedName(CallbackInfoReturnable<String> callbackInfoReturnable, String i18nName, int keyCode, String glfwName) {
+	//- 	String name = (glfwName == null ? I18n.get(i18nName) : glfwName);
+	//- 	StringBuilder fullName;
+	//- 	Font font = Minecraft.getInstance().font;
+	//- 	ModifierPrefixTextProvider.Variation variation = ModifierPrefixTextProvider.Variation.WIDEST;
+	//- 	do {
+	//- 		fullName = new StringBuilder(name);
+	//- 		for (KeyModifier keyModifier : KeyModifier.VALUES) {
+	//- 			if (keyModifier == KeyModifier.NONE) {
+	//- 				continue;
+	//- 			}
+
+	//- 			if (keyModifiers.get(keyModifier)) {
+	//- 				fullName.insert(0, keyModifier.textProvider.getTranslation(variation));
+	//- 			}
+	//- 		}
+	//- 	} while ((variation = variation.getSmaller()) != null && font.width(fullName.toString()) > 70);
+	//- 	callbackInfoReturnable.setReturnValue(fullName.toString());
+	//- }
+	//# end
 
 	@Inject(method = "matches", at = @At("RETURN"), cancellable = true)
 	public void matchesKey(int keyCode, int scanCode, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {

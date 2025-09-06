@@ -43,6 +43,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+//- import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
@@ -64,17 +65,22 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	private Button changeButton;
 
 	@Unique
+	//# if MC_VERSION_NUMBER >= 11600
 	private List<Component> description;
+	//# else
+	//- private List<String> description;
+	//# end
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void onConstructed(
 			/*# if MC_VERSION_NUMBER >= 11800 */KeyBindsList/*# else *//*- ControlList *//*# end */ parent,
 			KeyMapping keyBinding,
-			Component text,
+			/*# if MC_VERSION_NUMBER >= 11600 */Component text,/*# end */
 			CallbackInfo callbackInfo
 	) {
 		String descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
 		if (I18n.exists(descriptionKey)) {
+			//# if MC_VERSION_NUMBER >= 11600
 			String[] lines = StringUtils.split(I18n.get(descriptionKey), '\n');
 			description = new ArrayList<>(lines.length);
 			for (String line : lines) {
@@ -84,6 +90,9 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 				//- description.add(new TextComponent(line));
 				//# end
 			}
+			//# else
+			//- description = Arrays.asList(StringUtils.split(I18n.get(descriptionKey), '\n'));
+			//# end
 		} else {
 			description = null;
 		}
@@ -92,14 +101,18 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	@Inject(method = "render", at = @At("RETURN"))
 	//# if MC_VERSION_NUMBER >= 12000
 	public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-	//# else
+	//# elif MC_VERSION_NUMBER >= 11600
 	//- public void onRendered(PoseStack poseStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# else
+	//- public void onRendered(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
 	//# end
 		if (description != null && isMouseOverTitle(x, y, entryHeight, mouseX, mouseY)) {
 			//# if MC_VERSION_NUMBER >= 12000
 			context.renderComponentTooltip(Minecraft.getInstance().font, description, mouseX, mouseY);
-			//# else
+			//# elif MC_VERSION_NUMBER >= 11600
 			//- Minecraft.getInstance().screen.renderComponentTooltip(poseStack, description, mouseX, mouseY);
+			//# else
+			//- Minecraft.getInstance().screen.renderTooltip(description, mouseX, mouseY);
 			//# end
 		}
 	}
