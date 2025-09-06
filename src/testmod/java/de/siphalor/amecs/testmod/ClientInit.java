@@ -27,7 +27,11 @@ public class ClientInit implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		KeyBindingHelper.registerKeyBinding(new TestPriorityKeybinding(
-				new ResourceLocation("amecsapi-testmod", "priority"),
+				//# if MC_VERSION_NUMBER >= 12100
+				ResourceLocation.fromNamespaceAndPath("amecsapi-testmod", "priority"),
+				//# else
+				//- new ResourceLocation("amecsapi-testmod", "priority"),
+				//# end
 				InputConstants.Type.KEYSYM,
 				GLFW.GLFW_KEY_Z,
 				"key.categories.misc",

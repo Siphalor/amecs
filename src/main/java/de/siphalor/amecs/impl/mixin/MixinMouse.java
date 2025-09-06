@@ -32,8 +32,12 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.screens.Screen;
+//# if MC_VERSION_NUMBER >= 12100
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
+//# else
 //- import net.minecraft.client.gui.screens.controls.ControlsScreen;
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//# end
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

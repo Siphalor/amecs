@@ -25,8 +25,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
+//# if MC_VERSION_NUMBER >= 12100
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
+//# else
 //- import net.minecraft.client.gui.screens.controls.ControlsScreen;
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//# end
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

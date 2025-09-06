@@ -20,12 +20,18 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
+//# if MC_VERSION_NUMBER >= 12100
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
+//# else
+//- import net.minecraft.client.gui.screens.OptionsSubScreen;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
 //- import net.minecraft.client.gui.screens.controls.ControlsScreen;
-import net.minecraft.client.gui.screens.controls.KeyBindsList;
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsList;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+//# end
 import net.minecraft.network.chat.Component;
 //- import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -74,7 +80,14 @@ public abstract class MixinKeybindsScreen
 	//- }
 	//# end
 
-	@Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V"))
+	@Inject(
+			method = "mouseClicked",
+			//# if MC_VERSION_NUMBER >= 12102
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;setKey(Lcom/mojang/blaze3d/platform/InputConstants$Key;)V")
+			//# else
+			//- at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V")
+			//# end
+	)
 	public void onClicked(double x, double y, int type, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
 		InputConstants.Key key = ((IKeyBinding) selectedKey).amecs$getBoundKey();
 		KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
@@ -83,15 +96,42 @@ public abstract class MixinKeybindsScreen
 		}
 	}
 
-	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V", ordinal = 0))
+	@Inject(
+			method = "keyPressed",
+			at = @At(
+					value = "INVOKE",
+					//# if MC_VERSION_NUMBER >= 12102
+					target = "Lnet/minecraft/client/KeyMapping;setKey(Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
+					//# else
+					//- target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
+					//# end
+					ordinal = 0
+			)
+	)
 	public void clearKeyBinding(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
 		((IKeyBinding) selectedKey).amecs$getKeyModifiers().unset();
 	}
 
-	@Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V", ordinal = 1), cancellable = true)
+	@Inject(
+			method = "keyPressed",
+			at = @At(
+					value = "INVOKE",
+					//# if MC_VERSION_NUMBER >= 12102
+					target = "Lnet/minecraft/client/KeyMapping;setKey(Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
+					//# else
+					//- target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
+					//# end
+					ordinal = 1
+			),
+			cancellable = true
+	)
 	public void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
 		if (selectedKey.isUnbound()) {
-			options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+			//# if MC_VERSION_NUMBER >= 12102
+			selectedKey.setKey(InputConstants.getKey(keyCode, scanCode));
+			//# else
+			//- options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+			//# end
 		} else {
 			InputConstants.Key mainKey = ((IKeyBinding) selectedKey).amecs$getBoundKey();
 			KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
@@ -99,7 +139,11 @@ public abstract class MixinKeybindsScreen
 			KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
 			if (mainKeyModifier != KeyModifier.NONE && keyModifier == KeyModifier.NONE) {
 				keyModifiers.set(mainKeyModifier, true);
-				options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+				//# if MC_VERSION_NUMBER >= 12102
+				selectedKey.setKey(InputConstants.getKey(keyCode, scanCode));
+				//# else
+				//- options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+				//# end
 				return;
 			} else {
 				keyModifiers.set(keyModifier, true);
