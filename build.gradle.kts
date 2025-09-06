@@ -15,10 +15,10 @@ val mcProps = Properties().apply {
 	load(propFile.asFile.inputStream())
 }
 
-group = "de.siphalor"
+group = "de.siphalor.${project.name}"
 val archivesBaseName = "${project.name}-mc${minecraftVersionDescriptor}"
-version = "${properties["version"]}+mc${mcLibs.versions.minecraft.get()}"
-
+val shortVersion = "${properties["version"]}"
+version = "${shortVersion}+mc${mcLibs.versions.minecraft.get()}"
 
 sourceSets {
 	create("testmod") {
@@ -117,7 +117,8 @@ tasks.jar {
 publishing {
 	publications {
 		create<MavenPublication>("mavenJava") {
-			artifactId = project.name
+			artifactId = archivesBaseName
+			version = shortVersion
 
 			from(components["java"])
 		}
