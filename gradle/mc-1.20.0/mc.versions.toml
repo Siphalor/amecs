@@ -5,4 +5,3 @@ minecraft = "1.20"
 
 [libraries]
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
-

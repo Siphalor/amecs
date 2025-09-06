@@ -17,6 +17,7 @@
 package de.siphalor.amecs.impl.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
+//- import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.impl.duck.IKeyBinding;
@@ -46,7 +47,9 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 @Mixin(KeyBindsList.KeyEntry.class)
 public class MixinKeyBindingEntry implements IKeyBindingEntry {
+	@Unique
 	private static final String DESCRIPTION_SUFFIX = "." + AmecsAPI.MOD_ID + ".description";
+
 	@Shadow
 	@Final
 	private KeyMapping key;
@@ -72,15 +75,36 @@ public class MixinKeyBindingEntry implements IKeyBindingEntry {
 	}
 
 	@Inject(method = "render", at = @At("RETURN"))
+	//# if MC_VERSION_NUMBER >= 12000
 	public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-		if (description != null && mouseY >= y && mouseY < y + entryHeight && mouseX < changeButton.getX()) {
+	//# else
+	//- public void onRendered(PoseStack poseStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# end
+		if (description != null && isMouseOverTitle(x, y, entryHeight, mouseX, mouseY)) {
+			//# if MC_VERSION_NUMBER >= 12000
 			context.renderComponentTooltip(Minecraft.getInstance().font, description, mouseX, mouseY);
+			//# else
+			//- Minecraft.getInstance().screen.renderComponentTooltip(poseStack, description, mouseX, mouseY);
+			//# end
 		}
+	}
+
+	@Unique
+	private boolean isMouseOverTitle(int x, int y, int entryHeight, int mouseX, int mouseY) {
+		//# if MC_VERSION_NUMBER >= 11903
+		return mouseY >= y && mouseY < y + entryHeight && mouseX < changeButton.getX();
+		//# else
+		//- return mouseY >= y && mouseY < y + entryHeight && mouseX < changeButton.x;
+		//# end
 	}
 
 	@Inject(
 			method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+			//# if MC_VERSION_NUMBER >= 11904
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/controls/KeyBindsList;resetMappingAndUpdateButtons()V")
+			//# else
+			//- at = @At("RETURN")
+			//# end
 	)
 	public void onResetButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
 		KeyBindingUtils.resetBoundModifiers(keyBinding);

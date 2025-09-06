@@ -87,7 +87,11 @@ public abstract class MixinKeybindsScreen extends OptionsSubScreen {
 		}
 
 		this.lastKeySelection = Util.getMillis();
+		//# if MC_VERSION_NUMBER >= 11904
 		this.keyBindsList.resetMappingAndUpdateButtons();
+		//# else
+		//- KeyMapping.resetMapping();
+		//# end
 		callbackInfoReturnable.setReturnValue(true);
 	}
 }
