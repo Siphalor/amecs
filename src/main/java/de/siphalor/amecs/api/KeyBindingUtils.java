@@ -37,8 +37,10 @@ import net.minecraft.client.KeyMapping;
 public class KeyBindingUtils {
 	public static final int MOUSE_SCROLL_UP = 512;
 	public static final int MOUSE_SCROLL_DOWN = 513;
+	//# if MC_VERSION_NUMBER >= 12002
 	public static final int MOUSE_SCROLL_LEFT = 514;
 	public static final int MOUSE_SCROLL_RIGHT = 515;
+	//# end
 
 	/**
 	 * The last (y directional) scroll delta
@@ -99,6 +101,7 @@ public class KeyBindingUtils {
 		return InputConstants.Type.MOUSE.getOrCreate(deltaY > 0 ? KeyBindingUtils.MOUSE_SCROLL_UP : KeyBindingUtils.MOUSE_SCROLL_DOWN);
 	}
 
+	//# if MC_VERSION_NUMBER >= 12002
 	/**
 	 * Gets the key object for the horizontal scroll direction
 	 *
@@ -111,6 +114,7 @@ public class KeyBindingUtils {
 		}
 		return InputConstants.Type.MOUSE.getOrCreate(deltaX > 0 ? KeyBindingUtils.MOUSE_SCROLL_RIGHT : KeyBindingUtils.MOUSE_SCROLL_LEFT);
 	}
+	//# end
 
 	/**
 	 * Gets the "official" idToKeys map

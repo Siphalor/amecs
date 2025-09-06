@@ -34,8 +34,10 @@ public abstract class MixinInputUtilType {
 	private static void onRegisterKeyCodes(CallbackInfo callbackInfo) {
 		createScrollKey("mouse.scroll.up", KeyBindingUtils.MOUSE_SCROLL_UP);
 		createScrollKey("mouse.scroll.down", KeyBindingUtils.MOUSE_SCROLL_DOWN);
+		//# if MC_VERSION_NUMBER >= 12002
 		createScrollKey("mouse.scroll.left", KeyBindingUtils.MOUSE_SCROLL_LEFT);
 		createScrollKey("mouse.scroll.right", KeyBindingUtils.MOUSE_SCROLL_RIGHT);
+		//# end
 	}
 
 	@Unique

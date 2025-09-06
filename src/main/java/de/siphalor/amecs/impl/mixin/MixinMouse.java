@@ -67,13 +67,16 @@ public class MixinMouse implements IMouse {
 	}
 
 	@Unique
+	//# if MC_VERSION_NUMBER >= 12002
 	private void onScrollReceived(double scrollAmountX, double scrollAmountY) {
 		InputConstants.Key keyCodeX = KeyBindingUtils.getKeyFromHorizontalScroll(scrollAmountX);
-		InputConstants.Key keyCodeY = KeyBindingUtils.getKeyFromVerticalScroll(scrollAmountY);
-
 		if (keyCodeX != null) {
 			handleScrollKey(keyCodeX, scrollAmountX);
 		}
+	//# else
+	//- private void onScrollReceived(double scrollAmountY) {
+	//# end
+		InputConstants.Key keyCodeY = KeyBindingUtils.getKeyFromVerticalScroll(scrollAmountY);
 		if (keyCodeY != null) {
 			handleScrollKey(keyCodeY, scrollAmountY);
 		}
@@ -94,38 +97,71 @@ public class MixinMouse implements IMouse {
 
 	@SuppressWarnings("InvalidInjectorMethodSignature")
 	@Inject(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	//# if MC_VERSION_NUMBER >= 12002
 	private void isSpectator_onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, boolean discreteScroll, double sensitivity, double scrollAmountX, double scrollAmountY) {
+	//# else
+	//- private void isSpectator_onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, double scrollAmountY) {
+	//# end
 		if (AmecsAPI.TRIGGER_KEYBINDING_ON_SCROLL) {
-			onScrollReceived(scrollAmountX, scrollAmountY);
+			//# if MC_VERSION_NUMBER >= 12002
+			this.onScrollReceived(scrollAmountX, scrollAmountY);
+			//# else
+			//- this.onScrollReceived(scrollAmountY);
+			//# end
 		}
 	}
 
+	//# if MC_VERSION_NUMBER >= 12002
 	@WrapOperation(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;mouseScrolled(DDDD)Z"))
 	private boolean onMouseScrolledScreen(Screen screen, double mouseX, double mouseY, double xScrollAmount, double yScrollAmount, Operation<Boolean> original) {
 		Boolean handled = original.call(screen, mouseX, mouseY, xScrollAmount, yScrollAmount);
 		return amecs$onMouseScrolledScreen(handled, xScrollAmount, yScrollAmount);
 	}
+	//# else
+	//- @WrapOperation(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;mouseScrolled(DDD)Z"))
+	//- private boolean onMouseScrolledScreen(Screen screen, double mouseX, double mouseY, double yScrollAmount, Operation<Boolean> original) {
+	//- 	Boolean handled = original.call(screen, mouseX, mouseY, yScrollAmount);
+	//- 	return amecs$onMouseScrolledScreen(handled, yScrollAmount);
+	//- }
+	//# end
 
 	// Invoked through manual injection by de.siphalor.amecs.impl.mixin.AmecsAPIMixinConfig
 	@SuppressWarnings("unused")
-	private boolean amecs$onMouseScrolledScreen(boolean handled, double xScrollAmount, double yScrollAmount) {
+	private boolean amecs$onMouseScrolledScreen(
+			boolean handled,
+			//# if MC_VERSION_NUMBER >= 12002
+			double xScrollAmount,
+			//# end
+			double yScrollAmount
+	) {
 		this.mouseScrolled_eventUsed = handled;
 		if (handled) {
 			return true;
 		}
 
 		if (AmecsAPI.TRIGGER_KEYBINDING_ON_SCROLL) {
+			//# if MC_VERSION_NUMBER >= 12002
 			this.onScrollReceived(xScrollAmount, yScrollAmount);
+			//# else
+			//- this.onScrollReceived(yScrollAmount);
+			//# end
 		}
 		return false;
 	}
 
 	@Inject(method = "onScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	//# if MC_VERSION_NUMBER >= 12002
 	private void onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, boolean discreteScroll, double sensitivity, double scrollAmountX, double scrollAmountY) {
-		InputConstants.Key keyCodeX = KeyBindingUtils.getKeyFromHorizontalScroll(scrollAmountX);
+	//# else
+	//- private void onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, double scrollAmountY) {
+	//# end
 		InputConstants.Key keyCodeY = KeyBindingUtils.getKeyFromVerticalScroll(scrollAmountY);
-
+		//# if MC_VERSION_NUMBER >= 12002
+		InputConstants.Key keyCodeX = KeyBindingUtils.getKeyFromHorizontalScroll(scrollAmountX);
 		InputConstants.Key primaryKeyCode = keyCodeY != null ? keyCodeY : keyCodeX;
+		//# else
+		//- InputConstants.Key primaryKeyCode = keyCodeY;
+		//# end
 
 		// check if we have scroll input for the options screen
 		if (minecraft.screen instanceof KeyBindsScreen) {
@@ -138,9 +174,11 @@ public class MixinMouse implements IMouse {
 		if (KeyBindingManager.onKeyPressedPriority(keyCodeY)) {
 			callbackInfo.cancel();
 		}
+		//# if MC_VERSION_NUMBER >= 12002
 		if (KeyBindingManager.onKeyPressedPriority(keyCodeX)) {
 			callbackInfo.cancel();
 		}
+		//# end
 	}
 
 	@Unique
