@@ -3,10 +3,10 @@
 	"package": "de.siphalor.nmuk.impl.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"KeybindsScreenAccessor",
 		"EntryListWidgetAccessor",
 		"GameOptionsAccessor",
 		"KeyBindingAccessor",
+		"KeybindsScreenAccessor",
 		"MixinGameOptions",
 		"MixinKeyBinding",
 		"MixinKeyBindingEntry"

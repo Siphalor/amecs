@@ -17,15 +17,15 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,51 +34,47 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.*;
 
-@Mixin(value = GameOptions.class, priority = 800)
+@Mixin(value = Options.class, priority = 800)
 public class MixinGameOptions {
 	@Unique
 	private File nmukOptionsFile;
 	@Unique
-	private KeyBinding[] tempKeysAll;
+	private KeyMapping[] tempKeysAll;
 
 	@Mutable
 	@Shadow
 	@Final
-	public KeyBinding[] allKeys;
+	public KeyMapping[] keyMappings;
 
 	// Prevent nmuk keybindings from getting saved to the Vanilla options file
 	@Inject(
-			method = "accept",
-			at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;allKeys:[Lnet/minecraft/client/option/KeyBinding;")
+			method = "processOptions",
+			at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;keyMappings:[Lnet/minecraft/client/KeyMapping;")
 	)
 	public void removeNMUKBindings(CallbackInfo ci) {
-		tempKeysAll = allKeys;
-		allKeys = Arrays.stream(allKeys).filter(binding -> !((IKeyBinding) binding).nmuk_isAlternative()).toArray(KeyBinding[]::new);
+		tempKeysAll = keyMappings;
+		keyMappings = Arrays.stream(keyMappings).filter(binding -> !((IKeyBinding) binding).nmuk_isAlternative()).toArray(KeyMapping[]::new);
 	}
 
 	@Inject(
-			method = "accept",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/sound/SoundCategory;values()[Lnet/minecraft/sound/SoundCategory;")
+			method = "processOptions",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/sounds/SoundSource;values()[Lnet/minecraft/sounds/SoundSource;")
 	)
 	public void resetAllKeys(CallbackInfo ci) {
-		allKeys = tempKeysAll;
+		keyMappings = tempKeysAll;
 	}
 
 	@Inject(
-			method = "write",
+			method = "save",
 			at = @At("RETURN")
 	)
 	public void save(CallbackInfo ci) {
 		try (PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(nmukOptionsFile), StandardCharsets.UTF_8))) {
-			for (KeyBinding binding : allKeys) {
+			for (KeyMapping binding : keyMappings) {
 				if (((IKeyBinding) binding).nmuk_isAlternative()) {
-					printWriter.println("key_" + binding.getTranslationKey() + ":" + binding.getBoundKeyTranslationKey());
+					printWriter.println("key_" + binding.getName() + ":" + binding.saveString());
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -92,15 +88,15 @@ public class MixinGameOptions {
 	)
 	public void load(CallbackInfo ci) {
 		if (nmukOptionsFile == null) {
-			nmukOptionsFile = new File(MinecraftClient.getInstance().runDirectory, "options." + NMUK.MOD_ID + ".txt");
+			nmukOptionsFile = new File(Minecraft.getInstance().gameDirectory, "options." + NMUK.MOD_ID + ".txt");
 		}
 
 		if (!nmukOptionsFile.exists()) {
 			return;
 		}
-		Map<String, KeyBinding> keyBindings = KeyBindingAccessor.getKeysById();
-		Object2IntMap<KeyBinding> alternativeCountMap = new Object2IntOpenHashMap<>();
-		Queue<KeyBinding> newAlternatives = new ConcurrentLinkedQueue<>();
+		Map<String, KeyMapping> keyBindings = KeyMapping.ALL;
+		Object2IntMap<KeyMapping> alternativeCountMap = new Object2IntOpenHashMap<>();
+		Queue<KeyMapping> newAlternatives = new ArrayDeque<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(nmukOptionsFile))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -124,27 +120,21 @@ public class MixinGameOptions {
 					}
 					short altId = Short.parseShort(id.substring(stringIndex + 1));
 					id = id.substring(0, stringIndex);
-					InputUtil.Key boundKey = InputUtil.fromTranslationKey(keyId);
+					InputConstants.Key boundKey = InputConstants.getKey(keyId);
 					//noinspection ConstantConditions
-					KeyBinding base = keyBindings.get(id);
+					KeyMapping base = keyBindings.get(id);
 					if (base != null) {
 						int index = alternativeCountMap.getOrDefault(base, 0);
-						List<KeyBinding> children = ((IKeyBinding) base).nmuk_getAlternatives();
+						List<KeyMapping> children = ((IKeyBinding) base).nmuk_getAlternatives();
 						((IKeyBinding) base).nmuk_setNextChildId(altId);
-						if (children == null) {
-							KeyBinding alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base);
-							alternative.setBoundKey(boundKey);
+						if (children == null || index >= children.size()) {
+							KeyMapping alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base);
+							alternative.setKey(boundKey);
 							newAlternatives.add(alternative);
 						} else {
-							if (index < children.size()) {
-								children.get(index).setBoundKey(boundKey);
-							} else {
-								KeyBinding alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base);
-								alternative.setBoundKey(boundKey);
-								newAlternatives.add(alternative);
-							}
+							children.get(index).setKey(boundKey);
 						}
-						alternativeCountMap.putIfAbsent(base, index + 1);
+						alternativeCountMap.put(base, index + 1);
 					}
 				} catch (Throwable e) {
 					NMUK.log(Level.ERROR, "Encountered an issue whilst loading nmuk options file!");
@@ -154,15 +144,27 @@ public class MixinGameOptions {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		Set<KeyMapping> newAllKeyMappings = new TreeSet<>(Arrays.asList(keyMappings));
+
+		newAllKeyMappings.addAll(newAlternatives);
+
 		int newCount, oldCount;
-		for (KeyBinding binding : allKeys) {
+		for (KeyMapping binding : keyMappings) {
 			newCount = alternativeCountMap.getOrDefault(binding, 0);
 			oldCount = ((IKeyBinding) binding).nmuk_getAlternativesCount();
 			if (oldCount > newCount) {
-				List<KeyBinding> alternatives = ((IKeyBinding) binding).nmuk_getAlternatives();
-				alternatives.subList(newCount, oldCount).clear();
+				List<KeyMapping> alternatives = ((IKeyBinding) binding).nmuk_getAlternatives();
+				List<KeyMapping> obsoleteAlternatives = alternatives.subList(newCount, oldCount);
+
+				for (KeyMapping obsoleteAlternative : obsoleteAlternatives) {
+					newAllKeyMappings.remove(obsoleteAlternative);
+					KeyMapping.ALL.remove(obsoleteAlternative.getName());
+				}
+				obsoleteAlternatives.clear();
 			}
 		}
-		NMUKKeyBindingHelper.registerKeyBindings((GameOptions) (Object) this, newAlternatives);
+		keyMappings = newAllKeyMappings.toArray(new KeyMapping[0]);
+		KeyMapping.resetMapping();
 	}
 }

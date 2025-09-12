@@ -19,17 +19,18 @@ package de.siphalor.nmuk.impl;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.impl.mixin.EntryListWidgetAccessor;
 import de.siphalor.nmuk.impl.mixin.GameOptionsAccessor;
 import de.siphalor.nmuk.impl.mixin.KeybindsScreenAccessor;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -42,82 +43,90 @@ import java.util.List;
 
 @ApiStatus.Internal
 public class NMUKKeyBindingHelper {
-	public static final Multimap<KeyBinding, KeyBinding> defaultAlternatives = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
+	public static final Multimap<KeyMapping, KeyMapping> defaultAlternatives = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 	private static final boolean isAmecsLoaded = FabricLoader.getInstance().isModLoaded("amecsapi");
 
-	public static void removeKeyBinding(KeyBinding binding) {
-		GameOptionsAccessor options = (GameOptionsAccessor) MinecraftClient.getInstance().options;
-		KeyBinding[] keysAll = options.getAllKeys();
+	public static void removeKeyBinding(KeyMapping binding) {
+		GameOptionsAccessor options = (GameOptionsAccessor) Minecraft.getInstance().options;
+		KeyMapping[] keysAll = options.getKeyMappings();
 		int index = ArrayUtils.indexOf(keysAll, binding);
-		KeyBinding[] newKeysAll = new KeyBinding[keysAll.length - 1];
+		if (index < 0) {
+			return;
+		}
+		KeyMapping[] newKeysAll = new KeyMapping[keysAll.length - 1];
 		System.arraycopy(keysAll, 0, newKeysAll, 0, index);
 		System.arraycopy(keysAll, index + 1, newKeysAll, index, keysAll.length - index - 1);
-		options.setAllKeys(newKeysAll);
-		KeyBinding.updateKeysByCode();
+		options.setKeyMappings(newKeysAll);
+		KeyMapping.ALL.remove(binding.getName());
+		KeyMapping.resetMapping();
 	}
 
-	public static void registerKeyBinding(KeyBinding binding) {
-		GameOptionsAccessor options = (GameOptionsAccessor) MinecraftClient.getInstance().options;
-		if (options != null) { // Game is during initialization - this is handled by Fapi already
-			KeyBinding[] keysAll = options.getAllKeys();
-			KeyBinding[] newKeysAll = new KeyBinding[keysAll.length + 1];
+	public static void registerKeyBinding(KeyMapping binding) {
+		GameOptionsAccessor options = (GameOptionsAccessor) Minecraft.getInstance().options;
+		if (options != null) {
+			KeyMapping[] keysAll = options.getKeyMappings();
+			KeyMapping[] newKeysAll = new KeyMapping[keysAll.length + 1];
 			System.arraycopy(keysAll, 0, newKeysAll, 0, keysAll.length);
 			newKeysAll[keysAll.length] = binding;
-			options.setAllKeys(newKeysAll);
+			options.setKeyMappings(newKeysAll);
+		} else {
+			KeyBindingHelper.registerKeyBinding(binding);
 		}
-		KeyBinding.updateKeysByCode();
+		KeyMapping.ALL.put(binding.getName(), binding);
+		KeyMapping.resetMapping();
 	}
 
-	public static void registerKeyBindings(GameOptions gameOptions, Collection<KeyBinding> bindings) {
+	public static void registerKeyBindings(Options gameOptions, Collection<KeyMapping> bindings) {
 		GameOptionsAccessor options = (GameOptionsAccessor) gameOptions;
-		KeyBinding[] keysAll = options.getAllKeys();
-		KeyBinding[] newKeysAll = new KeyBinding[keysAll.length + bindings.size()];
+		KeyMapping[] keysAll = options.getKeyMappings();
+		KeyMapping[] newKeysAll = new KeyMapping[keysAll.length + bindings.size()];
 		System.arraycopy(keysAll, 0, newKeysAll, 0, keysAll.length);
 		int i = keysAll.length;
-		for (KeyBinding binding : bindings) {
+		for (KeyMapping binding : bindings) {
 			newKeysAll[i] = binding;
+			KeyMapping.ALL.put(binding.getName(), binding);
 			i++;
 		}
-		options.setAllKeys(newKeysAll);
-		KeyBinding.updateKeysByCode();
+		options.setKeyMappings(newKeysAll);
+		KeyMapping.resetMapping();
 	}
 
-	public static void resetSingleKeyBinding(KeyBinding keyBinding) {
-		keyBinding.setBoundKey(keyBinding.getDefaultKey());
+	public static void resetSingleKeyBinding(KeyMapping keyBinding) {
+		keyBinding.setKey(keyBinding.getDefaultKey());
 		if (isAmecsLoaded) {
 			AmecsProxy.resetKeyModifiers(keyBinding);
 		}
 	}
 
-	public static KeyBinding createAlternativeKeyBinding(KeyBinding base) {
+	public static KeyMapping createAlternativeKeyBinding(KeyMapping base) {
 		return createAlternativeKeyBinding(base, -1);
 	}
 
-	public static KeyBinding createAlternativeKeyBinding(KeyBinding base, int code) {
-		return createAlternativeKeyBinding(base, InputUtil.Type.KEYSYM, code);
+	public static KeyMapping createAlternativeKeyBinding(KeyMapping base, int code) {
+		return createAlternativeKeyBinding(base, InputConstants.Type.KEYSYM, code);
 	}
 
-	public static KeyBinding createAlternativeKeyBinding(KeyBinding base, InputUtil.Type type, int code) {
+	public static KeyMapping createAlternativeKeyBinding(KeyMapping base, InputConstants.Type type, int code) {
 		IKeyBinding parent = (IKeyBinding) base;
-		KeyBinding alt = new AlternativeKeyBinding(base, base.getTranslationKey() + "%" + parent.nmuk_getNextChildId(), type, code, base.getCategory());
+		KeyMapping alt = new AlternativeKeyBinding(base, base.getName() + "%" + parent.nmuk_getNextChildId(), type, code, base.getCategory());
 		parent.nmuk_addAlternative(alt);
 		return alt;
 	}
 
-	public static List<ControlsListWidget.KeyBindingEntry> getControlsListWidgetEntries() {
-		Screen screen = MinecraftClient.getInstance().currentScreen;
+	public static List<KeyBindsList.Entry> getControlsListWidgetEntries() {
+		Screen screen = Minecraft.getInstance().screen;
 		if (screen instanceof KeybindsScreenAccessor) {
 			//noinspection unchecked
-			return (List<ControlsListWidget.KeyBindingEntry>) (Object)
-					((EntryListWidgetAccessor) ((KeybindsScreenAccessor) screen).getControlsList()).getChildren();
+			return (List<KeyBindsList.Entry>) (Object)
+					((EntryListWidgetAccessor) ((KeybindsScreenAccessor) screen).getKeyBindsList()).getChildren();
 		}
 		return null;
 	}
 
-	public static ControlsListWidget.KeyBindingEntry createKeyBindingEntry(ControlsListWidget listWidget, KeyBinding binding, Text text) {
+	public static KeyBindsList.KeyEntry createKeyBindingEntry(KeyBindsList listWidget, KeyMapping binding, Component text) {
 		try {
-			// noinspection JavaReflectionMemberAccess,JavaReflectionMemberAccess
-			Constructor<ControlsListWidget.KeyBindingEntry> constructor = ControlsListWidget.KeyBindingEntry.class.getDeclaredConstructor(ControlsListWidget.class, KeyBinding.class, Text.class);
+			Constructor<KeyBindsList.KeyEntry> constructor = KeyBindsList.KeyEntry.class
+					.getDeclaredConstructor(KeyBindsList.class, KeyMapping.class, Component.class);
 			constructor.setAccessible(true);
 			return constructor.newInstance(listWidget, binding, text);
 		} catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {

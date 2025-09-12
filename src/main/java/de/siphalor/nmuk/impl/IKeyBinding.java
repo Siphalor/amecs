@@ -17,7 +17,7 @@
 
 package de.siphalor.nmuk.impl;
 
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -30,17 +30,17 @@ public interface IKeyBinding {
 
 	boolean nmuk_isAlternative();
 
-	KeyBinding nmuk_getParent();
+	KeyMapping nmuk_getParent();
 
-	void nmuk_setParent(KeyBinding binding);
+	void nmuk_setParent(KeyMapping binding);
 
-	List<KeyBinding> nmuk_getAlternatives();
+	List<KeyMapping> nmuk_getAlternatives();
 
 	int nmuk_getAlternativesCount();
 
-	void nmuk_removeAlternative(KeyBinding binding);
+	void nmuk_removeAlternative(KeyMapping binding);
 
-	void nmuk_addAlternative(KeyBinding binding);
+	void nmuk_addAlternative(KeyMapping binding);
 
 	int nmuk_getIndexInParent();
 }

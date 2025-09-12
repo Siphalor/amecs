@@ -17,29 +17,29 @@
 
 package de.siphalor.nmuk.impl;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 
 @ApiStatus.Internal
-public class AlternativeKeyBinding extends KeyBinding {
-	public AlternativeKeyBinding(KeyBinding parent, String translationKey, int code, String category) {
+public class AlternativeKeyBinding extends KeyMapping {
+	public AlternativeKeyBinding(KeyMapping parent, String translationKey, int code, String category) {
 		super(translationKey, code, category);
 		((IKeyBinding) this).nmuk_setParent(parent);
 	}
 
-	public AlternativeKeyBinding(KeyBinding parent, String translationKey, InputUtil.Type type, int code, String category) {
+	public AlternativeKeyBinding(KeyMapping parent, String translationKey, InputConstants.Type type, int code, String category) {
 		super(translationKey, type, code, category);
 		((IKeyBinding) this).nmuk_setParent(parent);
 	}
 
 	@Override
 	public boolean isDefault() {
-		if (getDefaultKey() == InputUtil.UNKNOWN_KEY) {
+		if (getDefaultKey() == InputConstants.UNKNOWN) {
 			return true;
 		}
 		return super.isDefault();
@@ -49,7 +49,7 @@ public class AlternativeKeyBinding extends KeyBinding {
 	static {
 		MethodHandle methodHandle;
 		try {
-			methodHandle = MethodHandles.lookup().unreflectSpecial(KeyBinding.class.getDeclaredMethod("amecs$incrementTimesPressed"), AlternativeKeyBinding.class);
+			methodHandle = MethodHandles.lookup().unreflectSpecial(KeyMapping.class.getDeclaredMethod("amecs$incrementTimesPressed"), AlternativeKeyBinding.class);
 		} catch (NoSuchMethodException | IllegalAccessException e) {
 			if (FabricLoader.getInstance().isModLoaded("amecsapi")) {
 				throw new RuntimeException("Failed to initialize NMUK compatibility with Amecs", e);
@@ -61,7 +61,7 @@ public class AlternativeKeyBinding extends KeyBinding {
 	public void amecs$incrementTimesPressed() throws Throwable {
 		INCREMENT_TIMES_PRESSED_SUPER.invoke(this);
 
-		KeyBinding parent = ((IKeyBinding) this).nmuk_getParent();
+		KeyMapping parent = ((IKeyBinding) this).nmuk_getParent();
 		((de.siphalor.amecs.impl.duck.IKeyBinding) parent).amecs$incrementTimesPressed();
 	}
 }

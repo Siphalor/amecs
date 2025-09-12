@@ -18,12 +18,12 @@
 package de.siphalor.nmuk.impl;
 
 import de.siphalor.amecs.api.KeyBindingUtils;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class AmecsProxy {
-	public static void resetKeyModifiers(KeyBinding keyBinding) {
+	public static void resetKeyModifiers(KeyMapping keyBinding) {
 		KeyBindingUtils.resetBoundModifiers(keyBinding);
 	}
 }

@@ -17,16 +17,16 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(GameOptions.class)
+@Mixin(Options.class)
 public interface GameOptionsAccessor {
 	@Accessor
-	KeyBinding[] getAllKeys();
+	KeyMapping[] getKeyMappings();
 
 	@Accessor
-	void setAllKeys(KeyBinding[] bindings);
+	void setKeyMappings(KeyMapping[] bindings);
 }

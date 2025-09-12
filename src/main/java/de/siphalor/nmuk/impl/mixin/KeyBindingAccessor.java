@@ -17,25 +17,18 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Map;
-
-@Mixin(KeyBinding.class)
+@Mixin(KeyMapping.class)
 public interface KeyBindingAccessor {
-	@Accessor("KEYS_BY_ID")
-	static Map<String, KeyBinding> getKeysById() {
-		return null;
-	}
-
 	@Final
 	@Mutable
 	@Accessor
-	void setTranslationKey(String id);
+	void setName(String id);
 
 	@Final
 	@Mutable
@@ -43,8 +36,8 @@ public interface KeyBindingAccessor {
 	void setCategory(String category);
 
 	@Accessor
-	int getTimesPressed();
+	int getClickCount();
 
 	@Accessor
-	void setTimesPressed(int timesPressed);
+	void setClickCount(int timesPressed);
 }

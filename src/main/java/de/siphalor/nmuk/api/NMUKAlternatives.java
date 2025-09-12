@@ -17,11 +17,11 @@
 
 package de.siphalor.nmuk.api;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
 import de.siphalor.nmuk.impl.mixin.KeyBindingAccessor;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -32,24 +32,24 @@ import java.util.List;
  */
 public class NMUKAlternatives {
 	/**
-	 * Create an alternative keybinding with the given code and {@link InputUtil.Type#KEYSYM}.
+	 * Create an alternative keybinding with the given code and {@link InputConstants.Type#KEYSYM}.
 	 *
 	 * @param base The base keybinding to create an alternative for
 	 * @param code The keycode to use as default for the alternative
 	 */
-	public static void create(KeyBinding base, int code) {
-		create(base, InputUtil.Type.KEYSYM, code);
+	public static void create(KeyMapping base, int code) {
+		create(base, InputConstants.Type.KEYSYM, code);
 	}
 
 	/**
 	 * Create an alternative keybinding with the given code and input type.
 	 *
 	 * @param base      The base keybinding to create an alternative for
-	 * @param inputType The {@link InputUtil.Type} that defines the type of the code
+	 * @param inputType The {@link InputConstants.Type} that defines the type of the code
 	 * @param code      The input code
 	 */
-	public static void create(KeyBinding base, InputUtil.Type inputType, int code) {
-		KeyBinding alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base, inputType, code);
+	public static void create(KeyMapping base, InputConstants.Type inputType, int code) {
+		KeyMapping alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base, inputType, code);
 		NMUKKeyBindingHelper.registerKeyBinding(alternative);
 		NMUKKeyBindingHelper.defaultAlternatives.put(base, alternative);
 	}
@@ -63,8 +63,8 @@ public class NMUKAlternatives {
 	 * @param base        The base keybinding to create an alternative for
 	 * @param alternative The alternative keybinding. This keybinding MUST NOT be registered yet
 	 */
-	public static void create(KeyBinding base, KeyBinding alternative) {
-		((KeyBindingAccessor) alternative).setTranslationKey(base.getTranslationKey() + "%" + ((IKeyBinding) base).nmuk_getNextChildId());
+	public static void create(KeyMapping base, KeyMapping alternative) {
+		((KeyBindingAccessor) alternative).setName(base.getName() + "%" + ((IKeyBinding) base).nmuk_getNextChildId());
 		((KeyBindingAccessor) alternative).setCategory(base.getCategory());
 		((IKeyBinding) base).nmuk_addAlternative(alternative);
 		((IKeyBinding) alternative).nmuk_setParent(base);
@@ -78,7 +78,7 @@ public class NMUKAlternatives {
 	 * @param binding A keybinding
 	 * @return Whether the given keybinding is an alternative
 	 */
-	public static boolean isAlternative(KeyBinding binding) {
+	public static boolean isAlternative(KeyMapping binding) {
 		return ((IKeyBinding) binding).nmuk_isAlternative();
 	}
 
@@ -89,7 +89,7 @@ public class NMUKAlternatives {
 	 * @return A list of alternatives or <code>null</code>
 	 */
 	@Nullable
-	public static List<KeyBinding> getAlternatives(KeyBinding binding) {
+	public static List<KeyMapping> getAlternatives(KeyMapping binding) {
 		return ((IKeyBinding) binding).nmuk_getAlternatives();
 	}
 
@@ -99,7 +99,7 @@ public class NMUKAlternatives {
 	 * @param binding An alternative keybinding
 	 * @return The base keyinding or <code>null</code> if the given keybinding is no alternative
 	 */
-	public static KeyBinding getBase(KeyBinding binding) {
+	public static KeyMapping getBase(KeyMapping binding) {
 		return ((IKeyBinding) binding).nmuk_getParent();
 	}
 }
