@@ -208,6 +208,13 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 		callbackInfo.cancel();
 	}
 
+	@Inject(method = "setKey", at = @At("RETURN"))
+	public void setKey(InputConstants.Key key, CallbackInfo callbackInfo) {
+		if (key == InputConstants.UNKNOWN) {
+			keyModifiers.unset();
+		}
+	}
+
 	@Inject(method = "isDefault", at = @At("HEAD"), cancellable = true)
 	public void isDefault(CallbackInfoReturnable<Boolean> cir) {
 		if (!((Object) this instanceof AmecsKeyBinding)) {

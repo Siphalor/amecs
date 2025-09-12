@@ -105,22 +105,6 @@ public abstract class MixinKeybindsScreen
 					//# else
 					//- target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
 					//# end
-					ordinal = 0
-			)
-	)
-	public void clearKeyBinding(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		((IKeyBinding) selectedKey).amecs$getKeyModifiers().unset();
-	}
-
-	@Inject(
-			method = "keyPressed",
-			at = @At(
-					value = "INVOKE",
-					//# if MC_VERSION_NUMBER >= 12102
-					target = "Lnet/minecraft/client/KeyMapping;setKey(Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
-					//# else
-					//- target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V",
-					//# end
 					ordinal = 1
 			),
 			cancellable = true

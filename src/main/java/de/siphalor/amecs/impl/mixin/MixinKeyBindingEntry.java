@@ -20,7 +20,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 //- import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.impl.AmecsAPI;
-import de.siphalor.amecs.impl.duck.IKeyBinding;
+//- import de.siphalor.amecs.impl.duck.IKeyBinding;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -174,7 +174,6 @@ public abstract class MixinKeyBindingEntry implements IKeyBindingEntry {
 
 	@Inject(method = "method_19871(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V", at = @At("HEAD"))
 	public void onEditButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
-		((IKeyBinding) key).amecs$getKeyModifiers().unset();
 		key.setKey(InputConstants.UNKNOWN);
 	}
 
