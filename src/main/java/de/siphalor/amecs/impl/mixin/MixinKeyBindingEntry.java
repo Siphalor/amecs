@@ -160,13 +160,7 @@ public abstract class MixinKeyBindingEntry implements IKeyBindingEntry {
 
 	@Inject(
 			method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
-			//# if MC_VERSION_NUMBER >= 12100
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/options/controls/KeyBindsList;resetMappingAndUpdateButtons()V")
-			//# elif MC_VERSION_NUMBER >= 11904
-			//- at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/controls/KeyBindsList;resetMappingAndUpdateButtons()V")
-			//# else
-			//- at = @At("RETURN")
-			//# end
+			at = @At("HEAD")
 	)
 	public void onResetButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
 		KeyBindingUtils.resetBoundModifiers(keyBinding);
