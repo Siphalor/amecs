@@ -20,7 +20,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 //- import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.impl.AmecsAPI;
-//- import de.siphalor.amecs.impl.duck.IKeyBinding;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -61,7 +60,13 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 //# else
 //- @Mixin(ControlList.KeyEntry.class)
 //# end
-public abstract class MixinKeyBindingEntry extends KeyBindsList.Entry implements IKeyBindingEntry {
+public abstract class MixinKeyBindingEntry
+		//# if MC_VERSION_NUMBER >= 11800
+		extends KeyBindsList.Entry
+		//# else
+		//- extends ControlList.Entry
+		//# end
+		implements IKeyBindingEntry {
 	@Unique
 	private static final String DESCRIPTION_SUFFIX = "." + AmecsAPI.MOD_ID + ".description";
 
