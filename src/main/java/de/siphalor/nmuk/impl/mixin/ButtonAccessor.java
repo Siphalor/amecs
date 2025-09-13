@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Button.class)
 public interface ButtonAccessor {
-	//# if MC_VERSION_NUMBER <= 11903
+	//# if MC_VERSION_NUMBER <= 11902
 	//- @Accessor
 	//- @Mutable
 	//- void setOnTooltip(Button.OnTooltip onTooltip);

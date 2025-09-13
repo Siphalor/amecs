@@ -116,7 +116,7 @@ public abstract class MixinKeyBindingEntry
 		IKeyBinding iKeyBinding = (IKeyBinding) binding;
 		if (iKeyBinding.nmuk_isAlternative()) {
 			name = ENTRY_NAME;
-			//# if MC_VERSION_NUMBER >= 11904
+			//# if MC_VERSION_NUMBER >= 11903
 			alternativesButton = Button.builder(REMOVE_NAME, button -> onRemoveClicked(binding))
 					.size(20, 20)
 					.build();
@@ -124,7 +124,7 @@ public abstract class MixinKeyBindingEntry
 			//- alternativesButton = new Button(0, 0, 20, 20, REMOVE_NAME, button -> onRemoveClicked(binding));
 			//# end
 		} else {
-			//# if MC_VERSION_NUMBER >= 11904
+			//# if MC_VERSION_NUMBER >= 11903
 			alternativesButton = Button.builder(ADD_NAME, button -> onAddClicked(binding))
 					.size(20, 20)
 					.build();
@@ -258,7 +258,7 @@ public abstract class MixinKeyBindingEntry
 			float tickDelta,
 			CallbackInfo callbackInfo
 	) {
-		//# if MC_VERSION_NUMBER >= 11904
+		//# if MC_VERSION_NUMBER >= 11903
 		alternativesButton.setY(resetButton.getY());
 		alternativesButton.setX(resetButton.getX() + resetButton.getWidth() + 10);
 		//# else
