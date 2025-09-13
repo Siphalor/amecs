@@ -15,17 +15,33 @@ public class AmecsTestMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		KeyMapping kbd = KeyBindingHelper.registerKeyBinding(new AmecsKeyBinding(
-				new ResourceLocation(MOD_ID, "kbd"),
+				//# if MC_VERSION_NUMBER >= 12100
+				ResourceLocation.fromNamespaceAndPath(MOD_ID, "kbd"),
+				//# else
+				//- new ResourceLocation(MOD_ID, "kbd"),
+				//# end
 				InputConstants.Type.KEYSYM,
 				86,
-				"key.categories.movement",
+				//# if MC_VERSION_NUMBER >= 12109
+				KeyMapping.Category.MOVEMENT,
+				//# else
+				//- "key.categories.movement",
+				//# end
 				new KeyModifiers(false, false, false)
 		));
 		NMUKAlternatives.create(kbd, new AmecsKeyBinding(
-				new ResourceLocation(MOD_ID, "test"),
+				//# if MC_VERSION_NUMBER >= 12100
+				ResourceLocation.fromNamespaceAndPath(MOD_ID, "test"),
+				//# else
+				//- new ResourceLocation(MOD_ID, "test"),
+				//# end
 				InputConstants.Type.KEYSYM,
 				87,
-				"",
+				//# if MC_VERSION_NUMBER >= 12109
+				KeyMapping.Category.MISC,
+				//# else
+				//- "",
+				//# end
 				new KeyModifiers(true, false, false)
 		));
 	}

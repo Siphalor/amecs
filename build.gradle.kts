@@ -60,6 +60,7 @@ dependencies {
 	modImplementation(mcLibs.fabric.api)
 	modImplementation(mcLibs.nmuk) {
 		exclude(group = "net.fabricmc.fabric-api")
+		exclude(group = "de.siphalor.amecs-api")
 	}
 
 	modImplementation(mcLibs.amecsApi)

@@ -15,7 +15,11 @@ public class SkinLayerKeyBinding extends AmecsKeyBinding {
 			ResourceLocation id,
 			InputConstants.Type type,
 			int code,
-			String category,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category,
+			//# else
+			//- String category,
+			//# end
 			PlayerModelPart playerModelPart
 	) {
 		super(id, type, code, category, new KeyModifiers());
@@ -25,12 +29,15 @@ public class SkinLayerKeyBinding extends AmecsKeyBinding {
 	@Override
 	public void onPressed() {
 		Minecraft client = Minecraft.getInstance();
-		//# if MC_VERSION_NUMBER >= 11700
+		//# if MC_VERSION_NUMBER >= 12108
+		client.options.setModelPart(playerModelPart, !client.options.isModelPartEnabled(playerModelPart));
+		Amecs.sendToggleMessage(client.player, client.options.isModelPartEnabled(playerModelPart), playerModelPart.getName());
+		//# elif MC_VERSION_NUMBER >= 11700
 		//- client.options.toggleModelPart(playerModelPart, !client.options.isModelPartEnabled(playerModelPart));
 		//- Amecs.sendToggleMessage(client.player, client.options.isModelPartEnabled(playerModelPart), playerModelPart.getName());
 		//# else
-		client.options.toggleModelPart(playerModelPart);
-		Amecs.sendToggleMessage(client.player, client.options.getModelParts().contains(playerModelPart), playerModelPart.getName());
+		//- client.options.toggleModelPart(playerModelPart);
+		//- Amecs.sendToggleMessage(client.player, client.options.getModelParts().contains(playerModelPart), playerModelPart.getName());
 		//# end
 	}
 }
