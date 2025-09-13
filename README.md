@@ -5,7 +5,7 @@
 
 ![supported Minecraft versions: 1.16 | 1.17 | 1.18 | 1.19 | 1.20 | 1.21](https://img.shields.io/badge/support%20for%20MC-1.14%20%7C%201.15%20%7C%201.16%20%7C%201.17%20%7C%201.18%20%7C%201.19%20%7C%201.20%20%7C%201.21-%2356AD56?style=for-the-badge)
 
-[![latest maven release](https://img.shields.io/maven-metadata/v?color=0f9fbc&metadataUrl=https%3A%2F%2Fmaven.siphalor.de%2Fde%2Fsiphalor%2Famecsapi-1.16%2Fmaven-metadata.xml&style=flat-square)](https://maven.siphalor.de/de/siphalor/amecsapi-1.16/)
+[![latest maven release](https://img.shields.io/maven-metadata/v?color=0f9fbc&metadataUrl=https%3A%2F%2Fmaven.siphalor.de%2Fde%2Fsiphalor%2Famecs-api/amecs-api-mc1.21.9%2Fmaven-metadata.xml&style=flat-square)](https://maven.siphalor.de/de/siphalor/amecs-api/)
 
 This library mod provides modifier keys for Minecraft keybindings as well as some related keybinding utilities
 
