@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          token: "${{ secrets.CUSTOMGHTOKEN }}"
 
       - name: Fix language file names
         run: |
