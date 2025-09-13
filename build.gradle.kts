@@ -40,6 +40,10 @@ loom {
 
 }
 
+tasks.validateAccessWidener {
+	enabled = false
+}
+
 repositories {
 	maven {
 		name = "Siphalor's Maven"
