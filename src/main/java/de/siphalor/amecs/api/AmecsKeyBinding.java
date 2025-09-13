@@ -42,7 +42,17 @@ public class AmecsKeyBinding extends KeyMapping {
 	 * @param category the id of the category which should include this keybinding
 	 * @param defaultModifiers the default modifiers
 	 */
-	public AmecsKeyBinding(ResourceLocation id, InputConstants.Type type, int code, String category, KeyModifiers defaultModifiers) {
+	public AmecsKeyBinding(
+			ResourceLocation id,
+			InputConstants.Type type,
+			int code,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category,
+			//# else
+			//- String category,
+			//# end
+			KeyModifiers defaultModifiers
+	) {
 		this("key." + id.getNamespace() + "." + id.getPath(), type, code, category, defaultModifiers);
 	}
 
@@ -57,7 +67,17 @@ public class AmecsKeyBinding extends KeyMapping {
 	 * @param category the id of the category which should include this keybinding
 	 * @param defaultModifiers the default modifiers
 	 */
-	public AmecsKeyBinding(String id, InputConstants.Type type, int code, String category, KeyModifiers defaultModifiers) {
+	public AmecsKeyBinding(
+			String id,
+			InputConstants.Type type,
+			int code,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category,
+			//# else
+			//- String category,
+			//# end
+			KeyModifiers defaultModifiers
+	) {
 		super(id, type, code, category);
 		if (defaultModifiers == null || defaultModifiers == KeyModifiers.NO_MODIFIERS) {
 			defaultModifiers = new KeyModifiers(); // the modifiable version of: KeyModifiers.NO_MODIFIERS

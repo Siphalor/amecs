@@ -28,7 +28,19 @@ public class TestPriorityKeybinding extends AmecsKeyBinding implements PriorityK
 	private final BooleanSupplier action;
 	private final BooleanSupplier releaseAction;
 
-	public TestPriorityKeybinding(ResourceLocation id, InputConstants.Type type, int code, String category, KeyModifiers defaultModifiers, BooleanSupplier action, BooleanSupplier releaseAction) {
+	public TestPriorityKeybinding(
+			ResourceLocation id,
+			InputConstants.Type type,
+			int code,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category,
+			//# else
+			//- String category,
+			//# end
+			KeyModifiers defaultModifiers,
+			BooleanSupplier action,
+			BooleanSupplier releaseAction
+	) {
 		super(id, type, code, category, defaultModifiers);
 		this.action = action;
 		this.releaseAction = releaseAction;

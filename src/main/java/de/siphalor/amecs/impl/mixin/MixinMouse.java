@@ -38,6 +38,8 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 //- import net.minecraft.client.gui.screens.controls.ControlsScreen;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 //# end
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -64,12 +66,29 @@ public class MixinMouse implements IMouse {
 		return mouseScrolled_eventUsed;
 	}
 
-	@Inject(method = "onPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0), cancellable = true)
-	private void onMouseButtonPriority(long window, int type, int state, int int_3, CallbackInfo callbackInfo) {
-		if (state == 1 && KeyBindingManager.onKeyPressedPriority(InputConstants.Type.MOUSE.getOrCreate(type))) {
+	@Inject(
+			//# if MC_VERSION_NUMBER >= 12109
+			method = "onButton",
+			//# else
+			//- method = "onPress",
+			//# end
+			at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0),
+			cancellable = true
+	)
+	//# if MC_VERSION_NUMBER >= 12109
+	private void onMouseButtonPriority(long window, MouseButtonInfo event, int state, CallbackInfo callbackInfo) {
+		if (state == 1
+				&& KeyBindingManager.onKeyPressedPriority(InputConstants.Type.MOUSE.getOrCreate(event.button()))) {
 			callbackInfo.cancel();
 		}
 	}
+	//# else
+	//- private void onMouseButtonPriority(long window, int type, int state, int int_3, CallbackInfo callbackInfo) {
+	//- 	if (state == 1 && KeyBindingManager.onKeyPressedPriority(InputConstants.Type.MOUSE.getOrCreate(type))) {
+	//- 		callbackInfo.cancel();
+	//- 	}
+	//- }
+	//# end
 
 	@Unique
 	//# if MC_VERSION_NUMBER >= 12002
@@ -205,8 +224,14 @@ public class MixinMouse implements IMouse {
 			}
 			// This is a bit hacky, but the easiest way out
 			// If the selected binding != null, the mouse x and y will always be ignored - so no need to convert them
-			// The key code that InputConstants.MOUSE.createFromCode chooses is always one bigger than the input
-			minecraft.screen.mouseClicked(-1, -1, primaryKeyCode.getValue());
+			//# if MC_VERSION_NUMBER >= 12109
+			minecraft.screen.mouseClicked(
+					new MouseButtonEvent(0D, 0D, new MouseButtonInfo(primaryKeyCode.getValue(), 0)),
+					true
+			);
+			//# else
+			//- minecraft.screen.mouseClicked(-1, -1, primaryKeyCode.getValue());
+			//# end
 			// if we do we cancel the method because we do not want the current screen to get the scroll event
 			callbackInfo.cancel();
 			return true;

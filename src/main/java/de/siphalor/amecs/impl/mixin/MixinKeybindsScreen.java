@@ -32,6 +32,8 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsList;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 //# end
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 //- import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -88,7 +90,17 @@ public abstract class MixinKeybindsScreen
 			//- at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setKey(Lnet/minecraft/client/KeyMapping;Lcom/mojang/blaze3d/platform/InputConstants$Key;)V")
 			//# end
 	)
-	public void onClicked(double x, double y, int type, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+	public void onClicked(
+			//# if MC_VERSION_NUMBER >= 12109
+			MouseButtonEvent mouseButtonEvent,
+			boolean bl,
+			//# else
+			//- double x,
+			//- double y,
+			//- int type,
+			//# end
+			CallbackInfoReturnable<Boolean> callbackInfoReturnable
+	) {
 		InputConstants.Key key = ((IKeyBinding) selectedKey).amecs$getBoundKey();
 		KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
 		if (!key.equals(InputConstants.UNKNOWN)) {
@@ -109,24 +121,42 @@ public abstract class MixinKeybindsScreen
 			),
 			cancellable = true
 	)
-	public void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+	public void onKeyPressed(
+			//# if MC_VERSION_NUMBER >= 12109
+			KeyEvent keyEvent,
+			//# else
+			//- int keyCode,
+			//- int scanCode,
+			//- int modifiers,
+			//# end
+			CallbackInfoReturnable<Boolean> callbackInfoReturnable
+	) {
+		//# if MC_VERSION_NUMBER >= 12109
+		InputConstants.Key key = InputConstants.getKey(keyEvent);
+		//# else
+		//- InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
+		//# end
 		if (selectedKey.isUnbound()) {
 			//# if MC_VERSION_NUMBER >= 12102
-			selectedKey.setKey(InputConstants.getKey(keyCode, scanCode));
+			selectedKey.setKey(key);
 			//# else
-			//- options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+			//- options.setKey(selectedKey, key);
 			//# end
 		} else {
 			InputConstants.Key mainKey = ((IKeyBinding) selectedKey).amecs$getBoundKey();
 			KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
 			KeyModifier mainKeyModifier = KeyModifier.fromKey(mainKey);
-			KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
+			//# if MC_VERSION_NUMBER >= 12102
+			KeyModifier keyModifier = KeyModifier.fromKey(key);
+			//# else
+			//- KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
+			//# end
 			if (mainKeyModifier != KeyModifier.NONE && keyModifier == KeyModifier.NONE) {
 				keyModifiers.set(mainKeyModifier, true);
 				//# if MC_VERSION_NUMBER >= 12102
-				selectedKey.setKey(InputConstants.getKey(keyCode, scanCode));
+				selectedKey.setKey(key);
 				//# else
-				//- options.setKey(selectedKey, InputConstants.getKey(keyCode, scanCode));
+				//- options.setKey(selectedKey, key);
 				//# end
 				return;
 			} else {

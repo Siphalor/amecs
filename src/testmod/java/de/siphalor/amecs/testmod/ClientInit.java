@@ -20,6 +20,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.KeyModifiers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
@@ -34,7 +35,11 @@ public class ClientInit implements ClientModInitializer {
 				//# end
 				InputConstants.Type.KEYSYM,
 				GLFW.GLFW_KEY_Z,
-				"key.categories.misc",
+				//# if MC_VERSION_NUMBER >= 12109
+				KeyMapping.Category.MISC,
+				//# else
+				//- "key.categories.misc",
+				//# end
 				new KeyModifiers(),
 				() -> {
 					System.out.println("priority");

@@ -31,6 +31,7 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 //- import net.minecraft.client.gui.screens.controls.ControlsScreen;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 //# end
+import net.minecraft.client.input.KeyEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,20 +42,51 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinKeyboard {
 
 	@Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
-	private void onKeyPriority(long window, int key, int scanCode, int action, int modifiers, CallbackInfo callbackInfo) {
+	private void onKeyPriority(
+			long window,
+			//# if MC_VERSION_NUMBER < 12109
+			//- int keyCode,
+			//- int scanCode,
+			//# end
+			int action,
+			//# if MC_VERSION_NUMBER >= 12109
+			KeyEvent keyEvent,
+			//# else
+			//- int modifiers,
+			//# end
+			CallbackInfo callbackInfo
+	) {
+		//# if MC_VERSION_NUMBER >= 12109
+		InputConstants.Key key = InputConstants.getKey(keyEvent);
+		//# else
+		//- InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
+		//# end
 		if (action == 1) {
-			if (KeyBindingManager.onKeyPressedPriority(InputConstants.getKey(key, scanCode))) {
+			if (KeyBindingManager.onKeyPressedPriority(key)) {
 				callbackInfo.cancel();
 			}
 		} else if (action == 0) {
-			if (KeyBindingManager.onKeyReleasedPriority(InputConstants.getKey(key, scanCode))) {
+			if (KeyBindingManager.onKeyReleasedPriority(key)) {
 				callbackInfo.cancel();
 			}
 		}
 	}
 
 	@Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyboardHandler;debugCrashKeyTime:J", ordinal = 0))
-	private void onKey(long window, int key, int scanCode, int action, int modifiers, CallbackInfo callbackInfo) {
+	private void onKey(
+			long window,
+			//# if MC_VERSION_NUMBER < 12109
+			//- int keyCode,
+			//- int scanCode,
+			//# end
+			int action,
+			//# if MC_VERSION_NUMBER >= 12109
+			KeyEvent keyEvent,
+			//# else
+			//- int modifiers,
+			//# end
+			CallbackInfo callbackInfo
+	) {
 		// Key released
 		//# if MC_VERSION_NUMBER >= 11800
 		if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen screen) {
@@ -67,6 +99,11 @@ public class MixinKeyboard {
 			screen.lastKeySelection = Util.getMillis();
 		}
 
-		AmecsAPI.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(InputConstants.getKey(key, scanCode).getValue()), action != 0);
+		//# if MC_VERSION_NUMBER >= 12109
+		InputConstants.Key key = InputConstants.getKey(keyEvent);
+		//# else
+		//- InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
+		//# end
+		AmecsAPI.CURRENT_MODIFIERS.set(KeyModifier.fromKeyCode(key.getValue()), action != 0);
 	}
 }

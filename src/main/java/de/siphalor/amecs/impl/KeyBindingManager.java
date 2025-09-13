@@ -17,6 +17,7 @@
 package de.siphalor.amecs.impl;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.api.KeyModifier;
 import de.siphalor.amecs.api.KeyModifiers;
@@ -130,8 +131,10 @@ public class KeyBindingManager {
 	}
 
 	public static void updatePressedStates() {
-		//# if MC_VERSION_NUMBER >= 11500
-		long windowHandle = Minecraft.getInstance().getWindow().getWindow();
+		//# if MC_VERSION_NUMBER >= 12109
+		Window windowHandle = Minecraft.getInstance().getWindow();
+		//# elif MC_VERSION_NUMBER >= 11500
+		//- long windowHandle = Minecraft.getInstance().getWindow().getWindow();
 		//# else
 		//- long windowHandle = Minecraft.getInstance().window.getWindow();
 		//# end

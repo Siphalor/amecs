@@ -27,9 +27,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.components.WidgetTooltipHolder;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 //# if MC_VERSION_NUMBER >= 12100
 import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
@@ -50,6 +48,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 //- import java.util.ArrayList;
 //- import java.util.Arrays;
@@ -62,7 +61,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //# else
 //- @Mixin(ControlList.KeyEntry.class)
 //# end
-public abstract class MixinKeyBindingEntry implements IKeyBindingEntry {
+public abstract class MixinKeyBindingEntry extends KeyBindsList.Entry implements IKeyBindingEntry {
 	@Unique
 	private static final String DESCRIPTION_SUFFIX = "." + AmecsAPI.MOD_ID + ".description";
 
@@ -117,26 +116,49 @@ public abstract class MixinKeyBindingEntry implements IKeyBindingEntry {
 		}
 	}
 
-	@Inject(method = "render", at = @At("RETURN"))
-	//# if MC_VERSION_NUMBER >= 12000
-	public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# if MC_VERSION_NUMBER >= 12109
+	@Inject(method = "renderContent", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
+	public void onRendered(
+			GuiGraphics context,
+			int mouseX,
+			int mouseY,
+			boolean hovered,
+			float delta,
+			CallbackInfo callbackInfo,
+			int x,
+			int y
+	) {
+	//# elif MC_VERSION_NUMBER >= 12000
+	//- @Inject(method = "render", at = @At("RETURN"))
+	//- public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
 	//# elif MC_VERSION_NUMBER >= 11600
+	//- @Inject(method = "render", at = @At("RETURN"))
 	//- public void onRendered(PoseStack poseStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
 	//# else
+	//- @Inject(method = "render", at = @At("RETURN"))
 	//- public void onRendered(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
 	//# end
 		if (description != null) {
-			//# if MC_VERSION_NUMBER >= 12106
+			//# if MC_VERSION_NUMBER >= 12109
 			description.refreshTooltipForNextRenderPass(
 					context,
 					mouseX,
 					mouseY,
-					isMouseOverTitle(x, y, entryHeight, mouseX, mouseY),
+					isMouseOverTitle(y, 20, mouseX, mouseY),
 					changeButton.isFocused(),
-					new ScreenRectangle(x, y, entryWidth, entryHeight)
+					new ScreenRectangle(x, y, changeButton.getX(), 20)
 			);
+			//# elif MC_VERSION_NUMBER >= 12106
+			//- description.refreshTooltipForNextRenderPass(
+			//- 		context,
+			//- 		mouseX,
+			//- 		mouseY,
+			//- 		isMouseOverTitle(y, entryHeight, mouseX, mouseY),
+			//- 		changeButton.isFocused(),
+			//- 		new ScreenRectangle(x, y, entryWidth, entryHeight)
+			//- );
 			//# else
-			//- if (isMouseOverTitle(x, y, entryHeight, mouseX, mouseY)) {
+			//- if (isMouseOverTitle(y, entryHeight, mouseX, mouseY)) {
 			//- 	//# if MC_VERSION_NUMBER >= 12000
 			//- 	context.renderComponentTooltip(Minecraft.getInstance().font, description, mouseX, mouseY);
 			//- 	//# elif MC_VERSION_NUMBER >= 11600
@@ -150,7 +172,7 @@ public abstract class MixinKeyBindingEntry implements IKeyBindingEntry {
 	}
 
 	@Unique
-	private boolean isMouseOverTitle(int x, int y, int entryHeight, int mouseX, int mouseY) {
+	private boolean isMouseOverTitle(int y, int entryHeight, int mouseX, int mouseY) {
 		//# if MC_VERSION_NUMBER >= 11903
 		return mouseY >= y && mouseY < y + entryHeight && mouseX < changeButton.getX();
 		//# else

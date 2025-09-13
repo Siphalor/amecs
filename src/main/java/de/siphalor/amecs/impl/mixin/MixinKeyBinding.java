@@ -22,6 +22,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 //- import net.minecraft.client.resources.language.I18n;
 import org.spongepowered.asm.mixin.*;
@@ -107,10 +109,29 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	//- }
 	//# end
 
-	@Inject(method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V", at = @At("RETURN"))
-	private void onConstructed(String id, InputConstants.Type type, int defaultCode, String category, CallbackInfo callbackInfo) {
+	//# if MC_VERSION_NUMBER >= 12109
+	@Inject(
+			method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILnet/minecraft/client/KeyMapping$Category;)V",
+			at = @At("RETURN")
+	)
+	private void onConstructed(
+			String id,
+			InputConstants.Type type,
+			int defaultCode,
+			KeyMapping.Category category,
+			CallbackInfo ci
+	) {
 		KeyBindingManager.register((KeyMapping) (Object) this);
 	}
+	//# else
+	//- @Inject(
+	//- 		method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V",
+	//- 		at = @At("RETURN")
+	//- )
+	//- private void onConstructed(String id, InputConstants.Type type, int defaultCode, String category, CallbackInfo callbackInfo) {
+	//- 	KeyBindingManager.register((KeyMapping) (Object) this);
+	//- }
+	//# end
 
 	//# if MC_VERSION_NUMBER >= 11600
 	@Inject(method = "getTranslatedKeyMessage", at = @At("TAIL"), cancellable = true)
@@ -158,14 +179,29 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	//# end
 
 	@Inject(method = "matches", at = @At("RETURN"), cancellable = true)
-	public void matchesKey(int keyCode, int scanCode, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+	public void matchesKey(
+			//# if MC_VERSION_NUMBER >= 12109
+			KeyEvent event,
+			//# else
+			//- int keyCode,
+			//- int scanCode,
+			//# end
+			CallbackInfoReturnable<Boolean> callbackInfoReturnable
+	) {
 		if (!keyModifiers.isUnset() && !keyModifiers.equals(KeyModifiers.getCurrentlyPressed())) {
 			callbackInfoReturnable.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "matchesMouse", at = @At("RETURN"), cancellable = true)
-	public void matchesMouse(int mouse, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+	public void matchesMouse(
+			//# if MC_VERSION_NUMBER >= 12109
+			MouseButtonEvent event,
+			//# else
+			//- int mouse,
+			//# end
+			CallbackInfoReturnable<Boolean> callbackInfoReturnable
+	) {
 		if (!keyModifiers.isUnset() && !keyModifiers.equals(KeyModifiers.getCurrentlyPressed())) {
 			callbackInfoReturnable.setReturnValue(false);
 		}

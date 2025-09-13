@@ -140,7 +140,7 @@ public class NOPMap<K, V> implements Map<K, V>, Serializable {
 	@Override
 	public V computeIfAbsent(K key, @NotNull Function<? super K, ? extends V> mappingFunction) {
 		// nop
-		return null;
+		return mappingFunction.apply(key);
 	}
 
 	@Override
