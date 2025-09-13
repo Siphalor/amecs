@@ -12,5 +12,8 @@
     "key.amecs.toggle_right_sleeve": "Pokaż/ukryj prawy rękaw",
     "key.amecs.toggle_left_pants_leg": "Pokaż/ukryj lewą nogawkę",
     "key.amecs.toggle_left_sleeve": "Pokaż/ukryj lewy rękaw",
-    "key.amecs.toggle_right_pants_leg": "Pokaż/ukryj prawą nogawkę"
+    "key.amecs.toggle_right_pants_leg": "Pokaż/ukryj prawą nogawkę",
+    "key.amecs.alternative_escape": "",
+    "amecs.search.no_results": "",
+    "amecs.search.placeholder": ""
 }
