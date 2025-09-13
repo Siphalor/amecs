@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - "1.16"
+      - "cross-version"
 
 
 jobs:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           token: "${{ secrets.CUSTOMGHTOKEN }}"
 
