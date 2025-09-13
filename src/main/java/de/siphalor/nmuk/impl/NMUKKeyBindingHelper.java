@@ -31,7 +31,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.KeyBindsList;
+//# if MC_VERSION_NUMBER >= 12100
+import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
+//# else
+//- import net.minecraft.client.gui.screens.controls.KeyBindsList;
+//# end
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Level;
@@ -39,10 +43,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @ApiStatus.Internal
 public class NMUKKeyBindingHelper {
@@ -139,7 +140,7 @@ public class NMUKKeyBindingHelper {
 			return (List<KeyBindsList.Entry>) (Object)
 					((EntryListWidgetAccessor) ((KeybindsScreenAccessor) screen).getKeyBindsList()).getChildren();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	public static KeyBindsList.KeyEntry createKeyBindingEntry(KeyBindsList listWidget, KeyMapping binding, Component text) {
@@ -161,7 +162,7 @@ public class NMUKKeyBindingHelper {
 	//- 		return (List<ControlList.Entry>) (Object)
 	//- 				((EntryListWidgetAccessor) ((KeybindsScreenAccessor) screen).getControlList()).getChildren();
 	//- 	}
-	//- 	return null;
+	//- 	return new ArrayList<>();
 	//- }
 
 	//- public static ControlList.KeyEntry createKeyBindingEntry(ControlList listWidget, KeyMapping binding, Component text) {

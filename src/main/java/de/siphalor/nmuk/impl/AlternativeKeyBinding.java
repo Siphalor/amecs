@@ -27,12 +27,31 @@ import java.lang.invoke.MethodHandles;
 
 @ApiStatus.Internal
 public class AlternativeKeyBinding extends KeyMapping {
-	public AlternativeKeyBinding(KeyMapping parent, String translationKey, int code, String category) {
+	public AlternativeKeyBinding(
+			KeyMapping parent,
+			String translationKey,
+			int code,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category
+			//# else
+			//- String category
+			//# end
+	) {
 		super(translationKey, code, category);
 		((IKeyBinding) this).nmuk_setParent(parent);
 	}
 
-	public AlternativeKeyBinding(KeyMapping parent, String translationKey, InputConstants.Type type, int code, String category) {
+	public AlternativeKeyBinding(
+			KeyMapping parent,
+			String translationKey,
+			InputConstants.Type type,
+			int code,
+			//# if MC_VERSION_NUMBER >= 12109
+			Category category
+			//# else
+			//- String category
+			//# end
+	) {
 		super(translationKey, type, code, category);
 		((IKeyBinding) this).nmuk_setParent(parent);
 	}

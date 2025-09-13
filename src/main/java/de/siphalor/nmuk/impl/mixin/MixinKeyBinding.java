@@ -17,10 +17,12 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
+//- import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.language.I18n;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -31,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+//- import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -43,7 +45,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	private boolean isDown;
 	@Shadow
 	@Final
-	private String category;
+	//# if MC_VERSION_NUMBER >= 12109
+	private KeyMapping.Category category;
+	//# else
+	//- private String category;
+	//# end
 	@Shadow
 	@Final
 	private String name;
@@ -122,13 +128,18 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 		return ((IKeyBinding) parent).nmuk_getAlternatives().indexOf((KeyMapping) (Object) this);
 	}
 
-	@Inject(
-			method = "click",
-			at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyMapping;clickCount:I"),
-			cancellable = true,
-			locals = LocalCapture.CAPTURE_FAILSOFT
-	)
-	private static void onKeyPressed(InputConstants.Key key, CallbackInfo callbackInfo, KeyMapping binding) {
+	//# if MC_VERSION_NUMBER >= 12109
+	@Inject(method = "method_74182", at = @At("HEAD"), cancellable = true)
+	private static void onKeyPressed(KeyMapping binding, CallbackInfo callbackInfo) {
+	//# else
+	//- @Inject(
+	//- 		method = "click",
+	//- 		at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyMapping;clickCount:I"),
+	//- 		cancellable = true,
+	//- 		locals = LocalCapture.CAPTURE_FAILSOFT
+	//- )
+	//- private static void onKeyPressed(InputConstants.Key key, CallbackInfo callbackInfo, KeyMapping binding) {
+	//# end
 		KeyMapping parent = ((IKeyBinding) binding).nmuk_getParent();
 		if (parent != null) {
 			((KeyBindingAccessor) parent).setClickCount(((KeyBindingAccessor) parent).getClickCount() + 1);
@@ -186,35 +197,51 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 		}
 	}
 
-	@Inject(
-			method = "matches",
-			at = @At("HEAD"),
-			cancellable = true
-	)
-	public void matchesKeyInjection(int keyCode, int scanCode, CallbackInfoReturnable<Boolean> cir) {
+	//# if MC_VERSION_NUMBER >= 12109
+	@Inject(method = "matches", at = @At("HEAD"), cancellable = true)
+	public void matchesKeyInjection(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
 		if (children != null && !children.isEmpty()) {
 			for (KeyMapping child : children) {
-				if (child.matches(keyCode, scanCode)) {
+				if (child.matches(keyEvent)) {
 					cir.setReturnValue(true);
 				}
 			}
 		}
 	}
 
-	@Inject(
-			method = "matchesMouse",
-			at = @At("HEAD"),
-			cancellable = true
-	)
-	public void matchesMouseInjection(int code, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "matchesMouse", at = @At("HEAD"), cancellable = true)
+	public void matchesMouseInjection(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
 		if (children != null && !children.isEmpty()) {
 			for (KeyMapping child : children) {
-				if (child.matchesMouse(code)) {
+				if (child.matchesMouse(event)) {
 					cir.setReturnValue(true);
 				}
 			}
 		}
 	}
+	//# else
+	//- @Inject(method = "matches", at = @At("HEAD"), cancellable = true)
+	//- public void matchesKeyInjection(int keyCode, int scanCode, CallbackInfoReturnable<Boolean> cir) {
+	//- 	if (children != null && !children.isEmpty()) {
+	//- 		for (KeyMapping child : children) {
+	//- 			if (child.matches(keyCode, scanCode)) {
+	//- 				cir.setReturnValue(true);
+	//- 			}
+	//- 		}
+	//- 	}
+	//- }
+
+	//- @Inject(method = "matchesMouse", at = @At("HEAD"), cancellable = true)
+	//- public void matchesMouseInjection(int code, CallbackInfoReturnable<Boolean> cir) {
+	//- 	if (children != null && !children.isEmpty()) {
+	//- 		for (KeyMapping child : children) {
+	//- 			if (child.matchesMouse(code)) {
+	//- 				cir.setReturnValue(true);
+	//- 			}
+	//- 		}
+	//- 	}
+	//- }
+	//# end
 
 	@Inject(
 			method = "isDefault",

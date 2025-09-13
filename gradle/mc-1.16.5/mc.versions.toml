@@ -1,5 +1,5 @@
 [versions]
-amecs-api = "1.6.1"
+amecs-api = "1.6.2"
 fabric-api = "0.42.0+1.16"
 java = "8"
 minecraft = "1.16.5"

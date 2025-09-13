@@ -33,7 +33,11 @@ public interface KeyBindingAccessor {
 	@Final
 	@Mutable
 	@Accessor
-	void setCategory(String category);
+	//# if MC_VERSION_NUMBER >= 12109
+	void setCategory(KeyMapping.Category category);
+	//# else
+	//- void setCategory(String category);
+	//# end
 
 	@Accessor
 	int getClickCount();

@@ -28,9 +28,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.Screen;
+//- import net.minecraft.client.gui.screens.Screen;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
-import net.minecraft.client.gui.screens.controls.KeyBindsList;
+//# if MC_VERSION_NUMBER >= 12100
+import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
+//# else
+//- import net.minecraft.client.gui.screens.controls.KeyBindsList;
+//# end
 import net.minecraft.network.chat.Component;
 //- import net.minecraft.network.chat.TextComponent;
 //- import net.minecraft.network.chat.TranslatableComponent;
@@ -50,7 +54,13 @@ import java.util.List;
 //# else
 //- @Mixin(ControlList.KeyEntry.class)
 //# end
-public class MixinKeyBindingEntry {
+public abstract class MixinKeyBindingEntry
+		//# if MC_VERSION_NUMBER >= 11800
+		extends KeyBindsList.Entry
+		//# else
+		//- extends ControlList.Entry
+		//# end
+		{
 	//# if MC_VERSION_NUMBER >= 11900
 	@Unique
 	private static final Component REMOVE_NAME = Component.literal("x");
@@ -132,11 +142,12 @@ public class MixinKeyBindingEntry {
 	private void onRemoveClicked(KeyMapping binding) {
 		((IKeyBinding) ((IKeyBinding) binding).nmuk_getParent()).nmuk_removeAlternative(binding);
 		NMUKKeyBindingHelper.removeKeyBinding(binding);
-		val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
-		if (entries != null) {
-			//noinspection SuspiciousMethodCalls
-			entries.remove(this);
-		}
+		//# if MC_VERSION_NUMBER >= 12109
+		listWidget.removeEntry(this);
+		listWidget.refreshEntries();
+		//# else
+		//- listWidget.removeEntry(this);
+		//# end
 	}
 
 	@Unique
@@ -145,28 +156,42 @@ public class MixinKeyBindingEntry {
 		NMUKKeyBindingHelper.registerKeyBinding(altBinding);
 		val altEntry = NMUKKeyBindingHelper.createKeyBindingEntry(listWidget, altBinding, ENTRY_NAME);
 		if (altEntry != null) {
-			val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
-			if (entries != null) {
-				for (int i = 0, entriesSize = entries.size(); i < entriesSize; i++) {
-					// noinspection ConstantConditions
-					if (entries.get(i) == (Object) this) {
-						i += ((IKeyBinding) binding).nmuk_getAlternativesCount();
-						entries.add(i, altEntry);
-						break;
-					}
+			//# if MC_VERSION_NUMBER >= 12109
+			val entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
+			//# else
+			//- val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
+			//# end
+			for (int i = 0, entriesSize = entries.size(); i < entriesSize; i++) {
+				// noinspection ConstantConditions
+				if (entries.get(i) == this) {
+					i += ((IKeyBinding) binding).nmuk_getAlternativesCount();
+					entries.add(i, altEntry);
+					break;
 				}
 			}
+			//# if MC_VERSION_NUMBER >= 12109
+			listWidget.replaceEntries(entries);
+			listWidget.refreshEntries();
+			//# end
 		}
 	}
 
 	@Inject(method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V", at = @At("HEAD"))
 	private void resetButtonPressed(KeyMapping keyBinding, Button widget, CallbackInfo ci) {
-		if (((IKeyBinding) keyBinding).nmuk_getParent() == null && Screen.hasShiftDown()) {
+		//# if MC_VERSION_NUMBER >= 12109
+		if (((IKeyBinding) keyBinding).nmuk_getParent() == null && Minecraft.getInstance().hasShiftDown()) {
+		//# else
+		//- if (((IKeyBinding) keyBinding).nmuk_getParent() == null && Screen.hasShiftDown()) {
+		//# end
 			List<KeyMapping> alternatives = ((IKeyBinding) keyBinding).nmuk_getAlternatives();
 			List<KeyMapping> defaultAlternatives = new ArrayList<>(NMUKKeyBindingHelper.defaultAlternatives.get(keyBinding));
-			val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
-			// noinspection ConstantConditions,SuspiciousMethodCalls
-			int entryPos = entries.indexOf((Object) this);
+			//# if MC_VERSION_NUMBER >= 12109
+			val entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
+			//# else
+			//- val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
+			//# end
+			// noinspection ConstantConditions
+			int entryPos = entries.indexOf(this);
 
 			int index;
 			for (Iterator<KeyMapping> iterator = alternatives.iterator(); iterator.hasNext(); ) {
@@ -191,11 +216,17 @@ public class MixinKeyBindingEntry {
 				entries.add(++entryPos, entry);
 				NMUKKeyBindingHelper.resetSingleKeyBinding(defaultAlternative);
 			}
+
+			//# if MC_VERSION_NUMBER >= 12109
+			listWidget.replaceEntries(entries);
+			//# end
 		}
 	}
 
-	//# if MC_VERSION_NUMBER >= 12005
-	@ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0), ordinal = 7)
+	//# if MC_VERSION_NUMBER >= 12109
+	@ModifyVariable(method = "renderContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
+	//# elif MC_VERSION_NUMBER >= 12005
+	//- @ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0), ordinal = 7)
 	//# else
 	//- @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 2, argsOnly = true)
 	//# end
@@ -203,18 +234,24 @@ public class MixinKeyBindingEntry {
 		return original - 30;
 	}
 
-	@Inject(method = "render", at = @At("RETURN"))
+	//# if MC_VERSION_NUMBER >= 12109
+	@Inject(method = "renderContent", at = @At("RETURN"))
+	//# else
+	//- @Inject(method = "render", at = @At("RETURN"))
+	//# end
 	public void render(
 			//# if MC_VERSION_NUMBER >= 12000
 			GuiGraphics context,
 			//# else
 			//- PoseStack context,
 			//# end
-			int index,
-			int y,
-			int x,
-			int entryWidth,
-			int entryHeight,
+			//# if MC_VERSION_NUMBER < 12109
+			//- int index,
+			//- int y,
+			//- int x,
+			//- int entryWidth,
+			//- int entryHeight,
+			//# end
 			int mouseX,
 			int mouseY,
 			boolean hovered,

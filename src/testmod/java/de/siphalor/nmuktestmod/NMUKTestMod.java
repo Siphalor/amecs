@@ -35,14 +35,26 @@ public class NMUKTestMod implements ModInitializer {
 				MOD_ID + ".test",
 				InputConstants.Type.KEYSYM,
 				86,
-				"key.categories.movement"
+				//# if MC_VERSION_NUMBER >= 12109
+				KeyMapping.Category.MOVEMENT
+				//# else
+				//- "key.categories.movement"
+				//# end
 		));
 		NMUKAlternatives.create(kbd, 85);
 		NMUKAlternatives.create(kbd, new AmecsKeyBinding(
-				new ResourceLocation(MOD_ID, ""),
+				//# if MC_VERSION_NUMBER >= 12100
+				ResourceLocation.fromNamespaceAndPath(MOD_ID, "alt"),
+				//# else
+				//- new ResourceLocation(MOD_ID, "alt"),
+				//# end
 				InputConstants.Type.KEYSYM,
 				86,
-				"",
+				//# if MC_VERSION_NUMBER >= 12109
+				KeyMapping.Category.MOVEMENT,
+				//# else
+				//- "key.categories.movement",
+				//# end
 				new KeyModifiers(false, true, true)
 		));
 	}
