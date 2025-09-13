@@ -8,5 +8,12 @@
     "amecs.toggled.on": "%s 활성화",
     "amecs.toggled.off": "%s 비활성화",
     "amecs.toggled.auto_jump": "자동 점프",
-    "amecs.key.mouse.scroll.down": "아래로 스크롤"
+    "amecs.key.mouse.scroll.down": "아래로 스크롤",
+    "key.amecs.toggle_right_sleeve": "",
+    "key.amecs.alternative_escape": "",
+    "key.amecs.toggle_left_sleeve": "",
+    "amecs.search.no_results": "",
+    "key.amecs.toggle_right_pants_leg": "",
+    "key.amecs.toggle_left_pants_leg": "",
+    "amecs.search.placeholder": ""
 }

@@ -12,5 +12,8 @@
     "key.amecs.toggle_right_sleeve": "החלף שרוול ימין",
     "amecs.toggled.on": "הפעל %s",
     "amecs.toggled.off": "כבה %s",
-    "amecs.toggled.auto_jump": "קפיצה אוטומטית"
+    "amecs.toggled.auto_jump": "קפיצה אוטומטית",
+    "key.amecs.alternative_escape": "",
+    "amecs.search.no_results": "",
+    "amecs.search.placeholder": ""
 }

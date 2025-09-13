@@ -12,5 +12,8 @@
     "key.amecs.toggle_left_pants_leg": "Перемкнути Штани Лівої Ноги",
     "amecs.toggled.auto_jump": "Автострибок",
     "amecs.toggled.off": "Вимкнено %s",
-    "key.amecs.toggle_jacket": "Перемкнути Піджак"
+    "key.amecs.toggle_jacket": "Перемкнути Піджак",
+    "key.amecs.alternative_escape": "",
+    "amecs.search.no_results": "",
+    "amecs.search.placeholder": ""
 }
