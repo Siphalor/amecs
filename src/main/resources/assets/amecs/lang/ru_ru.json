@@ -12,8 +12,5 @@
     "amecs.toggled.off": "Отключено %s",
     "key.amecs.toggle_auto_jump": "Переключить авто-прыжок",
     "key.amecs.toggle_hat": "Переключить шляпу",
-    "key.amecs.toggle_right_pants_leg": "Переключить правую штанину",
-    "key.amecs.alternative_escape": "",
-    "amecs.search.no_results": "",
-    "amecs.search.placeholder": ""
+    "key.amecs.toggle_right_pants_leg": "Переключить правую штанину"
 }

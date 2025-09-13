@@ -11,7 +11,5 @@
     "amecs.toggled.on": "%s Etkin",
     "amecs.toggled.off": "%s Devre Dışı",
     "amecs.toggled.auto_jump": "Otomatik Zıplama",
-    "amecs.search.placeholder": "Ara... (Tuşa göre arama '=')",
-    "key.amecs.alternative_escape": "",
-    "amecs.search.no_results": ""
+    "amecs.search.placeholder": "Ara... (Tuşa göre arama '=')"
 }
