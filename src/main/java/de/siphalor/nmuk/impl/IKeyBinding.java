@@ -26,6 +26,8 @@ import java.util.List;
 public interface IKeyBinding {
 	short nmuk_getNextChildId();
 
+	short nmuk_claimNextChildId();
+
 	void nmuk_setNextChildId(short nextChildId);
 
 	boolean nmuk_isAlternative();

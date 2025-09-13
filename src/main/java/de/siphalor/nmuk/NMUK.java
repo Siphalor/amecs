@@ -29,7 +29,10 @@ public class NMUK {
 	public static final String MOD_NAME = "No More Useless Keys";
 
 	public static void log(Level level, String message) {
-		LOGGER.log(level, "[" + MOD_NAME + "] " + message);
+		LOGGER.log(level, () -> "[" + MOD_NAME + "] " + message);
 	}
 
+	public static void log(Level level, String message, Throwable e) {
+		LOGGER.log(level, () -> "[" + MOD_NAME + "] " + message, e);
+	}
 }

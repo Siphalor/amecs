@@ -20,6 +20,7 @@ package de.siphalor.nmuk.impl;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.mojang.blaze3d.platform.InputConstants;
+import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.mixin.EntryListWidgetAccessor;
 import de.siphalor.nmuk.impl.mixin.GameOptionsAccessor;
 import de.siphalor.nmuk.impl.mixin.KeybindsScreenAccessor;
@@ -29,9 +30,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
+//- import net.minecraft.client.gui.screens.controls.ControlList;
 import net.minecraft.client.gui.screens.controls.KeyBindsList;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Constructor;
@@ -99,20 +102,36 @@ public class NMUKKeyBindingHelper {
 	}
 
 	public static KeyMapping createAlternativeKeyBinding(KeyMapping base) {
-		return createAlternativeKeyBinding(base, -1);
-	}
-
-	public static KeyMapping createAlternativeKeyBinding(KeyMapping base, int code) {
-		return createAlternativeKeyBinding(base, InputConstants.Type.KEYSYM, code);
+		return createAlternativeKeyBinding(base, InputConstants.UNKNOWN.getType(), InputConstants.UNKNOWN.getValue());
 	}
 
 	public static KeyMapping createAlternativeKeyBinding(KeyMapping base, InputConstants.Type type, int code) {
 		IKeyBinding parent = (IKeyBinding) base;
-		KeyMapping alt = new AlternativeKeyBinding(base, base.getName() + "%" + parent.nmuk_getNextChildId(), type, code, base.getCategory());
+		return createAlternativeKeyBindingWithName(
+				base,
+				base.getName() + "%" + parent.nmuk_claimNextChildId(),
+				type,
+				code
+		);
+	}
+
+	public static KeyMapping createAlternativeKeyBindingWithName(KeyMapping base, String name, InputConstants.Key key) {
+		return createAlternativeKeyBindingWithName(base, name, key.getType(), key.getValue());
+	}
+
+	public static KeyMapping createAlternativeKeyBindingWithName(
+			KeyMapping base,
+			String name,
+			InputConstants.Type type,
+			int code
+	) {
+		IKeyBinding parent = (IKeyBinding) base;
+		KeyMapping alt = new AlternativeKeyBinding(base, name, type, code, base.getCategory());
 		parent.nmuk_addAlternative(alt);
 		return alt;
 	}
 
+	//# if MC_VERSION_NUMBER >= 11800
 	public static List<KeyBindsList.Entry> getControlsListWidgetEntries() {
 		Screen screen = Minecraft.getInstance().screen;
 		if (screen instanceof KeybindsScreenAccessor) {
@@ -130,8 +149,31 @@ public class NMUKKeyBindingHelper {
 			constructor.setAccessible(true);
 			return constructor.newInstance(listWidget, binding, text);
 		} catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-			e.printStackTrace();
+			NMUK.log(Level.ERROR, "Failed to create GUI representation of key binding", e);
 		}
 		return null;
 	}
+	//# else
+	//- public static List<ControlList.Entry> getControlsListWidgetEntries() {
+	//- 	Screen screen = Minecraft.getInstance().screen;
+	//- 	if (screen instanceof KeybindsScreenAccessor) {
+	//- 		//noinspection unchecked
+	//- 		return (List<ControlList.Entry>) (Object)
+	//- 				((EntryListWidgetAccessor) ((KeybindsScreenAccessor) screen).getControlList()).getChildren();
+	//- 	}
+	//- 	return null;
+	//- }
+
+	//- public static ControlList.KeyEntry createKeyBindingEntry(ControlList listWidget, KeyMapping binding, Component text) {
+	//- 	try {
+	//- 		Constructor<ControlList.KeyEntry> constructor = ControlList.KeyEntry.class
+	//- 				.getDeclaredConstructor(ControlList.class, KeyMapping.class, Component.class);
+	//- 		constructor.setAccessible(true);
+	//- 		return constructor.newInstance(listWidget, binding, text);
+	//- 	} catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+	//- 		NMUK.log(Level.ERROR, "Failed to create GUI representation of key binding", e);
+	//- 	}
+	//- 	return null;
+	//- }
+	//# end
 }

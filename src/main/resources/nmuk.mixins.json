@@ -3,6 +3,7 @@
 	"package": "de.siphalor.nmuk.impl.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
+		"ButtonAccessor",
 		"EntryListWidgetAccessor",
 		"GameOptionsAccessor",
 		"KeyBindingAccessor",

@@ -21,8 +21,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -50,7 +48,11 @@ public class MixinGameOptions {
 
 	// Prevent nmuk keybindings from getting saved to the Vanilla options file
 	@Inject(
+			//# if MC_VERSION_NUMBER >= 11700
 			method = "processOptions",
+			//# else
+			//- method = "save",
+			//# end
 			at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;keyMappings:[Lnet/minecraft/client/KeyMapping;")
 	)
 	public void removeNMUKBindings(CallbackInfo ci) {
@@ -59,7 +61,11 @@ public class MixinGameOptions {
 	}
 
 	@Inject(
+			//# if MC_VERSION_NUMBER >= 11700
 			method = "processOptions",
+			//# else
+			//- method = "save",
+			//# end
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/sounds/SoundSource;values()[Lnet/minecraft/sounds/SoundSource;")
 	)
 	public void resetAllKeys(CallbackInfo ci) {
@@ -78,7 +84,7 @@ public class MixinGameOptions {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			NMUK.log(Level.ERROR, "Failed to save NMUK key binding alternatives", e);
 		}
 	}
 
@@ -95,8 +101,8 @@ public class MixinGameOptions {
 			return;
 		}
 		Map<String, KeyMapping> keyBindings = KeyMapping.ALL;
-		Object2IntMap<KeyMapping> alternativeCountMap = new Object2IntOpenHashMap<>();
-		Queue<KeyMapping> newAlternatives = new ArrayDeque<>();
+		Set<String> encounteredKeyBindingNames = new HashSet<>(keyMappings.length * 2);
+		List<KeyMapping> newAlternatives = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(nmukOptionsFile))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -106,64 +112,72 @@ public class MixinGameOptions {
 						NMUK.log(Level.WARN, "Invalid nmuk options line: " + line);
 						continue;
 					}
-					String id = line.substring(0, stringIndex);
+					String name = line.substring(0, stringIndex);
 					String keyId = line.substring(stringIndex + 1);
-					if (!id.startsWith("key_")) {
-						NMUK.log(Level.WARN, "Invalid nmuk options entry: " + id);
+					if (!name.startsWith("key_")) {
+						NMUK.log(Level.WARN, "Invalid nmuk options entry: " + name);
 						continue;
 					}
-					id = id.substring(4);
-					stringIndex = id.indexOf('%');
+					name = name.substring(4);
+					stringIndex = name.indexOf('%');
 					if (stringIndex <= 0) {
 						NMUK.log(Level.WARN, "Nmuk entry is missing an alternative id");
 						continue;
 					}
-					short altId = Short.parseShort(id.substring(stringIndex + 1));
-					id = id.substring(0, stringIndex);
+					short altId = Short.parseShort(name.substring(stringIndex + 1));
+
+					String baseName = name.substring(0, stringIndex);
 					InputConstants.Key boundKey = InputConstants.getKey(keyId);
-					//noinspection ConstantConditions
-					KeyMapping base = keyBindings.get(id);
-					if (base != null) {
-						int index = alternativeCountMap.getOrDefault(base, 0);
-						List<KeyMapping> children = ((IKeyBinding) base).nmuk_getAlternatives();
-						((IKeyBinding) base).nmuk_setNextChildId(altId);
-						if (children == null || index >= children.size()) {
-							KeyMapping alternative = NMUKKeyBindingHelper.createAlternativeKeyBinding(base);
-							alternative.setKey(boundKey);
-							newAlternatives.add(alternative);
-						} else {
-							children.get(index).setKey(boundKey);
-						}
-						alternativeCountMap.put(base, index + 1);
+
+					KeyMapping baseBinding = keyBindings.get(baseName);
+					if (baseBinding == null) {
+						NMUK.log(Level.WARN, "Key binding " + baseName + " doesn't exist");
+						continue;
 					}
+
+					IKeyBinding baseBindingAccessor = (IKeyBinding) baseBinding;
+					baseBindingAccessor.nmuk_setNextChildId(
+							(short) Math.max(altId, baseBindingAccessor.nmuk_getNextChildId())
+					);
+
+					KeyMapping altBinding = keyBindings.get(name);
+					if (altBinding == null) {
+						altBinding = NMUKKeyBindingHelper.createAlternativeKeyBindingWithName(
+								baseBinding,
+								name,
+								boundKey
+						);
+						newAlternatives.add(altBinding);
+					}
+
+					altBinding.setKey(boundKey);
+					encounteredKeyBindingNames.add(name);
 				} catch (Throwable e) {
-					NMUK.log(Level.ERROR, "Encountered an issue whilst loading nmuk options file!");
-					e.printStackTrace();
+					NMUK.log(Level.WARN, "Encountered an issue whilst loading nmuk options file!", e);
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			NMUK.log(Level.ERROR, "Failed to load nmuk options file");
 		}
 
 		Set<KeyMapping> newAllKeyMappings = new TreeSet<>(Arrays.asList(keyMappings));
 
 		newAllKeyMappings.addAll(newAlternatives);
 
-		int newCount, oldCount;
-		for (KeyMapping binding : keyMappings) {
-			newCount = alternativeCountMap.getOrDefault(binding, 0);
-			oldCount = ((IKeyBinding) binding).nmuk_getAlternativesCount();
-			if (oldCount > newCount) {
-				List<KeyMapping> alternatives = ((IKeyBinding) binding).nmuk_getAlternatives();
-				List<KeyMapping> obsoleteAlternatives = alternatives.subList(newCount, oldCount);
-
-				for (KeyMapping obsoleteAlternative : obsoleteAlternatives) {
-					newAllKeyMappings.remove(obsoleteAlternative);
-					KeyMapping.ALL.remove(obsoleteAlternative.getName());
+		for (KeyMapping keyMapping : keyMappings) {
+			if (!encounteredKeyBindingNames.contains(keyMapping.getName())) {
+				KeyMapping parent = ((IKeyBinding) keyMapping).nmuk_getParent();
+				if (parent == null) {
+					continue;
 				}
-				obsoleteAlternatives.clear();
+
+				List<KeyMapping> alternatives = ((IKeyBinding) parent).nmuk_getAlternatives();
+				alternatives.remove(keyMapping);
+				newAllKeyMappings.remove(keyMapping);
+				KeyMapping.ALL.remove(keyMapping.getName());
 			}
 		}
+
 		keyMappings = newAllKeyMappings.toArray(new KeyMapping[0]);
 		KeyMapping.resetMapping();
 	}

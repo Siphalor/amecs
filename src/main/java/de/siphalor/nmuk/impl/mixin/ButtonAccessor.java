@@ -17,23 +17,16 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
-//- import net.minecraft.client.gui.screens.controls.ControlList;
-//- import net.minecraft.client.gui.screens.controls.ControlsScreen;
-import net.minecraft.client.gui.screens.controls.KeyBindsList;
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+import net.minecraft.client.gui.components.Button;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+//- import org.spongepowered.asm.mixin.Mutable;
+//- import org.spongepowered.asm.mixin.gen.Accessor;
 
-//# if MC_VERSION_NUMBER >= 11800
-@Mixin(KeyBindsScreen.class)
-public interface KeybindsScreenAccessor {
-	@Accessor
-	KeyBindsList getKeyBindsList();
+@Mixin(Button.class)
+public interface ButtonAccessor {
+	//# if MC_VERSION_NUMBER <= 11903
+	//- @Accessor
+	//- @Mutable
+	//- void setOnTooltip(Button.OnTooltip onTooltip);
+	//# end
 }
-//# else
-//- @Mixin(ControlsScreen.class)
-//- public interface KeybindsScreenAccessor {
-//- 	@Accessor
-//- 	ControlList getControlList();
-//- }
-//# end

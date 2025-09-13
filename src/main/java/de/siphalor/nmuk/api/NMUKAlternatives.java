@@ -64,7 +64,7 @@ public class NMUKAlternatives {
 	 * @param alternative The alternative keybinding. This keybinding MUST NOT be registered yet
 	 */
 	public static void create(KeyMapping base, KeyMapping alternative) {
-		((KeyBindingAccessor) alternative).setName(base.getName() + "%" + ((IKeyBinding) base).nmuk_getNextChildId());
+		((KeyBindingAccessor) alternative).setName(base.getName() + "%" + ((IKeyBinding) base).nmuk_claimNextChildId());
 		((KeyBindingAccessor) alternative).setCategory(base.getCategory());
 		((IKeyBinding) base).nmuk_addAlternative(alternative);
 		((IKeyBinding) alternative).nmuk_setParent(base);

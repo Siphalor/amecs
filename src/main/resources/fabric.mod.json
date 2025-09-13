@@ -24,10 +24,9 @@
 	"mixins": [
 		"nmuk.mixins.json"
 	],
-  "accessWidener": "nmuk.accesswidener",
-  "depends": {
-		"fabricloader": ">=0.4.0",
-		"minecraft": ">=1.19.4"
+	"accessWidener": "nmuk.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.4.0"
 	},
 	"conflicts": {
 		"amecsapi": "<=1.3.999"
