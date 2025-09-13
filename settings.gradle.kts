@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.maven
 import java.util.*
 
 pluginManagement {
@@ -5,6 +6,10 @@ pluginManagement {
 		maven {
 			name = "Fabric"
 			url = uri("https://maven.fabricmc.net/")
+		}
+		maven {
+			name = "Siphalor's Maven"
+			url = uri("https://maven.siphalor.de")
 		}
 		gradlePluginPortal()
 		mavenLocal()
