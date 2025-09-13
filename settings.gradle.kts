@@ -11,6 +11,13 @@ pluginManagement {
 			}
 		}
 		maven {
+			name = "Siphalor's Maven"
+			url = uri("https://maven.siphalor.de")
+			mavenContent {
+				includeGroupAndSubgroups("de.siphalor")
+			}
+		}
+		maven {
 			url = uri("https://maven.firstdark.dev/releases")
 			mavenContent {
 				includeGroupAndSubgroups("com.hypherionmc")
