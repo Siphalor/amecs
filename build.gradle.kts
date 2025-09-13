@@ -158,6 +158,7 @@ publisher {
 
 	curseID = "438172"
 	modrinthID = "YCcdA1Lp"
+	githubRepo = "Siphalor/nmuk"
 
 	artifact.set(tasks.remapJar)
 
