@@ -1,24 +1,28 @@
 package de.siphalor.amecs.gui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.amecs.Amecs;
 import de.siphalor.amecs.compat.NMUKProxy;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
+import lombok.val;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+//- import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+//- import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.controls.ControlList;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -27,78 +31,124 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
-	protected MinecraftClient minecraft;
+public class SearchFieldControlsListWidget
+		//# if MC_VERSION_NUMBER >= 11802
+		//- extends KeyBindsList.Entry
+		//# else
+		extends ControlList.Entry
+		//# end
+{
+	private final Minecraft minecraft;
+	//# if MC_VERSION_NUMBER >= 11802
+	//- private final KeyBindsList listWidget;
+	//# else
+	private final ControlList listWidget;
+	//# end
 
-	private final TextFieldWidget textFieldWidget;
+	private final EditBox searchField;
 
 	private int lastEntryCount = 0;
-	private final Set<ControlsListWidget.KeyBindingEntry> entries = new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
+	//# if MC_VERSION_NUMBER >= 11802
+	//- private final Set<KeyBindsList.KeyEntry> entries =
+	//# else
+	private final Set<ControlList.KeyEntry> entries =
+	//# end
+			new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
-	public SearchFieldControlsListWidget(MinecraftClient client) {
-		minecraft = client;
-		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-		assert minecraft.currentScreen != null;
+	public SearchFieldControlsListWidget(
+			//# if MC_VERSION_NUMBER >= 11802
+			//- KeyBindsList listWidget,
+			//# else
+			ControlList listWidget,
+			//# end
+			Minecraft minecraft
+	) {
+		this.listWidget = listWidget;
+		this.minecraft = minecraft;
+		Font font = minecraft.font;
+		assert this.minecraft.screen != null;
 
-		textFieldWidget = new TextFieldWidget(textRenderer, minecraft.currentScreen.width / 2 - 125, 0, 250, 20, Text.empty());
-		textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
-		textFieldWidget.setChangedListener(searchText -> {
-			ControlsListWidget listWidget = null;
-			for (Element child : client.currentScreen.children()) {
-				if (child instanceof ControlsListWidget) {
-					listWidget = (ControlsListWidget) child;
-					break;
-				}
-			}
-			assert listWidget != null;
-
+		searchField = new EditBox(
+				font,
+				this.minecraft.screen.width / 2 - 125,
+				0,
+				250,
+				20,
+				//# if MC_VERSION_NUMBER >= 11900
+				//- Component.empty()
+				//# else
+				TextComponent.EMPTY
+				//# end
+		);
+		searchField.setSuggestion(I18n.get("amecs.search.placeholder"));
+		searchField.setResponder(searchText -> {
 			if (searchText.isEmpty()) {
-				textFieldWidget.setSuggestion(I18n.translate("amecs.search.placeholder"));
+				searchField.setSuggestion(I18n.get("amecs.search.placeholder"));
 			} else {
-				textFieldWidget.setSuggestion("");
+				searchField.setSuggestion("");
 			}
 
 			searchText = searchText.trim();
 			listWidget.setScrollAmount(0);
 
-			List<ControlsListWidget.Entry> children = listWidget.children();
+			val children = listWidget.children();
 			if (entries.isEmpty()) {
-				for (ControlsListWidget.Entry entry : children) {
-					if (entry instanceof ControlsListWidget.KeyBindingEntry) {
-						entries.add((ControlsListWidget.KeyBindingEntry) entry);
+				//# if MC_VERSION_NUMBER >= 11802
+				//- for (KeyBindsList.Entry entry : children) {
+				//- 	if (entry instanceof KeyBindsList.KeyEntry) {
+				//- 		entries.add((KeyBindsList.KeyEntry) entry);
+				//- 	}
+				//- }
+				//# else
+				for (ControlList.Entry entry : children) {
+					if (entry instanceof ControlList.KeyEntry) {
+						entries.add((ControlList.KeyEntry) entry);
 					}
 				}
+				//# end
 				lastEntryCount = children.size();
 			}
 			int childrenCount = children.size();
 			if (childrenCount != lastEntryCount) {
 				Amecs.log(Level.INFO, "Controls search results changed externally - recompiling the list!");
 				try {
-					//noinspection JavaReflectionMemberAccess
-					Constructor<ControlsListWidget.KeyBindingEntry> c = ControlsListWidget.KeyBindingEntry.class.getDeclaredConstructor(
-							ControlsListWidget.class, KeyBinding.class, Text.class
+					//# if MC_VERSION_NUMBER >= 11802
+					//- Constructor<KeyBindsList.KeyEntry> c = KeyBindsList.KeyEntry.class.getDeclaredConstructor(
+					//- 		KeyBindsList.class, KeyMapping.class, Component.class
+					//- );
+					//- KeyBindsList.KeyEntry entry;
+					//# else
+					Constructor<ControlList.KeyEntry> c = ControlList.KeyEntry.class.getDeclaredConstructor(
+							ControlList.class, KeyMapping.class, Component.class
 					);
-					c.setAccessible(true);
+					ControlList.KeyEntry entry;
+					//# end
 					entries.clear();
-					KeyBinding[] keyBindings = client.options.allKeys;
+					KeyMapping[] keyBindings = minecraft.options.keyMappings;
 					Arrays.sort(keyBindings);
 					String lastCat = null;
-					ControlsListWidget.KeyBindingEntry entry;
 					lastEntryCount = 1;
-					for (KeyBinding keyBinding : keyBindings) {
+					for (KeyMapping keyBinding : keyBindings) {
 						if (!Objects.equals(lastCat, keyBinding.getCategory())) {
 							lastCat = keyBinding.getCategory();
-							children.add(listWidget.new CategoryEntry(Text.translatable(keyBinding.getCategory())));
+							//# if MC_VERSION_NUMBER >= 11900
+							//- children.add(listWidget.new CategoryEntry(Component.translatable(keyBinding.getCategory())));
+							//# else
+							children.add(listWidget.new CategoryEntry(new TranslatableComponent(keyBinding.getCategory())));
+							//# end
 							lastEntryCount++;
 						}
-						entry = c.newInstance(listWidget, keyBinding, Text.translatable(keyBinding.getTranslationKey()));
+						//# if MC_VERSION_NUMBER >= 11900
+						//- entry = c.newInstance(listWidget, keyBinding, Component.translatable(keyBinding.getName()));
+						//# else
+						entry = c.newInstance(listWidget, keyBinding, new TranslatableComponent(keyBinding.getName()));
+						//# end
 						children.add(entry);
 						entries.add(entry);
 						lastEntryCount++;
 					}
 				} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-					Amecs.log(Level.ERROR, "An unexpected exception occured during recompilation of controls list!");
-					e.printStackTrace();
+					Amecs.log(Level.ERROR, "An unexpected exception occurred during recompilation of controls list!", e);
 				}
 			}
 
@@ -121,8 +171,12 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 			boolean lastMatched = false;
 			boolean includeCat = false;
 			lastEntryCount = 1;
-			for (ControlsListWidget.KeyBindingEntry entry : entries) {
-				KeyBinding binding = ((IKeyBindingEntry) entry).amecs$getKeyBinding();
+			//# if MC_VERSION_NUMBER >= 11802
+			//- for (KeyBindsList.KeyEntry entry : entries) {
+			//# else
+			for (ControlList.KeyEntry entry : entries) {
+			//# end
+				KeyMapping binding = ((IKeyBindingEntry) entry).amecs$getKeyBinding();
 				if (nmuk && lastMatched && NMUKProxy.isAlternative(binding)) {
 					children.add(entry);
 					lastEntryCount++;
@@ -131,17 +185,21 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 
 				final String cat = binding.getCategory();
 				if (!cat.equals(lastCat)) {
-					includeCat = StringUtils.containsIgnoreCase(I18n.translate(cat), searchText);
+					includeCat = StringUtils.containsIgnoreCase(I18n.get(cat), searchText);
 				}
 				if (
 						(
 								includeCat
 										|| searchText == null
-										|| StringUtils.containsIgnoreCase(I18n.translate(((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslationKey()), searchText)
+										|| StringUtils.containsIgnoreCase(I18n.get(((IKeyBindingEntry) entry).amecs$getKeyBinding().getName()), searchText)
 						) && Amecs.entryKeyMatches(entry, keyFilter)
 				) {
 					if (!cat.equals(lastCat)) {
-						children.add(listWidget.new CategoryEntry(Text.translatable(cat)));
+						//# if MC_VERSION_NUMBER >= 11900
+						//- children.add(listWidget.new CategoryEntry(Component.translatable(cat)));
+						//# else
+						children.add(listWidget.new CategoryEntry(new TranslatableComponent(cat)));
+						//# end
 						lastCat = cat;
 						lastEntryCount++;
 					}
@@ -153,54 +211,90 @@ public class SearchFieldControlsListWidget extends ControlsListWidget.Entry {
 				}
 			}
 			if (lastEntryCount <= 1) {
-				MutableText noResultsText = Text.translatable(Amecs.MOD_ID + ".search.no_results");
-				noResultsText.setStyle(noResultsText.getStyle().withColor(Formatting.GRAY));
+				//# if MC_VERSION_NUMBER >= 11900
+				//- MutableComponent noResultsText = Component.translatable(Amecs.MOD_ID + ".search.no_results");
+				//# else
+				MutableComponent noResultsText = new TranslatableComponent(Amecs.MOD_ID + ".search.no_results");
+				//# end
+				noResultsText.setStyle(noResultsText.getStyle().withColor(ChatFormatting.GRAY));
 				children.add(listWidget.new CategoryEntry(noResultsText));
 			}
 		});
 	}
 
 	@Override
-	public List<? extends Element> children() {
-		return Collections.singletonList(textFieldWidget);
+	public List<? extends GuiEventListener> children() {
+		return Collections.singletonList(searchField);
 	}
 
 	@Override
 	public boolean mouseClicked(double double_1, double double_2, int int_1) {
-		return textFieldWidget.mouseClicked(double_1, double_2, int_1);
+		return searchField.mouseClicked(double_1, double_2, int_1);
 	}
+
+	//# if MC_VERSION_NUMBER >= 11700
+	//- @Override
+	//- public List<? extends NarratableEntry> narratables() {
+	//- 	return Collections.singletonList(searchField);
+	//- }
+	//# end
 
 	@Override
 	public boolean mouseReleased(double double_1, double double_2, int int_1) {
-		return textFieldWidget.mouseReleased(double_1, double_2, int_1);
+		return searchField.mouseReleased(double_1, double_2, int_1);
 	}
 
 	@Override
 	public boolean keyPressed(int int_1, int int_2, int int_3) {
-		return textFieldWidget.keyPressed(int_1, int_2, int_3);
+		return searchField.keyPressed(int_1, int_2, int_3);
 	}
 
 	@Override
 	public boolean charTyped(char char_1, int int_1) {
-		return textFieldWidget.charTyped(char_1, int_1);
+		return searchField.charTyped(char_1, int_1);
 	}
 
+	//# if MC_VERSION_NUMBER >= 11904
+	//- @Override
+	//- public void setFocused(boolean focused) {
+	//- 	searchField.setFocused(focused);
+	//- }
+	//# else
 	@Override
-	public void setFocused(boolean boolean_1) {
-		textFieldWidget.setFocused(boolean_1);
+	public boolean changeFocus(boolean focused) {
+		return searchField.changeFocus(focused);
 	}
+	//# end
 
 	@Override
-	public void render(DrawContext drawContext, int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, float var9) {
-		textFieldWidget.setY(var2);
-		textFieldWidget.render(drawContext, var6, var7, var9);
+	public void render(
+			//# if MC_VERSION_NUMBER >= 12000
+			//- GuiGraphics drawContext,
+			//# else
+			PoseStack drawContext,
+			//# end
+			int index,
+			int y,
+			int x,
+			int entryWidth,
+			int entryHeight,
+			int mouseX,
+			int mouseY,
+			boolean var8,
+			float tickDelta
+	) {
+		//# if MC_VERSION_NUMBER >= 11903
+		//- searchField.setY(y);
+		//# else
+		searchField.y = y;
+		//# end
+		searchField.render(drawContext, mouseX, mouseY, tickDelta);
 	}
 
-	@Override
-	public List<? extends Selectable> selectableChildren() {
-		return Collections.singletonList(textFieldWidget);
-	}
+	//# if MC_VERSION_NUMBER >= 11904
+	//- @Override
+	//- public void refreshEntry() {
 
-	@Override
-	protected void update() {}
+	//- }
+	//# end
 }

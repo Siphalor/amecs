@@ -1,5 +1,6 @@
 package de.siphalor.amecs;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.api.AmecsKeyBinding;
 import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.impl.duck.IKeyBindingEntry;
@@ -10,16 +11,16 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.gui.screen.option.ControlsListWidget;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.render.entity.PlayerModelPart;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.controls.ControlList;
+//- import net.minecraft.client.gui.screens.controls.KeyBindsList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -45,22 +46,51 @@ public class Amecs implements ClientModInitializer {
 
     private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
 
-	public static final KeyBinding ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyBinding(new Identifier(MOD_ID, "alternative_escape"), InputUtil.Type.KEYSYM, -1, "key.categories.ui", new KeyModifiers()));
+	public static final KeyMapping ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyBinding(
+			new ResourceLocation(MOD_ID, "alternative_escape"),
+			InputConstants.Type.KEYSYM,
+			-1,
+			"key.categories.ui",
+			new KeyModifiers()
+	));
 
     @Override
     public void onInitializeClient() {
-        KeyBindingHelper.registerKeyBinding(new ToggleAutoJumpKeyBinding(new Identifier(MOD_ID, "toggle_auto_jump"), InputUtil.Type.KEYSYM, 66, "key.categories.movement", new KeyModifiers()));
+        KeyBindingHelper.registerKeyBinding(new ToggleAutoJumpKeyBinding(
+				new ResourceLocation(MOD_ID, "toggle_auto_jump"),
+				InputConstants.Type.KEYSYM,
+				66,
+				"key.categories.movement",
+				new KeyModifiers()
+		));
 
         Arrays.stream(PlayerModelPart.values())
-                .map(playerModelPart -> new SkinLayerKeyBinding(new Identifier(MOD_ID, "toggle_" + playerModelPart.getName().toLowerCase(Locale.ENGLISH)), InputUtil.Type.KEYSYM, -1, SKIN_LAYER_CATEGORY, playerModelPart))
+                .map(playerModelPart -> new SkinLayerKeyBinding(
+						new ResourceLocation(MOD_ID, "toggle_" + playerModelPart.getId().toLowerCase(Locale.ENGLISH)),
+						InputConstants.Type.KEYSYM,
+						-1,
+						SKIN_LAYER_CATEGORY,
+						playerModelPart
+				))
                 .forEach(KeyBindingHelper::registerKeyBinding);
     }
 
-    public static void sendToggleMessage(PlayerEntity playerEntity, boolean value, Text option) {
-        playerEntity.sendMessage(Text.translatable("amecs.toggled." + (value ? "on" : "off"), option), true);
+    public static void sendToggleMessage(Player player, boolean value, Component option) {
+		//# if MC_VERSION_NUMBER >= 11900
+		//- player.displayClientMessage(Component.translatable("amecs.toggled." + (value ? "on" : "off"), option), true);
+		//# else
+		player.displayClientMessage(new TranslatableComponent("amecs.toggled." + (value ? "on" : "off"), option), true);
+		//# end
     }
 
-    public static boolean entryKeyMatches(ControlsListWidget.KeyBindingEntry entry, String keyFilter) {
+    public static boolean entryKeyMatches(
+			//# if MC_VERSION_NUMBER >= 11802
+			//- KeyBindsList.KeyEntry entry,
+			//# else
+			ControlList.KeyEntry entry,
+			//# end
+			String keyFilter
+	) {
         if (keyFilter == null) {
             return true;
         }
@@ -68,13 +98,21 @@ public class Amecs implements ClientModInitializer {
             case "":
                 return ((IKeyBindingEntry) entry).amecs$getKeyBinding().isUnbound();
             case "%":
-                return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getEditButton().getMessage().getStyle().getColor() == TextColor.fromFormatting(Formatting.RED);
+                return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getChangeButton()
+						.getMessage().getStyle().getColor() == TextColor.fromLegacyFormat(ChatFormatting.RED);
             default:
-                return StringUtils.containsIgnoreCase(((IKeyBindingEntry) entry).amecs$getKeyBinding().getBoundKeyLocalizedText().getString(), keyFilter);
+                return StringUtils.containsIgnoreCase(
+						((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslatedKeyMessage().getString(),
+						keyFilter
+				);
         }
     }
 
     public static void log(Level level, String message) {
-        LOGGER.log(level, LOGGER_PREFIX + message);
+        LOGGER.log(level, "{}: {}", LOGGER_PREFIX, message);
     }
+
+	public static void log(Level level, String message, Throwable throwable) {
+		LOGGER.log(level, "{}: {}", LOGGER_PREFIX, message, throwable);
+	}
 }
