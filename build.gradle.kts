@@ -154,15 +154,12 @@ publishing {
 publisher {
 	apiKeys {
 		project.findProperty("modrinth.token")?.let { modrinth(it as String) }
-		project.findProperty("curseforge.token")?.let { modrinth(it as String) }
+		project.findProperty("curseforge.token")?.let { curseforge(it as String) }
 		project.findProperty("github.token")?.let { github(it as String) }
 	}
 
-	debug = true
-
 	curseID = "438172"
 	modrinthID = "YCcdA1Lp"
-	githubRepo = "Siphalor/nmuk"
 
 	artifact.set(tasks.remapJar)
 
@@ -177,4 +174,19 @@ publisher {
 	changelog.set(providers.exec {
 		commandLine("git", "log", "-1", "--format=format:##%x20%s%n%n%b%nRelease%x20by%x20%an", "--grep", "Version")
 	}.standardOutput.asText.map { it.trim() })
+
+	curseDepends {
+		required("fabric-api")
+	}
+	modrinthDepends {
+		required("fabric-api")
+	}
+
+	github {
+		repo("Siphalor/nmuk")
+		projectVersion = shortVersion
+		tag(shortVersion)
+		createTag(true)
+		createRelease(true)
+	}
 }
