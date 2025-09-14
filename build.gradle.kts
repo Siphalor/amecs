@@ -147,7 +147,6 @@ publisher {
 
 	curseID = "324564"
 	modrinthID = "rcLriA4v"
-	githubRepo = "Siphalor/amecs"
 
 	artifact.set(tasks.remapJar)
 
@@ -170,5 +169,13 @@ publisher {
 	modrinthDepends {
 		required("fabric-api")
 		incompatible("controlling")
+	}
+
+	github {
+		repo("Siphalor/amecs")
+		projectVersion = shortVersion
+		tag(shortVersion)
+		createTag(true)
+		createRelease(true)
 	}
 }
