@@ -164,4 +164,13 @@ publisher {
 	changelog.set(providers.exec {
 		commandLine("git", "log", "-1", "--format=format:##%x20%s%n%n%b%nRelease%x20by%x20%an", "--grep", "Version")
 	}.standardOutput.asText.map { it.trim() })
+
+	curseDepends {
+		required("fabric-api")
+		incompatible("controlling")
+	}
+	modrinthDepends {
+		required("fabric-api")
+		incompatible("controlling")
+	}
 }
