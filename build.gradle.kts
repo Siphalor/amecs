@@ -145,8 +145,6 @@ publisher {
 		project.findProperty("github.token")?.let { github(it as String) }
 	}
 
-	debug = true
-
 	curseID = "324564"
 	modrinthID = "rcLriA4v"
 	githubRepo = "Siphalor/amecs"
