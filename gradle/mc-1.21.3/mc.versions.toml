@@ -4,4 +4,8 @@ java = "21"
 minecraft = "1.21.3"
 
 [libraries]
+controlling = { group = "com.blamejared.controlling", name = "Controlling-fabric-1.21.3", version = "21.0.1" }
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+
+[bundles]
+compatibility = ["controlling"]

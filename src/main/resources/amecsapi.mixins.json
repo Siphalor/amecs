@@ -4,14 +4,15 @@
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [],
 	"client": [
-		"MixinKeybindsScreen",
 		"MixinGameOptions",
 		"MixinInputUtilType",
 		"MixinKeyBinding",
 		"MixinKeyBindingEntry",
+		"MixinKeybindsScreen",
 		"MixinKeyboard",
 		"MixinMinecraftClient",
-		"MixinMouse"
+		"MixinMouse",
+		"compat.controlling.MixinControllingKeyBindingEntry"
 	],
 	"server": [],
 	"injectors": {

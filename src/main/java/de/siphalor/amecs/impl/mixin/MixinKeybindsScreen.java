@@ -17,6 +17,7 @@
 package de.siphalor.amecs.impl.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import de.siphalor.amecs.impl.KeyBindingEditGuiHelper;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
@@ -136,34 +137,8 @@ public abstract class MixinKeybindsScreen
 		//# else
 		//- InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
 		//# end
-		if (selectedKey.isUnbound()) {
-			//# if MC_VERSION_NUMBER >= 12102
-			selectedKey.setKey(key);
-			//# else
-			//- options.setKey(selectedKey, key);
-			//# end
-		} else {
-			InputConstants.Key mainKey = ((IKeyBinding) selectedKey).amecs$getBoundKey();
-			KeyModifiers keyModifiers = ((IKeyBinding) selectedKey).amecs$getKeyModifiers();
-			KeyModifier mainKeyModifier = KeyModifier.fromKey(mainKey);
-			//# if MC_VERSION_NUMBER >= 12102
-			KeyModifier keyModifier = KeyModifier.fromKey(key);
-			//# else
-			//- KeyModifier keyModifier = KeyModifier.fromKeyCode(keyCode);
-			//# end
-			if (mainKeyModifier != KeyModifier.NONE && keyModifier == KeyModifier.NONE) {
-				keyModifiers.set(mainKeyModifier, true);
-				//# if MC_VERSION_NUMBER >= 12102
-				selectedKey.setKey(key);
-				//# else
-				//- options.setKey(selectedKey, key);
-				//# end
-				return;
-			} else {
-				keyModifiers.set(keyModifier, true);
-				keyModifiers.cleanup(selectedKey);
-			}
-		}
+
+		KeyBindingEditGuiHelper.handleKeyPress(selectedKey, key);
 
 		this.lastKeySelection = Util.getMillis();
 		//# if MC_VERSION_NUMBER >= 11904

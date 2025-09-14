@@ -5,3 +5,6 @@ minecraft = "1.19.4"
 
 [libraries]
 minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+
+[bundles]
+compatibility = []

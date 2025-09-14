@@ -20,11 +20,13 @@ val archivesBaseName = "${project.name}-mc${minecraftVersionDescriptor}"
 val shortVersion = "${properties["version"]}"
 version = "${shortVersion}+mc${mcLibs.versions.minecraft.get()}"
 
-sourceSets {
-	create("testmod") {
-		compileClasspath += sourceSets.main.get().compileClasspath
-		runtimeClasspath += sourceSets.main.get().runtimeClasspath
-	}
+val testmod: SourceSet by sourceSets.creating {
+	compileClasspath += sourceSets.main.get().compileClasspath
+	runtimeClasspath += sourceSets.main.get().runtimeClasspath
+}
+val compatibilityCheck: SourceSet by sourceSets.creating {
+	compileClasspath += testmod.compileClasspath
+	runtimeClasspath += testmod.runtimeClasspath
 }
 
 license {
@@ -39,16 +41,39 @@ loom {
 		create("testmodClient") {
 			client()
 			name("Testmod Client")
-			source(sourceSets.getByName("testmod"))
+			source(testmod)
+		}
+		create("compatibilityCheck") {
+			client()
+			name("Compatibility Check")
+			source(compatibilityCheck)
 		}
 	}
 
+	createRemapConfigurations(compatibilityCheck)
 }
 
 repositories {
 	maven {
 		name = "Siphalor's Maven"
 		url = uri("https://maven.siphalor.de")
+		mavenContent {
+			includeGroupAndSubgroups("de.siphalor")
+		}
+	}
+	maven {
+		name = "BlameJared"
+		url = uri("https://maven.blamejared.com")
+		mavenContent {
+			includeGroupAndSubgroups("com.blamejared")
+		}
+	}
+	maven {
+		name = "Modrinth"
+		url = uri("https://api.modrinth.com/maven")
+		mavenContent {
+			includeGroupAndSubgroups("maven.modrinth")
+		}
 	}
 	mavenLocal()
 }
@@ -71,7 +96,14 @@ dependencies {
 		"modImplementation"(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))
 	}
 
+	"modCompileOnly"(mcLibs.bundles.compatibility)
+
 	"testmodImplementation"(sourceSets.main.map { it.output })
+
+	"compatibilityCheckImplementation"(sourceSets.named("testmod").map { it.output })
+	"modCompatibilityCheckImplementation"(mcLibs.bundles.compatibility) {
+		exclude(group = "net.fabricmc")
+	}
 }
 
 tasks.processResources {

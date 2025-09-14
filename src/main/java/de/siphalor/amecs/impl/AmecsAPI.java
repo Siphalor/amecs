@@ -16,12 +16,13 @@
 
 package de.siphalor.amecs.impl;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import de.siphalor.amecs.api.KeyModifiers;
+//- import de.siphalor.amecs.impl.compat.controlling.AmecsControllingIntegration;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//- import net.fabricmc.loader.api.FabricLoader;
+import org.jetbrains.annotations.ApiStatus;
 
 @Environment(EnvType.CLIENT)
 @ApiStatus.Internal
@@ -40,6 +41,11 @@ public class AmecsAPI implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// Required to be a valid mod initializer
+		//# if CONTROLLING_INTEGRATION
+		//- FabricLoader loader = FabricLoader.getInstance();
+		//- if (loader.isModLoaded("controlling")) {
+		//- 	AmecsControllingIntegration.initialize();
+		//- }
+		//# end
 	}
 }
