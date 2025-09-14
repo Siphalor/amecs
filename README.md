@@ -30,9 +30,9 @@ repositories {
 }
 
 // VERSION: Check the badge above for the latest version
-// MINECRAFT_VERSION: The major Minecraft version you're developing for (e.g. 1.15 for 1.15.2)
+// MINECRAFT_VERSION: Roughly the Minecraft version you're developing for - check the maven or ./gradle for all options
 dependencies {
-    include(modImplementation("de.siphalor:amecsapi-MINECRAFT_VERSION:VERSION"))
+    include(modImplementation("de.siphalor.amecs-api:amecs-api-MINECRAFT_VERSION:VERSION"))
 }
 ```
 
