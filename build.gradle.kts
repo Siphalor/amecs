@@ -141,7 +141,7 @@ publishing {
 publisher {
 	apiKeys {
 		project.findProperty("modrinth.token")?.let { modrinth(it as String) }
-		project.findProperty("curseforge.token")?.let { modrinth(it as String) }
+		project.findProperty("curseforge.token")?.let { curseforge(it as String) }
 		project.findProperty("github.token")?.let { github(it as String) }
 	}
 
