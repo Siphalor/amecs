@@ -173,7 +173,6 @@ publisher {
 
 	github {
 		repo("Siphalor/amecs")
-		projectVersion = shortVersion
 		tag(shortVersion)
 		createTag(true)
 		createRelease(true)
