@@ -21,9 +21,7 @@
 		"server": []
 	},
 	"accessWidener": "amecsapi.accesswidener",
-	"mixins": [
-		"amecsapi.mixins.json"
-	],
+	"mixins": [${mixins}],
 	"custom": {
 		"modmenu:api": true,
 		"modmenu": {

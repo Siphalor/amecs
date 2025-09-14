@@ -11,8 +11,7 @@
 		"MixinKeybindsScreen",
 		"MixinKeyboard",
 		"MixinMinecraftClient",
-		"MixinMouse",
-		"compat.controlling.MixinControllingKeyBindingEntry"
+		"MixinMouse"
 	],
 	"server": [],
 	"injectors": {
