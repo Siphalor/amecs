@@ -80,7 +80,6 @@ dependencies {
 	}
 
 	modImplementation(mcLibs.amecsApi)
-	include(mcLibs.amecsApi)
 
 	"testmodImplementation"(sourceSets.main.map { it.output })
 }
