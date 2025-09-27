@@ -184,6 +184,7 @@ publisher {
 	github {
 		repo("Siphalor/nmuk")
 		tag(shortVersion)
+		displayName(shortVersion)
 		createTag(true)
 		createRelease(true)
 	}
