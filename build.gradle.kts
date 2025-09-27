@@ -108,11 +108,22 @@ dependencies {
 
 tasks.processResources {
 	inputs.property("version", project.version)
+	val extraMixins = mcProps["mixins.extra"]?.toString()?.split(",")?.map { it.trim() } ?: listOf()
+	inputs.property("extraMixins", extraMixins)
 
 	from(sourceSets.main.get().resources.srcDirs) {
 		include("fabric.mod.json")
-		expand("version" to project.version)
+		expand(
+			"version" to project.version,
+			"mixins" to extraMixins.plus("amecsapi.mixins.json").joinToString(",") { "\"$it\"" },
+		)
 		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
+
+	if (extraMixins.isNotEmpty()) {
+		from(project.file("src/main/mixins")) {
+			include(extraMixins)
+		}
 	}
 }
 
