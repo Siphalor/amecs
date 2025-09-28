@@ -174,6 +174,7 @@ publisher {
 	github {
 		repo("Siphalor/amecs")
 		tag(shortVersion)
+		displayName(shortVersion)
 		createTag(true)
 		createRelease(true)
 	}
