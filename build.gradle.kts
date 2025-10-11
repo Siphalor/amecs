@@ -78,6 +78,15 @@ repositories {
 	mavenLocal()
 }
 
+configurations {
+	apiElements {
+		outgoing.capability("de.siphalor:amecsapi-${mcProps["minecraft.version.major"]}:${shortVersion}")
+	}
+	runtimeElements {
+		outgoing.capability("de.siphalor:amecsapi-${mcProps["minecraft.version.major"]}:${shortVersion}")
+	}
+}
+
 dependencies {
 	annotationProcessor(libs.lombok)
 	compileOnly(libs.lombok)
