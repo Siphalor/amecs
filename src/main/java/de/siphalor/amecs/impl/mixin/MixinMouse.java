@@ -139,7 +139,7 @@ public class MixinMouse implements IMouse {
 	@WrapOperation(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;mouseScrolled(DDDD)Z"))
 	private boolean onMouseScrolledScreen(Screen screen, double mouseX, double mouseY, double xScrollAmount, double yScrollAmount, Operation<Boolean> original) {
 		Boolean handled = original.call(screen, mouseX, mouseY, xScrollAmount, yScrollAmount);
-		return amecs$onMouseScrolledScreen(handled, xScrollAmount, yScrollAmount);
+		return onMouseScrolledScreen(handled, xScrollAmount, yScrollAmount);
 	}
 	//# else
 	//- @WrapOperation(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;mouseScrolled(DDD)Z"))
@@ -149,9 +149,8 @@ public class MixinMouse implements IMouse {
 	//- }
 	//# end
 
-	// Invoked through manual injection by de.siphalor.amecs.impl.mixin.AmecsAPIMixinConfig
-	@SuppressWarnings("unused")
-	private boolean amecs$onMouseScrolledScreen(
+	@Unique
+	private boolean onMouseScrolledScreen(
 			boolean handled,
 			//# if MC_VERSION_NUMBER >= 12002
 			double xScrollAmount,
