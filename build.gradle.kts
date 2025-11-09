@@ -165,6 +165,12 @@ tasks.named("compileTestmodJava") {
 tasks.jar {
 	from(file("LICENSE"))
 }
+tasks.named<Jar>("sourcesJar") {
+	dependsOn(tasks.processResources)
+	from(project.layout.buildDirectory.file("resources/main/fabric.mod.json")) {
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
+}
 
 publishing {
 	publications {
