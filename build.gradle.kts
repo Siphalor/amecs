@@ -80,9 +80,11 @@ repositories {
 
 configurations {
 	apiElements {
+		outgoing.capability("${project.group}:${archivesBaseName}:${shortVersion}")
 		outgoing.capability("de.siphalor:amecsapi-${mcProps["minecraft.version.major"]}:${shortVersion}")
 	}
 	runtimeElements {
+		outgoing.capability("${project.group}:${archivesBaseName}:${shortVersion}")
 		outgoing.capability("de.siphalor:amecsapi-${mcProps["minecraft.version.major"]}:${shortVersion}")
 	}
 }
