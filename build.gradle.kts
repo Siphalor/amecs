@@ -30,7 +30,7 @@ val compatibilityCheck: SourceSet by sourceSets.creating {
 }
 
 license {
-	header = project.resources.text.fromFile(file("LICENSE_HEADER"))
+	rule(file("LICENSE_HEADER"))
 	include("**/*.java")
 }
 

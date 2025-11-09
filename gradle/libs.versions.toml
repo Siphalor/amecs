@@ -1,13 +1,13 @@
 [versions]
 fabric-loader = "0.17.2"
 jcyo = "0.4.2"
-licenser = "0.6.1"
+licenser = "2.2.1"
 lombok = "1.18.38"
 loom = "1.11-SNAPSHOT"
 
 [plugins]
 jcyo = { id = "de.siphalor.jcyo", version.ref = "jcyo" }
-licenser = { id = "org.cadixdev.licenser", version.ref = "licenser" }
+licenser = { id = "dev.yumi.gradle.licenser", version.ref = "licenser" }
 loom = { id = "fabric-loom", version.ref = "loom" }
 
 [libraries]
