@@ -135,7 +135,6 @@ tasks.processResources {
 java {
 	sourceCompatibility = JavaVersion.toVersion(mcLibs.versions.java.get())
 	targetCompatibility = JavaVersion.toVersion(mcLibs.versions.java.get())
-	withSourcesJar()
 }
 
 val jcyoVars = mcProps.stringPropertyNames()
@@ -161,12 +160,14 @@ tasks.named("compileTestmodJava") {
 tasks.jar {
 	from(file("LICENSE"))
 }
-tasks.named<Jar>("sourcesJar") {
-	dependsOn(tasks.processResources)
-	from(project.layout.buildDirectory.file("resources/main/fabric.mod.json")) {
-		duplicatesStrategy = DuplicatesStrategy.INCLUDE
-	}
+
+tasks.register<Jar>("sourcesJar") {
+	dependsOn(jcyo, tasks.processResources)
+	from(sourceSets.main.get().allJava)
+	from(layout.buildDirectory.file("resources/main"))
+	archiveClassifier.set("sources")
 }
+java.withSourcesJar()
 
 publishing {
 	publications {
