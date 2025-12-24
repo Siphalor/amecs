@@ -23,7 +23,7 @@ public abstract class MixinEntryListWidget {
 	@Shadow protected abstract int addEntry(AbstractSelectionList.Entry<?> entry);
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	//# if MC_VERSION_NUMBER >= 12005
+	//# if MC_VERSION_NUMBER >= 12003
 	public void onConstruct(Minecraft client, int width, int height, int y0, int itemHeight, CallbackInfo ci) {
 	//# else
 	//- public void onConstruct(Minecraft client, int width, int height, int y0, int y1, int itemHeight, CallbackInfo ci) {

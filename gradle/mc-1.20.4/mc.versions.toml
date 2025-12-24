@@ -1,0 +1,12 @@
+[versions]
+amecsApi = "1.7.0"
+fabric-api = "0.97.3+1.20.4"
+java = "17"
+minecraft = "1.20.4"
+nmuk = "1.2.0"
+
+[libraries]
+amecsApi = { group = "de.siphalor.amecs-api", name = "amecs-api-mc1.20.2", version.ref = "amecsApi" }
+fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
+minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+nmuk = { group = "de.siphalor.nmuk", name = "nmuk-mc1.20.0", version.ref = "nmuk" }
