@@ -93,7 +93,7 @@ java {
 val jcyoVars = mcProps.stringPropertyNames()
 	.filter { it.startsWith("preprocessor.") }
 	.map { it to mcProps[it] }
-	.associate { (key, value) -> key.substring("preprocessor.".length) to value }
+	.associate { (key, value) -> key.substring("preprocessor.".length) to value.toString() }
 val jcyo = tasks.register<JcyoTask>("jcyo") {
 	inputDirectory = file("src/main/java")
 	variables = jcyoVars
