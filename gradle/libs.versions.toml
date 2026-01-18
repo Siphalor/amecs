@@ -1,4 +1,5 @@
 [versions]
+changelogPlugin = "2.5.0"
 fabric-loader = "0.17.2"
 jcyo = "0.6.0"
 licenser = "2.2.1"
@@ -7,6 +8,7 @@ loom = "1.11-SNAPSHOT"
 modPublisher = "2.1.8"
 
 [plugins]
+changelog = { id = "org.jetbrains.changelog", version.ref = "changelogPlugin" }
 jcyo = { id = "de.siphalor.jcyo", version.ref = "jcyo" }
 licenser = { id = "dev.yumi.gradle.licenser", version.ref = "licenser" }
 loom = { id = "fabric-loom", version.ref = "loom" }

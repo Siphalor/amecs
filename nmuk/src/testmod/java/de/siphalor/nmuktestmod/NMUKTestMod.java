@@ -17,12 +17,13 @@
 
 package de.siphalor.nmuktestmod;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import de.siphalor.amecs.api.AmecsKeyBinding;
-import de.siphalor.amecs.api.KeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.nmuk.api.NMUKAlternatives;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 
@@ -42,7 +43,7 @@ public class NMUKTestMod implements ModInitializer {
 				//# end
 		));
 		NMUKAlternatives.create(kbd, 85);
-		NMUKAlternatives.create(kbd, new AmecsKeyBinding(
+		NMUKAlternatives.create(kbd, new AmecsKeyBindingWithKeyModifiers(
 				//# if MC_VERSION_NUMBER >= 12100
 				ResourceLocation.fromNamespaceAndPath(MOD_ID, "alt"),
 				//# else
@@ -55,7 +56,7 @@ public class NMUKTestMod implements ModInitializer {
 				//# else
 				//- "key.categories.movement",
 				//# end
-				new KeyModifiers(false, true, true)
+				new AmecsKeyModifierCombination(false, true, true)
 		));
 	}
 }

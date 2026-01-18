@@ -13,7 +13,9 @@ val projectInfo = extensions.create<ProjectInfoExtension>("projectInfo").apply {
 	minecraftVersionDescriptor = mcVersionDescriptor
 	minecraftVersion = mcLibs.versions.minecraft.get()
 	minecraftVersionTitle = mcProps.map { it["minecraft.version.title"] as String }
-	supportedMinecraftVersions = mcProps.map { (it["mc.version.supported"] as String).split(",").map { it.trim() } }
+	supportedMinecraftVersions = mcProps.map {
+		(it["minecraft.version.supported"] as String).split(",").map { it.trim() }
+	}
 }
 
 project.version = "${projectInfo.shortVersion.get()}+mc${projectInfo.minecraftVersion.get()}"

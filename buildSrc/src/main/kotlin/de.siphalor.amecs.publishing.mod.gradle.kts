@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.getByType
 plugins {
 	alias(libs.plugins.loom)
 	alias(libs.plugins.modPublisher)
+	alias(libs.plugins.changelog)
 	id("de.siphalor.amecs.project-info")
 }
 
@@ -30,12 +31,16 @@ publisher {
 
 	displayName = projectInfo.minecraftVersionTitle.zip(projectInfo.shortVersion)
 		{ mcTitle, version -> "[$mcTitle] $version" }
-	// TODO: changelog
+	changelog.set(
+		providers.fileContents(project.layout.projectDirectory.file("CHANGELOG.md")).asText
+			.zip(projectInfo.shortVersion)
+				{ file, version -> project.changelog.renderItem(project.changelog.get(version)) }
+	)
 
 	github {
 		repo("Siphalor/amecs")
 		tag("${project.name}/${projectInfo.shortVersion.get()}")
-		displayName(projectInfo.shortVersion.get())
+		displayName("[${project.name}] ${projectInfo.shortVersion.get()}")
 		createTag(true)
 		createRelease(true)
 	}

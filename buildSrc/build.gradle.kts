@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+	implementation(pluginMarker(libs.plugins.changelog))
 	implementation(pluginMarker(libs.plugins.loom))
 	implementation(pluginMarker(libs.plugins.licenser))
 	implementation(pluginMarker(libs.plugins.jcyo))
