@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"ControlsListWidgetKeyBindingEntryAccessor",
+		"MixinKeyboard"
+	],
+	"client": [
+		"MixinEntryListWidget"
+	],
+	"server": [],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

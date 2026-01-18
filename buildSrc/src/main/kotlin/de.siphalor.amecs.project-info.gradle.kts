@@ -8,6 +8,7 @@ val mcProps = mcVersionDescriptor.flatMap { descriptor ->
 }.map { propsFile -> Properties().apply { load(StringReader(propsFile))} }
 
 val projectInfo = extensions.create<ProjectInfoExtension>("projectInfo").apply {
+	modId = project.name
 	shortVersion = "${properties["version"]}"
 
 	minecraftVersionDescriptor = mcVersionDescriptor

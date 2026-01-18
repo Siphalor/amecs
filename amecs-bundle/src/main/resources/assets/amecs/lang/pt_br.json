@@ -1,0 +1,17 @@
+{
+    "amecs.key.categories.skin_layers": "Camadas de skins do Amecs",
+    "key.amecs.toggle_auto_jump": "Ativar/Desativar pulo automático",
+    "key.amecs.toggle_cape": "Ativar/Desativar capa",
+    "key.amecs.toggle_hat": "Ativar/Desativar chapéu",
+    "key.amecs.toggle_jacket": "Ativar/Desativar casaco",
+    "key.amecs.toggle_left_pants_leg": "Ativar/Desativar calça da perna esquerda",
+    "key.amecs.toggle_left_sleeve": "Ativar/Desativar manga esquerda",
+    "key.amecs.toggle_right_pants_leg": "Ativar/Desativar calça da perna direita",
+    "key.amecs.toggle_right_sleeve": "Ativar/Desativar manga direita",
+    "amecs.toggled.on": "Você ativou: %s",
+    "amecs.toggled.off": "Você desativou %s",
+    "amecs.toggled.auto_jump": "Pulo automático",
+    "amecs.search.placeholder": "Buscar... (= para buscar por palavra, =%% por conflitos)",
+    "amecs.search.no_results": "Nenhum resultado encontrado",
+    "key.amecs.alternative_escape": "Escape (Tecla alternativa)"
+}

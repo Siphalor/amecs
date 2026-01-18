@@ -1,0 +1,16 @@
+{
+    "amecs.key.mouse.scroll.up": "גלול למלה",
+    "amecs.key.mouse.scroll.down": "גלול למטה",
+    "amecs.key.categories.skin_layers": "שכבות עור",
+    "key.amecs.toggle_auto_jump": "החלף קפיצה אוטומטית",
+    "key.amecs.toggle_cape": "החלף גלימה",
+    "key.amecs.toggle_hat": "החלף כובע",
+    "key.amecs.toggle_jacket": "החלף ז'קט",
+    "key.amecs.toggle_left_sleeve": "החלף שרוול שמאל",
+    "key.amecs.toggle_left_pants_leg": "החלף מכנס רגל שמאל",
+    "key.amecs.toggle_right_pants_leg": "החלף מכנס רגל ימין",
+    "key.amecs.toggle_right_sleeve": "החלף שרוול ימין",
+    "amecs.toggled.on": "הפעל %s",
+    "amecs.toggled.off": "כבה %s",
+    "amecs.toggled.auto_jump": "קפיצה אוטומטית"
+}

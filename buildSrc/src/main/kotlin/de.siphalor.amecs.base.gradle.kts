@@ -23,10 +23,9 @@ license {
 }
 
 loom {
-	val accessWidenerFile = file("src/main/resources/${project.name}.accesswidener")
-	if (accessWidenerFile.exists()) {
-		this.accessWidenerPath = accessWidenerFile
-	}
+	this.accessWidenerPath = projectInfo.modId
+		.map { file("src/main/resources/${it}.accesswidener") }
+		.filter { it.exists() }
 }
 
 tasks.validateAccessWidener {
@@ -93,11 +92,6 @@ tasks.processResources {
 			"version" to project.version,
 			"extra_mixins" to if (extraMixins.isEmpty()) "" else "," + extraMixins.joinToString(",") { "\"$it\"" }
 		)
-	}
-
-	from(layout.settingsDirectory.file("images/core-logo-48.png")) {
-		into("assets/amecs-core")
-		rename { "logo.png" }
 	}
 
 	if (extraMixins.isNotEmpty()) {

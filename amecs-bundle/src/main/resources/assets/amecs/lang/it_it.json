@@ -1,0 +1,17 @@
+{
+    "key.amecs.toggle_auto_jump": "Attiva salto automatico",
+    "key.amecs.toggle_cape": "Attiva mantello",
+    "key.amecs.toggle_hat": "Attiva cappello",
+    "key.amecs.toggle_jacket": "Attiva giacca",
+    "key.amecs.toggle_left_pants_leg": "Attiva gamba sinistra dei pantaloni",
+    "key.amecs.toggle_left_sleeve": "Attiva manica sinistra",
+    "key.amecs.toggle_right_sleeve": "Attiva manica destra",
+    "key.amecs.alternative_escape": "Esc (Tasto Alternativo)",
+    "amecs.toggled.on": "%s Abilitato",
+    "amecs.toggled.off": "%s Disabilitato",
+    "amecs.toggled.auto_jump": "Salto Automatico",
+    "amecs.search.no_results": "Nessun risultato trovato",
+    "amecs.key.categories.skin_layers": "Livelli di Skin Amecs",
+    "key.amecs.toggle_right_pants_leg": "Attiva gamba destra dei pantaloni",
+    "amecs.search.placeholder": "Cerca... (= per parola chiave, =%% per conflitti)"
+}

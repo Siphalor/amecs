@@ -4,7 +4,9 @@ plugins {
 	id("de.siphalor.amecs.publishing.mod")
 }
 
-group = "de.siphalor.nmuk"
+projectInfo {
+	modId = "amecs"
+}
 
 loom {
 	runs {
@@ -25,5 +27,14 @@ dependencies {
 		modImplementation(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))
 	}
 
-	compileOnly(project(":amecs-key-modifiers"))
+	for (module in listOf(
+		":amecs-api-legacy",
+		":amecs-key-modifiers",
+		":amecs-mouse-inputs",
+		":amecs-priority-key-mappings",
+	)) {
+		implementation(project(module, configuration = "namedElements"))
+		include(project(module))
+	}
+	compileOnly(project(":nmuk", configuration = "namedElements"))
 }

@@ -1,5 +1,5 @@
 plugins {
-	id("de.siphalor.amecs.base")
+	id("de.siphalor.amecs.core")
 	id("de.siphalor.amecs.publishing.maven")
 }
 

@@ -40,14 +40,16 @@ dependencyResolutionManagement {
 	}
 }
 
-rootProject.name = "amecs-core"
+rootProject.name = "amecs"
 
 include("amecs-key-modifiers")
 include("amecs-priority-key-mappings")
 include("amecs-mouse-inputs")
-include("nmuk")
 
 include("amecs-api-legacy")
+
+include("amecs-bundle")
+include("nmuk")
 
 include("testmod")
 

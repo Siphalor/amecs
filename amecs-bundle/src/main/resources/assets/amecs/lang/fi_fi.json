@@ -1,0 +1,17 @@
+{
+    "amecs.key.categories.skin_layers": "Amecs Skin Kerrokset",
+    "key.amecs.toggle_auto_jump": "Kytke Automaattinen Hyppy",
+    "key.amecs.toggle_cape": "Kytke Viitta",
+    "key.amecs.toggle_hat": "Kytke Hattu",
+    "key.amecs.toggle_jacket": "Kytke Takki",
+    "key.amecs.toggle_left_pants_leg": "Kytke Vasen Housunjalka",
+    "key.amecs.toggle_left_sleeve": "Kytke Vasen Hiha",
+    "key.amecs.toggle_right_pants_leg": "Kytke Oikea Housunjalka",
+    "key.amecs.toggle_right_sleeve": "Kytke Oikea Hiha",
+    "key.amecs.alternative_escape": "Escape (vaihtoehtoinen näppäin)",
+    "amecs.toggled.on": "Aktivoitu %s",
+    "amecs.toggled.off": "Deaktivoitu %s",
+    "amecs.toggled.auto_jump": "Automaattinen Hyppy",
+    "amecs.search.placeholder": "Etsi... (= haku avaimen mukaan, =%% ristiriitoja varten)",
+    "amecs.search.no_results": "Tuloksia ei löytynyt"
+}
