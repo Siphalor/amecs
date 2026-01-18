@@ -144,7 +144,7 @@ afterEvaluate {
 				variables = jcyoVars
 				importOrder = listOf(
 					"",
-					"net.minecraft",
+					"com.mojang|net.minecraft",
 					"\\#",
 				)
 			}

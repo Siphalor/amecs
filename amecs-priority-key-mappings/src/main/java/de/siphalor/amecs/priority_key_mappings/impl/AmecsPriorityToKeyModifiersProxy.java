@@ -1,11 +1,11 @@
 package de.siphalor.amecs.priority_key_mappings.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManagerLayer;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import lombok.NoArgsConstructor;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

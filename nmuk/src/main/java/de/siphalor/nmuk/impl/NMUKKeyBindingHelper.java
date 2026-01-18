@@ -19,7 +19,6 @@ package de.siphalor.nmuk.impl;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.mixin.EntryListWidgetAccessor;
 import de.siphalor.nmuk.impl.mixin.GameOptionsAccessor;
@@ -33,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.ApiStatus;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;

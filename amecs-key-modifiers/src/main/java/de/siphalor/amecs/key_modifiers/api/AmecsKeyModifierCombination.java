@@ -14,7 +14,6 @@ package de.siphalor.amecs.key_modifiers.api;/*
  * limitations under the License.
  */
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import net.fabricmc.api.Environment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 /**

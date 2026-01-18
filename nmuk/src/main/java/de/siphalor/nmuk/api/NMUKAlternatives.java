@@ -17,13 +17,13 @@
 
 package de.siphalor.nmuk.api;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
 import de.siphalor.nmuk.impl.mixin.KeyBindingAccessor;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 /**

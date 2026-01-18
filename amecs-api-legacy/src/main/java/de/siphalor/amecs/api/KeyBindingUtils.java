@@ -16,7 +16,6 @@
 
 package de.siphalor.amecs.api;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.impl.OldKeyModifiersView;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
@@ -26,6 +25,7 @@ import lombok.CustomLog;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 /**

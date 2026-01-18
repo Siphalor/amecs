@@ -17,13 +17,13 @@
 
 package de.siphalor.nmuk.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 @ApiStatus.Internal

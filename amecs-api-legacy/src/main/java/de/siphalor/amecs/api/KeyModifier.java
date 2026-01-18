@@ -16,10 +16,11 @@
 
 package de.siphalor.amecs.api;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.apache.commons.lang3.ArrayUtils;
+
+import com.mojang.blaze3d.platform.InputConstants;
 
 /**
  * @deprecated Use {@link de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier} and

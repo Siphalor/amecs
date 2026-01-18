@@ -16,8 +16,6 @@
 
 package de.siphalor.amecs.key_modifiers.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
-//- import com.mojang.blaze3d.vertex.PoseStack;
 //- import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyBindingEntry;
@@ -36,6 +34,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.mojang.blaze3d.platform.InputConstants;
+//- import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

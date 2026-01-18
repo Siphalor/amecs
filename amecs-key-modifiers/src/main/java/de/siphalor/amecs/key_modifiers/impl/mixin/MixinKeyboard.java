@@ -16,7 +16,6 @@
 
 package de.siphalor.amecs.key_modifiers.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
@@ -28,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;

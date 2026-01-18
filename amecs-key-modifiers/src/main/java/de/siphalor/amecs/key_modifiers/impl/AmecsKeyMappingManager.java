@@ -16,8 +16,6 @@
 
 package de.siphalor.amecs.key_modifiers.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.Window;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
@@ -28,6 +26,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 

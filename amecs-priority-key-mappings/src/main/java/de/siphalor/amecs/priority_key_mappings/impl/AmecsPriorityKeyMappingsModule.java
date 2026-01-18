@@ -1,12 +1,12 @@
 package de.siphalor.amecs.priority_key_mappings.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import de.siphalor.amecs.priority_key_mappings.impl.mixin.KeyMappingAccessor;
 import java.util.Collections;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
+import com.mojang.blaze3d.platform.InputConstants;
 //- import net.minecraft.client.KeyMapping;
 
 public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {

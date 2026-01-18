@@ -17,7 +17,6 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
@@ -31,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;

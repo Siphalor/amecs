@@ -16,7 +16,6 @@
 
 package de.siphalor.amecs.priority_key_mappings.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.priority_key_mappings.impl.AmecsPriorityKeyMappingsModule;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -26,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
 

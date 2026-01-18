@@ -1,11 +1,11 @@
 package de.siphalor.amecs.key_modifiers.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import java.util.*;
 import java.util.stream.Stream;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 public class AmecsKeyMappingManagerLayer {

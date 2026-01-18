@@ -16,10 +16,11 @@
 
 package de.siphalor.amecs.key_modifiers.impl.duck;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import com.mojang.blaze3d.platform.InputConstants;
 
 @Environment(EnvType.CLIENT)
 public interface IKeyMapping {

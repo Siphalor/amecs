@@ -16,7 +16,6 @@
 
 package de.siphalor.amecs.inputs.mouse.impl.mixin;
 
-import com.mojang.blaze3d.platform.InputConstants;
 //- import de.siphalor.amecs.api.KeyBindingUtils;
 import de.siphalor.amecs.inputs.mouse.api.AmecsMouseInputs;
 import de.siphalor.amecs.inputs.mouse.impl.AmecsMouseInputsModule;
@@ -27,6 +26,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.mojang.blaze3d.platform.InputConstants;
 
 @Environment(EnvType.CLIENT)
 @Mixin(InputConstants.Type.class)

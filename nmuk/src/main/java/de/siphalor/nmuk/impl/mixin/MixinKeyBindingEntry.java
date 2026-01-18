@@ -18,8 +18,6 @@
 package de.siphalor.nmuk.impl.mixin;
 
 import com.google.common.collect.ImmutableList;
-//- import com.mojang.blaze3d.platform.GlStateManager;
-//- import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+//- import com.mojang.blaze3d.platform.GlStateManager;
+//- import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

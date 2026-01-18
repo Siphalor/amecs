@@ -16,7 +16,6 @@
 
 package de.siphalor.amecs.key_modifiers.impl;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
@@ -24,6 +23,7 @@ import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
 

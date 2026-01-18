@@ -19,7 +19,6 @@ package de.siphalor.amecs.inputs.mouse.impl.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.platform.InputConstants;
 //- import de.siphalor.amecs.impl.KeyBindingManager;
 //- import de.siphalor.amecs.inputs.mouse.api.AmecsMouseInputs;
 import de.siphalor.amecs.inputs.mouse.impl.AmecsMouseInputsModule;
@@ -37,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
