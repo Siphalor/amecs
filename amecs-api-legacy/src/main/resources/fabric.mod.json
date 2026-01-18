@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "amecsapi",
+	"version": "${version}",
+	"name": "Amecs Core - Legacy API",
+	"description": "The deprecated legacy API of Amecs",
+	"authors": [
+		"Siphalor",
+		"Klotzi111"
+	],
+	"contributors": [],
+	"contact": {},
+	"license": "Apache-2.0",
+	"icon": "assets/amecs-core/logo.png",
+	"environment": "client",
+	"mixins": [ "amecsapi.mixins.json" ],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	},
+	"depends": {
+		"fabricloader": ">=0.17.0",
+		"fabric-api-base": "*",
+		"fabric-key-binding-api-v1": "*",
+		"fabric-resource-loader-v0": "*"
+	},
+	"conflicts": {
+		"nmuk": "<=1.0.999"
+	}
+}

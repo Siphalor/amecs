@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs_key_modifiers",
+	"version": "${version}",
+	"name": "Amecs Core - Key Modifiers",
+	"description": "Allows binding key combinations with modifiers like shift, alt or ctrl pressed at the same time.",
+	"authors": ["Siphalor"],
+	"contributors": ["Klotzi111"],
+	"license": "Apache-2.0",
+	"icon": "assets/amecs-core/logo.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [ "de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersEarlyInit" ],
+		"client": [ "de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule" ]
+	},
+	"mixins": [ "amecs_key_modifiers.mixins.json" ${extra_mixins} ],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.inputs.mouse.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"client": [
+		"MixinInputUtilType",
+		"MixinMouse"
+	]
+}

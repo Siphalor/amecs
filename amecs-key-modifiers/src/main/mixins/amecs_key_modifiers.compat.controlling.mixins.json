@@ -1,0 +1,12 @@
+{
+	"required": false,
+	"package": "de.siphalor.amecs.key_modifiers.impl.mixin.compat.controlling",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [],
+	"client": [
+		"MixinControllingKeyBindingEntry"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

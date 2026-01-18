@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.key_modifiers.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"MixinGameOptions",
+		"MixinKeyBindingEntry",
+		"MixinKeybindsScreen",
+		"MixinKeyboard",
+		"MixinKeyMapping"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

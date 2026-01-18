@@ -1,0 +1,14 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs_priority_key_mappings_testmod",
+	"version": "0.0.1",
+	"name": "Amecs Core - Priority Key Mappings - Testmod",
+	"authors": ["Siphalor"],
+	"license": "Apache-2.0",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"de.siphalor.amecs.priority_key_mappings_testmod.AmecsPriorityKeyMappingsTestmod"
+		]
+	}
+}

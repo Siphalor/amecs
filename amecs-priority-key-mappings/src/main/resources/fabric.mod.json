@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs_priority_key_mappings",
+	"version": "${version}",
+	"name": "Amecs Core - Priority Key Mappings",
+	"description": "Allows other mods to declare key bindings that run before any checks.",
+	"authors": ["Siphalor"],
+	"contributors": ["Klotzi111"],
+	"license": "Apache-2.0",
+	"icon": "assets/amecs-core/logo.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"de.siphalor.amecs.priority_key_mappings.impl.AmecsPriorityKeyMappingsModule"
+		]
+	},
+	"mixins": [ "amecs_priority_key_mappings.mixins.json" ],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	}
+}

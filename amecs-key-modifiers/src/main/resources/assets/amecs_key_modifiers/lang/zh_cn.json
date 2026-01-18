@@ -1,0 +1,11 @@
+{
+    "amecs.key-modifiers.modifier.alt": "Alt",
+    "amecs.key-modifiers.modifier.alt.short": "Alt",
+    "amecs.key-modifiers.modifier.alt.tiny": "A",
+    "amecs.key-modifiers.modifier.control": "Control",
+    "amecs.key-modifiers.modifier.control.short": "Ctrl",
+    "amecs.key-modifiers.modifier.control.tiny": "C",
+    "amecs.key-modifiers.modifier.shift": "Shift",
+    "amecs.key-modifiers.modifier.shift.short": "Shft",
+    "amecs.key-modifiers.modifier.shift.tiny": "S"
+}

@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "amecsapi-testmod",
+	"version": "${version}",
+	"name": "Amecs API",
+	"description": "Testmod for Amecs API",
+	"authors": ["Siphalor"],
+	"license": "Apache-2.0",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"de.siphalor.amecs.testmod.ClientInit"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.4.0",
+		"amecs_key_modifiers": "*",
+		"amecs_priority_key_mappings": "*"
+	}
+}

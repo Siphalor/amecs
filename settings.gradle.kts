@@ -27,5 +27,17 @@ dependencyResolutionManagement {
 	}
 }
 
-rootProject.name = "amecs-api"
+rootProject.name = "amecs-core"
 
+include("amecs-key-modifiers")
+include("amecs-priority-key-mappings")
+include("amecs-mouse-inputs")
+
+include("amecs-api-legacy")
+
+include("testmod")
+
+fun includeAs(name: String, path: String) {
+	include(name)
+	project(":$name").projectDir = file(path)
+}

@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs_mouse_inputs",
+	"version": "${version}",
+	"name": "Amecs Core - Mouse Inputs",
+	"description": "Allows binding certain extra mouse inputs like scrolling to key bindings.",
+	"authors": ["Siphalor"],
+	"contributors": ["Klotzi111"],
+	"license": "Apache-2.0",
+	"icon": "assets/amecs-core/logo.png",
+	"environment": "client",
+	"accessWidener": "amecs_mouse_inputs.accesswidener",
+	"mixins": [ "amecs_mouse_inputs.mixins.json" ],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	}
+}

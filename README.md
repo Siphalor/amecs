@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Logo" src="src/main/resources/assets/amecsapi/icon.png" />
+<img alt="Logo" src="images/core-logo-128.png" />
 
 # Amecs API (or Amecs' API)
 

@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"MixinMinecraftClient"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
