@@ -22,6 +22,12 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -32,11 +38,6 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 //# end
 import net.minecraft.client.input.KeyEvent;
-import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(KeyboardHandler.class)

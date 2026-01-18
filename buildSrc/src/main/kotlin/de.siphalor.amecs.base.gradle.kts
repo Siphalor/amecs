@@ -115,6 +115,11 @@ val jcyoVars = mcProps.stringPropertyNames()
 val jcyo = tasks.register<JcyoTask>("jcyo") {
 	inputDirectory = file("src/main/java")
 	variables = jcyoVars
+	importOrder = listOf(
+		"",
+		"net.minecraft",
+		"\\#",
+	)
 }
 
 tasks.compileJava {

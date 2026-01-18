@@ -3,10 +3,10 @@ package de.siphalor.amecs.key_modifiers.impl;
 import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
-import net.minecraft.client.KeyMapping;
-
 import java.util.*;
 import java.util.stream.Stream;
+
+import net.minecraft.client.KeyMapping;
 
 public class AmecsKeyMappingManagerLayer {
 	private final Map<InputConstants.Key, Collection<KeyMapping>> mappingsByInput = new HashMap<>(100);

@@ -23,6 +23,7 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
 

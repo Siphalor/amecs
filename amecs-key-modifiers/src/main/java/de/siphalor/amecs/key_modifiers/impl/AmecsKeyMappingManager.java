@@ -23,13 +23,13 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
+import java.util.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.*;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 
 @Environment(EnvType.CLIENT)
 @ApiStatus.Internal

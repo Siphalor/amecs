@@ -1,6 +1,6 @@
 [versions]
 fabric-loader = "0.17.2"
-jcyo = "0.5.1"
+jcyo = "0.6.0"
 licenser = "2.2.1"
 lombok = "1.18.38"
 loom = "1.11-SNAPSHOT"

@@ -20,6 +20,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 

@@ -22,6 +22,7 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 //- import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 

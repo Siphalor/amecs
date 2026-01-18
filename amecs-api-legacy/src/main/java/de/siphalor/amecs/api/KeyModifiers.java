@@ -20,13 +20,13 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.impl.OldKeyModifiersView;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
+import java.util.Arrays;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyMapping;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Arrays;
+import net.minecraft.client.KeyMapping;
 
 /**
  * Defines modifiers for a key binding

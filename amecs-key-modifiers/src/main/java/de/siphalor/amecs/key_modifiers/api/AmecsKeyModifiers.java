@@ -2,12 +2,11 @@ package de.siphalor.amecs.key_modifiers.api;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.DefaultKeyModifier;
+import java.util.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AmecsKeyModifiers {

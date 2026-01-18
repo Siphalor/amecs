@@ -18,6 +18,7 @@ package de.siphalor.amecs.key_modifiers.impl.duck;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.KeyMapping;
 
 @Environment(EnvType.CLIENT)

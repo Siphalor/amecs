@@ -5,6 +5,7 @@ import de.siphalor.amecs.api.KeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
+
 import net.minecraft.client.KeyMapping;
 
 @SuppressWarnings("removal")

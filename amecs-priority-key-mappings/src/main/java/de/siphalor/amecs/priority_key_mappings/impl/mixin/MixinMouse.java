@@ -20,13 +20,14 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.priority_key_mappings.impl.AmecsPriorityKeyMappingsModule;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MouseHandler;
-import net.minecraft.client.input.MouseButtonInfo;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.input.MouseButtonInfo;
 
 // TODO: Fix the priority when Mixin 0.8 is a thing and try again (-> MaLiLib causes incompatibilities)
 @Environment(EnvType.CLIENT)

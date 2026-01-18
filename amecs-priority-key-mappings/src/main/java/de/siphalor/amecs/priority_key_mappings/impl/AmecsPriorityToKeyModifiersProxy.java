@@ -5,6 +5,7 @@ import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManagerLayer;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import lombok.NoArgsConstructor;
+
 import net.minecraft.client.KeyMapping;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

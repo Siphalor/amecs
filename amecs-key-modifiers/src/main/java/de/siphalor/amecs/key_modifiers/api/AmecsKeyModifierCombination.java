@@ -17,16 +17,16 @@ package de.siphalor.amecs.key_modifiers.api;/*
 import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyMapping;
-import org.apache.commons.lang3.ArrayUtils;
-import org.jetbrains.annotations.ApiStatus;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.client.KeyMapping;
 
 /**
  * Defines modifiers for a key binding

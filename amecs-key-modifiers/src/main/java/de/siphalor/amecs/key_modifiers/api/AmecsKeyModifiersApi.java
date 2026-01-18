@@ -3,6 +3,7 @@ package de.siphalor.amecs.key_modifiers.api;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
 import net.minecraft.client.KeyMapping;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

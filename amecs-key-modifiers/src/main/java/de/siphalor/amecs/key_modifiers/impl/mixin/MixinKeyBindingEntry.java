@@ -18,11 +18,24 @@ package de.siphalor.amecs.key_modifiers.impl.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
 //- import com.mojang.blaze3d.vertex.PoseStack;
+//- import de.siphalor.amecs.impl.AmecsAPI;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyBindingEntry;
-//- import de.siphalor.amecs.impl.AmecsAPI;
+//- import java.util.ArrayList;
+//- import java.util.Arrays;
+//- import java.util.List;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//- import org.apache.commons.lang3.StringUtils;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -36,22 +49,9 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
 //# end
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-//- import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.MutableComponent;
+//- import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-//- import org.apache.commons.lang3.StringUtils;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-//- import java.util.ArrayList;
-//- import java.util.Arrays;
-//- import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)

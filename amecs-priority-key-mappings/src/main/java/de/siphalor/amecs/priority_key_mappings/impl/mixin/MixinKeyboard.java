@@ -24,14 +24,15 @@ import de.siphalor.amecs.priority_key_mappings.impl.AmecsPriorityKeyMappingsModu
 //- import de.siphalor.amecs.priority_key_mappings.impl.AmecsPriorityToKeyModifiersProxy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyboardHandler;
-//- import net.minecraft.client.Minecraft;
-import net.minecraft.client.input.KeyEvent;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.KeyboardHandler;
+//- import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
 
 @Environment(EnvType.CLIENT)
 @Mixin(KeyboardHandler.class)

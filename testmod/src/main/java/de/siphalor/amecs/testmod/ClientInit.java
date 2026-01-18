@@ -20,9 +20,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
-import org.lwjgl.glfw.GLFW;
 
 public class ClientInit implements ClientModInitializer {
 	@Override

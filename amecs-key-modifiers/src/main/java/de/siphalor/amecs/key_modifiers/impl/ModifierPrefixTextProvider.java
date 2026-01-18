@@ -19,6 +19,7 @@ package de.siphalor.amecs.key_modifiers.impl;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 //- import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

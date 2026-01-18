@@ -3,11 +3,11 @@ package de.siphalor.amecs.priority_key_mappings.impl;
 import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import de.siphalor.amecs.priority_key_mappings.impl.mixin.KeyMappingAccessor;
+import java.util.Collections;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-//- import net.minecraft.client.KeyMapping;
 
-import java.util.Collections;
+//- import net.minecraft.client.KeyMapping;
 
 public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 	private static final boolean KEY_MODIFIERS_MODULE_PRESENT = FabricLoader.getInstance().isModLoaded("amecs_key_modifiers");

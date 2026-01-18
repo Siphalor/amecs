@@ -22,21 +22,21 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import lombok.AccessLevel;
-import lombok.CustomLog;
-import lombok.NoArgsConstructor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import org.jetbrains.annotations.ApiStatus;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.CustomLog;
+import lombok.NoArgsConstructor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 
 @Environment(EnvType.CLIENT)
 @ApiStatus.Internal

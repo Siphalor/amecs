@@ -19,14 +19,15 @@ package de.siphalor.amecs.key_modifiers.impl.mixin;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifierOptions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Options;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Options.class)

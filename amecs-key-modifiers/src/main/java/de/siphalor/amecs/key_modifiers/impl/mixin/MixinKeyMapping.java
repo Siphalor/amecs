@@ -16,37 +16,34 @@
 
 package de.siphalor.amecs.key_modifiers.impl.mixin;
 
-import java.util.Map;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
+import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.ModifierPrefixTextProvider;
 import de.siphalor.amecs.key_modifiers.impl.NOPMap;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Component;
-//- import net.minecraft.client.resources.language.I18n;
+import java.util.Map;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 //- import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+//- import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)
