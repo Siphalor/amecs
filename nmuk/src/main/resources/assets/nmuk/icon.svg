@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="165.61343"
+   height="165.61343"
+   viewBox="0 0 43.818554 43.818554"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="icon.svg"
+   inkscape:export-xdpi="463.73047"
+   inkscape:export-ydpi="463.73047"
+   inkscape:export-filename="D:\coding\java\minecraft\nmuk\src\main\resources\assets\nmuk\icon_large.png">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1094">
+      <stop
+         style="stop-color:#edd900;stop-opacity:1"
+         offset="0"
+         id="stop1090" />
+      <stop
+         id="stop1098"
+         offset="0.43157983"
+         style="stop-color:#e68000;stop-opacity:1" />
+      <stop
+         style="stop-color:#d4008b;stop-opacity:1"
+         offset="1"
+         id="stop1092" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1094"
+       id="linearGradient1096"
+       x1="26.505583"
+       y1="2.2258186"
+       x2="60.287205"
+       y2="44.370167"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4"
+     inkscape:cx="52.526233"
+     inkscape:cy="82.259444"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1346"
+     inkscape:window-height="1040"
+     inkscape:window-x="567"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     units="px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:document-rotation="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-23.235253,-5.7118137)">
+    <circle
+       style="fill:url(#linearGradient1096);fill-opacity:1;stroke:#75204d;stroke-width:1.05999994;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path815"
+       cx="45.144531"
+       cy="27.621092"
+       r="21.379278" />
+    <g
+       aria-label="α"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Calibri;-inkscape-font-specification:Calibri;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="text820-7"
+       transform="translate(-1.8426342,0.3307295)" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.263358px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 33.71183,22.571616 c -1.262562,-2.774486 1.181508,-4.670529 2.546945,-4.661831 1.365436,0.0087 3.920298,1.581834 5.563036,4.357628 1.642738,2.775794 4.422376,10.016031 4.422376,10.016031 0,0 2.586077,-2.132615 3.617605,-4.408486 1.031528,-2.275871 2.078257,-5.512563 1.504364,-6.862519 -0.573893,-1.349955 -3.579101,-2.614494 -3.579101,-2.614494 0,0 4.932788,-0.471516 6.138265,1.002438 1.755647,2.146655 -1.237588,8.703486 -2.091836,10.58836 -0.854247,1.884873 -6.471794,10.457008 -6.471794,10.457008 0,0 -1.107137,-4.594236 -2.77656,-9.197521 -1.669422,-4.603285 -3.128077,-8.75345 -5.447239,-10.139956 -2.319162,-1.386505 -3.426061,1.463345 -3.426061,1.463345 z"
+       id="path845"
+       sodipodi:nodetypes="cczczzcszcszcc" />
+  </g>
+</svg>

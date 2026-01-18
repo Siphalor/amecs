@@ -1,0 +1,11 @@
+[versions]
+fabric-api = "0.97.8+1.20.5"
+java = "17"
+minecraft = "1.20.5"
+
+[libraries]
+controlling = { group = "com.blamejared.controlling", name = "Controlling-fabric-1.20.5", version = "16.0.2" }
+minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+
+[bundles]
+compatibility = ["controlling"]
