@@ -61,6 +61,13 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	@Unique
 	private KeyMapping parent = null;
 
+	//# if MC_VERSION_NUMBER < 11500
+	//- @Override
+	//- public void nmuk_setDown(boolean down) {
+	//- 	isDown = down;
+	//- }
+	//# end
+
 	@Override
 	public short nmuk_getNextChildId() {
 		return nextChildId;
@@ -169,7 +176,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	private void resetInjection(CallbackInfo callbackInfo) {
 		if (children != null && !children.isEmpty()) {
 			for (KeyMapping child : children) {
+				//# if MC_VERSION_NUMBER >= 11500
 				child.setDown(false);
+				//# else
+				//- ((IKeyBinding) child).nmuk_setDown(false);
+				//# end
 			}
 		}
 	}

@@ -17,6 +17,8 @@
 
 package de.siphalor.nmuk.impl.mixin;
 
+//- import java.util.Collections;
+//- import java.util.Map;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -26,6 +28,13 @@ import net.minecraft.client.KeyMapping;
 
 @Mixin(KeyMapping.class)
 public interface KeyBindingAccessor {
+	//# if MC_VERSION_NUMBER < 11600
+	//- @Accessor
+	//- static Map<String, Integer> getCATEGORY_SORT_ORDER() {
+	//- 	return Collections.emptyMap();
+	//- }
+	//# end
+
 	@Final
 	@Mutable
 	@Accessor

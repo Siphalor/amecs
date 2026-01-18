@@ -25,7 +25,7 @@ import net.minecraft.client.gui.components.Button;
 
 @Mixin(Button.class)
 public interface ButtonAccessor {
-	//# if MC_VERSION_NUMBER <= 11902
+	//# if MC_VERSION_NUMBER <= 11902 && MC_VERSION_NUMBER >= 11600
 	//- @Accessor
 	//- @Mutable
 	//- void setOnTooltip(Button.OnTooltip onTooltip);

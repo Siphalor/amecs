@@ -24,6 +24,10 @@ import net.minecraft.client.KeyMapping;
 
 @ApiStatus.Internal
 public interface IKeyBinding {
+	//# if MC_VERSION_NUMBER < 11500
+	//- void nmuk_setDown(boolean down);
+	//# end
+
 	short nmuk_getNextChildId();
 
 	short nmuk_claimNextChildId();

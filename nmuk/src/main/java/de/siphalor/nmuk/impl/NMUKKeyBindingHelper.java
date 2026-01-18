@@ -165,12 +165,30 @@ public class NMUKKeyBindingHelper {
 	//- 	return new ArrayList<>();
 	//- }
 
-	//- public static ControlList.KeyEntry createKeyBindingEntry(ControlList listWidget, KeyMapping binding, Component text) {
+	//- public static ControlList.KeyEntry createKeyBindingEntry(
+	//- 		ControlList listWidget,
+	//- 		KeyMapping binding
+	//- 		//# if MC_VERSION_NUMBER >= 11600
+	//- 		, Component text
+	//- 		//# end
+	//- ) {
 	//- 	try {
 	//- 		Constructor<ControlList.KeyEntry> constructor = ControlList.KeyEntry.class
-	//- 				.getDeclaredConstructor(ControlList.class, KeyMapping.class, Component.class);
+	//- 				.getDeclaredConstructor(
+	//- 						ControlList.class,
+	//- 						KeyMapping.class
+	//- 						//# if MC_VERSION_NUMBER >= 11600
+	//- 						, Component.class
+	//- 						//# end
+	//- 				);
 	//- 		constructor.setAccessible(true);
-	//- 		return constructor.newInstance(listWidget, binding, text);
+	//- 		return constructor.newInstance(
+	//- 				listWidget,
+	//- 				binding
+	//- 				//# if MC_VERSION_NUMBER >= 11600
+	//- 				, text
+	//- 				//# end
+	//- 		);
 	//- 	} catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
 	//- 		NMUK.log(Level.ERROR, "Failed to create GUI representation of key binding", e);
 	//- 	}

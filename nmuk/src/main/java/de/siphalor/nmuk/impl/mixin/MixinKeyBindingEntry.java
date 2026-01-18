@@ -18,6 +18,7 @@
 package de.siphalor.nmuk.impl.mixin;
 
 import com.google.common.collect.ImmutableList;
+//- import com.mojang.blaze3d.platform.GlStateManager;
 //- import com.mojang.blaze3d.vertex.PoseStack;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
@@ -45,6 +46,7 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
 //# else
 //- import net.minecraft.client.gui.screens.controls.KeyBindsList;
 //# end
+//- import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 //- import net.minecraft.network.chat.TextComponent;
 //- import net.minecraft.network.chat.TranslatableComponent;
@@ -62,24 +64,36 @@ public abstract class MixinKeyBindingEntry
 		//- extends ControlList.Entry
 		//# end
 		{
+	@Unique
+	private static final String REMOVE_LITERAL = "x";
+	@Unique
+	private static final String ADD_LITERAL = "+";
+	@Unique
+	private static final String ALTERNATIVE_ENTRY_LITERAL = "    ->";
+	@Unique
+	private static final String RESET_TOOLTIP_KEY = "nmuk.options.controls.reset.tooltip";
+
 	//# if MC_VERSION_NUMBER >= 11900
 	@Unique
-	private static final Component REMOVE_NAME = Component.literal("x");
+	private static final Component REMOVE_COMPONENT = Component.literal(REMOVE_LITERAL);
 	@Unique
-	private static final Component ADD_NAME = Component.literal("+");
+	private static final Component ADD_COMPONENT = Component.literal(ADD_LITERAL);
 	@Unique
-	private static final Component ENTRY_NAME = Component.literal("    ->");
+	private static final Component ALTERNATIVE_ENTRY_COMPONENT = Component.literal(ALTERNATIVE_ENTRY_LITERAL);
 	@Unique
-	private static final Component RESET_TOOLTIP = Component.translatable("nmuk.options.controls.reset.tooltip");
+	private static final Component RESET_TOOLTIP_COMPONENT = Component.translatable(RESET_TOOLTIP_KEY);
+	//# elif MC_VERSION_NUMBER >= 11600
+	//- @Unique
+	//- private static final Component REMOVE_COMPONENT = new TextComponent(REMOVE_LITERAL);
+	//- @Unique
+	//- private static final Component ADD_COMPONENT = new TextComponent(ADD_LITERAL);
+	//- @Unique
+	//- private static final Component ALTERNATIVE_ENTRY_COMPONENT = new TextComponent(ALTERNATIVE_ENTRY_LITERAL);
+	//- @Unique
+	//- private static final Component RESET_TOOLTIP_COMPONENT = new TranslatableComponent(RESET_TOOLTIP_KEY);
 	//# else
 	//- @Unique
-	//- private static final Component REMOVE_NAME = new TextComponent("x");
-	//- @Unique
-	//- private static final Component ADD_NAME = new TextComponent("+");
-	//- @Unique
-	//- private static final Component ENTRY_NAME = new TextComponent("    ->");
-	//- @Unique
-	//- private static final Component RESET_TOOLTIP = new TranslatableComponent("nmuk.options.controls.reset.tooltip");
+	//- private static final String RESET_TOOLTIP = I18n.get(RESET_TOOLTIP_KEY);
 	//# end
 
 	@Shadow
@@ -91,7 +105,11 @@ public abstract class MixinKeyBindingEntry
 	@Mutable
 	@Shadow
 	@Final
+	//# if MC_VERSION_NUMBER >= 11600
 	private Component name;
+	//# else
+	//- private String name;
+	//# end
 	// This is a synthetic field containing the outer class instance
 	@Shadow(aliases = "field_2742", remap = false)
 	@Final
@@ -99,7 +117,10 @@ public abstract class MixinKeyBindingEntry
 	private KeyBindsList listWidget;
 	//# else
 	//- private ControlList listWidget;
-	//# end
+	//- 		@Shadow
+	//- 		@Final
+	//- 		private KeyMapping key;
+	//- 		//# end
 	@Unique
 	private Button alternativesButton;
 
@@ -111,30 +132,42 @@ public abstract class MixinKeyBindingEntry
 			//- ControlList outer,
 			//# end
 			KeyMapping binding,
+			//# if MC_VERSION_NUMBER >= 11600
 			Component text,
+			//# end
 			CallbackInfo ci
 	) {
 		IKeyBinding iKeyBinding = (IKeyBinding) binding;
 		if (iKeyBinding.nmuk_isAlternative()) {
-			name = ENTRY_NAME;
+			//# if MC_VERSION_NUMBER >= 11600
+			name = ALTERNATIVE_ENTRY_COMPONENT;
+			//# else
+			//- name = ALTERNATIVE_ENTRY_LITERAL;
+			//# end
+
 			//# if MC_VERSION_NUMBER >= 11903
-			alternativesButton = Button.builder(REMOVE_NAME, button -> onRemoveClicked(binding))
+			alternativesButton = Button.builder(REMOVE_COMPONENT, button -> onRemoveClicked(binding))
 					.size(20, 20)
 					.build();
+			//# elif MC_VERSION_NUMBER >= 11600
+			//- alternativesButton = new Button(0, 0, 20, 20, REMOVE_COMPONENT, button -> onRemoveClicked(binding));
 			//# else
-			//- alternativesButton = new Button(0, 0, 20, 20, REMOVE_NAME, button -> onRemoveClicked(binding));
+			//- alternativesButton = new Button(0, 0, 20, 20, REMOVE_LITERAL, button -> onRemoveClicked(binding));
 			//# end
 		} else {
 			//# if MC_VERSION_NUMBER >= 11903
-			alternativesButton = Button.builder(ADD_NAME, button -> onAddClicked(binding))
+			alternativesButton = Button.builder(ADD_COMPONENT, button -> onAddClicked(binding))
 					.size(20, 20)
 					.build();
-			resetButton.setTooltip(Tooltip.create(RESET_TOOLTIP));
-			//# else
-			//- alternativesButton = new Button(0, 0, 20, 20, ADD_NAME,  button -> onAddClicked(binding));
-			//- ((ButtonAccessor) alternativesButton).setOnTooltip((button, poseStack, x, y) ->
-			//- 		Minecraft.getInstance().screen.renderTooltip(poseStack, RESET_TOOLTIP, x, y)
+			resetButton.setTooltip(Tooltip.create(RESET_TOOLTIP_COMPONENT));
+			//# elif MC_VERSION_NUMBER >= 11600
+			//- alternativesButton = new Button(0, 0, 20, 20, ADD_COMPONENT,  button -> onAddClicked(binding));
+			//- ((ButtonAccessor) resetButton).setOnTooltip((button, poseStack, x, y) ->
+			//- 		Minecraft.getInstance().screen.renderTooltip(poseStack, RESET_TOOLTIP_COMPONENT, x, y)
 			//- );
+			//# else
+			//- alternativesButton = new Button(0, 0, 20, 20, ADD_LITERAL, button -> onAddClicked(binding));
+			//- // Tooltip rendering happens manually in the render injection
 			//# end
 		}
 	}
@@ -155,7 +188,13 @@ public abstract class MixinKeyBindingEntry
 	private void onAddClicked(KeyMapping binding) {
 		KeyMapping altBinding = NMUKKeyBindingHelper.createAlternativeKeyBinding(binding);
 		NMUKKeyBindingHelper.registerKeyBinding(altBinding);
-		val altEntry = NMUKKeyBindingHelper.createKeyBindingEntry(listWidget, altBinding, ENTRY_NAME);
+		val altEntry = NMUKKeyBindingHelper.createKeyBindingEntry(
+				listWidget,
+				altBinding
+				//# if MC_VERSION_NUMBER >= 11600
+				, ALTERNATIVE_ENTRY_COMPONENT
+				//# end
+		);
 		if (altEntry != null) {
 			//# if MC_VERSION_NUMBER >= 12109
 			val entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
@@ -213,7 +252,13 @@ public abstract class MixinKeyBindingEntry
 			NMUKKeyBindingHelper.registerKeyBindings(Minecraft.getInstance().options, defaultAlternatives);
 			alternatives.addAll(defaultAlternatives);
 			for (KeyMapping defaultAlternative : defaultAlternatives) {
-				entry = NMUKKeyBindingHelper.createKeyBindingEntry(listWidget, defaultAlternative, ENTRY_NAME);
+				entry = NMUKKeyBindingHelper.createKeyBindingEntry(
+						listWidget,
+						defaultAlternative
+						//# if MC_VERSION_NUMBER >= 11600
+						, ALTERNATIVE_ENTRY_COMPONENT
+						//# end
+				);
 				entries.add(++entryPos, entry);
 				NMUKKeyBindingHelper.resetSingleKeyBinding(defaultAlternative);
 			}
@@ -243,7 +288,7 @@ public abstract class MixinKeyBindingEntry
 	public void render(
 			//# if MC_VERSION_NUMBER >= 12000
 			GuiGraphics context,
-			//# else
+			//# elif MC_VERSION_NUMBER >= 11600
 			//- PoseStack context,
 			//# end
 			//# if MC_VERSION_NUMBER < 12109
@@ -266,7 +311,20 @@ public abstract class MixinKeyBindingEntry
 		//- alternativesButton.y = resetButton.y;
 		//- alternativesButton.x = resetButton.x + resetButton.getWidth() + 10;
 		//# end
+		//# if MC_VERSION_NUMBER >= 11600
 		alternativesButton.render(context, mouseX, mouseY, tickDelta);
+		//# else
+		//- alternativesButton.render(mouseX, mouseY, tickDelta);
+		//# end
+
+		//# if MC_VERSION_NUMBER < 11600
+		//- if (resetButton.isMouseOver(mouseX, mouseY)
+		//- 		&& resetButton.active
+		//- 		&& !((IKeyBinding) key).nmuk_isAlternative()) {
+		//- 	Minecraft.getInstance().screen.renderTooltip(RESET_TOOLTIP, mouseX, mouseY);
+		//- 	GlStateManager.disableLighting();
+		//- }
+		//# end
 	}
 
 	@Inject(method = "children", at = @At("RETURN"), cancellable = true)

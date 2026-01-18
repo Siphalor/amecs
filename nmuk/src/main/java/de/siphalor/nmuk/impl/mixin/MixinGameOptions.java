@@ -21,6 +21,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
+//- import de.siphalor.nmuk.impl.util.IdentityHashSet;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -160,7 +161,12 @@ public class MixinGameOptions {
 			NMUK.log(Level.ERROR, "Failed to load nmuk options file");
 		}
 
+		//# if MC_VERSION_NUMBER >= 11600
 		Set<KeyMapping> newAllKeyMappings = new TreeSet<>(Arrays.asList(keyMappings));
+		//# else
+		//- Set<KeyMapping> newAllKeyMappings = new IdentityHashSet<>(keyMappings.length + newAlternatives.size());
+		//- newAllKeyMappings.addAll(Arrays.asList(keyMappings));
+		//# end
 
 		newAllKeyMappings.addAll(newAlternatives);
 
@@ -178,7 +184,18 @@ public class MixinGameOptions {
 			}
 		}
 
+		//# if MC_VERSION_NUMBER >= 11600
 		keyMappings = newAllKeyMappings.toArray(new KeyMapping[0]);
+		//# else
+		//- List<KeyMapping> sortedKeyMappings = new ArrayList<>(newAllKeyMappings);
+		//- sortedKeyMappings.sort(
+		//- 		Comparator.<KeyMapping, Integer>comparing(km -> KeyBindingAccessor.getCATEGORY_SORT_ORDER().getOrDefault(km.getCategory(), 99))
+		//- 				.thenComparing(KeyMapping::getCategory)
+		//- 				.thenComparing(KeyMapping::getName)
+		//- );
+		//- keyMappings = sortedKeyMappings.toArray(new KeyMapping[0]);
+		//# end
+
 		KeyMapping.resetMapping();
 	}
 }
