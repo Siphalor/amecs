@@ -108,24 +108,6 @@ java {
 	targetCompatibility = JavaVersion.toVersion(mcLibs.versions.java.get())
 }
 
-val jcyoVars = mcProps.stringPropertyNames()
-	.filter { it.startsWith("preprocessor.") }
-	.map { it to mcProps[it] }
-	.associate { (key, value) -> key.substring("preprocessor.".length) to value.toString() }
-val jcyo = tasks.register<JcyoTask>("jcyo") {
-	inputDirectory = file("src/main/java")
-	variables = jcyoVars
-	importOrder = listOf(
-		"",
-		"net.minecraft",
-		"\\#",
-	)
-}
-
-tasks.compileJava {
-	dependsOn(jcyo)
-}
-
 tasks.jar {
 	from(layout.settingsDirectory.file("LICENSE"))
 }
@@ -133,9 +115,41 @@ tasks.jar {
 tasks.register<Jar>("sourcesJar") {
 	group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-	dependsOn(jcyo, tasks.processResources)
+	dependsOn(tasks.processResources)
 	from(sourceSets.main.get().allJava)
 	from(layout.buildDirectory.file("resources/main"))
 	archiveClassifier.set("sources")
 }
 java.withSourcesJar()
+
+afterEvaluate {
+	val jcyoVars = mcProps.stringPropertyNames()
+		.filter { it.startsWith("preprocessor.") }
+		.map { it to mcProps[it] }
+		.associate { (key, value) -> key.substring("preprocessor.".length) to value.toString() }
+
+	tasks.withType<JavaCompile>() {
+		val compileTask = this
+		val scope = name.removeSurrounding("compile", "Java")
+
+		val sourceSetName = if (scope.isEmpty()) { "main" } else { scope.lowercase(Locale.ROOT) }
+		val sources = project.file("src/${sourceSetName}/java")
+		if (sources.exists()) {
+			val jcyoTask = tasks.register<JcyoTask>("jcyo${scope}") {
+				inputDirectory = sources
+				variables = jcyoVars
+				importOrder = listOf(
+					"",
+					"net.minecraft",
+					"\\#",
+				)
+			}
+
+			compileTask.dependsOn(jcyoTask)
+
+			if (scope.isEmpty()) {
+				tasks.getByName("sourcesJar").dependsOn(jcyoTask)
+			}
+		}
+	}
+}
