@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.key_modifiers.impl.mixin;
 
+//- import com.llamalad7.mixinextras.sugar.Local;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
@@ -154,7 +155,15 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 	}
 	//# else
 	//- @Inject(method = "getTranslatedKeyMessage", at = @At("TAIL"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
-	//- public void getLocalizedName(CallbackInfoReturnable<String> callbackInfoReturnable, String i18nName, int keyCode, String glfwName) {
+	//- public void getLocalizedName(
+	//- 		CallbackInfoReturnable<String> callbackInfoReturnable,
+	//- 		@Local(ordinal = 0) String i18nName,
+	//- 		//# if MC_VERSION_NUMBER >= 11600
+	//- 		@Local(ordinal = 2) String glfwName
+	//- 		//# else
+	//- 		@Local(ordinal = 1) String glfwName
+	//- 		//# end
+	//- ) {
 	//- 	String name = (glfwName == null ? I18n.get(i18nName) : glfwName);
 	//- 	StringBuilder fullName;
 	//- 	Font font = Minecraft.getInstance().font;
