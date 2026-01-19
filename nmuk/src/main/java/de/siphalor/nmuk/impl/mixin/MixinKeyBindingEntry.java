@@ -322,7 +322,9 @@ public abstract class MixinKeyBindingEntry
 		//- 		&& resetButton.active
 		//- 		&& !((IKeyBinding) key).nmuk_isAlternative()) {
 		//- 	Minecraft.getInstance().screen.renderTooltip(RESET_TOOLTIP, mouseX, mouseY);
+		//- 	//# if MC_VERSION_NUMBER < 11500
 		//- 	GlStateManager.disableLighting();
+		//- 	//# end
 		//- }
 		//# end
 	}
