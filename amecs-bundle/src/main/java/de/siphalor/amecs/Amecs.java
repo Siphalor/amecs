@@ -130,13 +130,20 @@ public class Amecs implements ClientModInitializer {
             case "%":
 				//# if MC_VERSION_NUMBER >= 12109
 				return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getHasCollision();
-				//# else
+				//# elif MC_VERSION_NUMBER >= 11600
 				//- return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getChangeButton()
 				//- 		.getMessage().getStyle().getColor() == TextColor.fromLegacyFormat(ChatFormatting.RED);
+				//# else
+				//- return ((ControlsListWidgetKeyBindingEntryAccessor) entry).getChangeButton()
+				//- 		.getMessage().startsWith(ChatFormatting.RED.toString());
 				//# end
             default:
                 return StringUtils.containsIgnoreCase(
+						//# if MC_VERSION_NUMBER >= 11600
 						((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslatedKeyMessage().getString(),
+						//# else
+						//- ((IKeyBindingEntry) entry).amecs$getKeyBinding().getTranslatedKeyMessage(),
+						//# end
 						keyFilter
 				);
         }

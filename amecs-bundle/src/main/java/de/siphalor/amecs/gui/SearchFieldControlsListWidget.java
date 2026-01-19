@@ -14,10 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 //- import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
+//- import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -33,7 +32,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+//- import net.minecraft.network.chat.MutableComponent;
 //- import net.minecraft.network.chat.TextComponent;
 //- import net.minecraft.network.chat.TranslatableComponent;
 
@@ -47,11 +46,11 @@ public class SearchFieldControlsListWidget
 {
 	private final EditBox searchField;
 
-	private int lastEntryCount = 0;
+	private int lastChildrenCount = 0;
 	//# if MC_VERSION_NUMBER >= 11802
-	private final Set<KeyBindsList.KeyEntry> entries =
+	private final Set<KeyBindsList.KeyEntry> allKeyEntries =
 	//# else
-	//- private final Set<ControlList.KeyEntry> entries =
+	//- private final Set<ControlList.KeyEntry> allKeyEntries =
 	//# end
 			new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
@@ -63,22 +62,23 @@ public class SearchFieldControlsListWidget
 			//# end
 			Minecraft minecraft
 	) {
-		Font font = minecraft.font;
 		assert minecraft.screen != null;
 
 		//# if MC_VERSION_NUMBER >= 12109
 		setHeight(20);
 		//# end
 		searchField = new EditBox(
-				font,
+				minecraft.font,
 				minecraft.screen.width / 2 - 125,
 				0,
 				250,
 				20,
 				//# if MC_VERSION_NUMBER >= 11900
 				Component.empty()
-				//# else
+				//# elif MC_VERSION_NUMBER >= 11600
 				//- TextComponent.EMPTY
+				//# else
+				//- ""
 				//# end
 		);
 		searchField.setSuggestion(I18n.get("amecs.search.placeholder"));
@@ -97,24 +97,24 @@ public class SearchFieldControlsListWidget
 			//# else
 			//- val children = listWidget.children();
 			//# end
-			if (entries.isEmpty()) {
+			if (allKeyEntries.isEmpty()) {
 				//# if MC_VERSION_NUMBER >= 11802
 				for (KeyBindsList.Entry entry : children) {
 					if (entry instanceof KeyBindsList.KeyEntry) {
-						entries.add((KeyBindsList.KeyEntry) entry);
+						allKeyEntries.add((KeyBindsList.KeyEntry) entry);
 					}
 				}
 				//# else
 				//- for (ControlList.Entry entry : children) {
 				//- 	if (entry instanceof ControlList.KeyEntry) {
-				//- 		entries.add((ControlList.KeyEntry) entry);
+				//- 		allKeyEntries.add((ControlList.KeyEntry) entry);
 				//- 	}
 				//- }
 				//# end
-				lastEntryCount = children.size();
+				lastChildrenCount = children.size();
 			}
-			int childrenCount = children.size();
-			if (childrenCount != lastEntryCount) {
+
+			if (children.size() != lastChildrenCount) {
 				Amecs.log(Level.INFO, "Controls search results changed externally - recompiling the list!");
 				try {
 					//# if MC_VERSION_NUMBER >= 11802
@@ -124,39 +124,28 @@ public class SearchFieldControlsListWidget
 					KeyBindsList.KeyEntry entry;
 					//# else
 					//- Constructor<ControlList.KeyEntry> c = ControlList.KeyEntry.class.getDeclaredConstructor(
-					//- 		ControlList.class, KeyMapping.class, Component.class
+					//- 		ControlList.class,
+					//- 		KeyMapping.class
+					//- 		//# if MC_VERSION_NUMBER >= 11600
+					//- 		, Component.class
+					//- 		//# end
 					//- );
+					//- c.setAccessible(true);
 					//- ControlList.KeyEntry entry;
 					//# end
-					entries.clear();
+					allKeyEntries.clear();
 					KeyMapping[] keyBindings = minecraft.options.keyMappings;
 					Arrays.sort(keyBindings);
-					//# if MC_VERSION_NUMBER >= 12109
-					KeyMapping.Category lastCat = null;
-					//# else
-					//- String lastCat = null;
-					//# end
-					lastEntryCount = 1;
+
 					for (KeyMapping keyBinding : keyBindings) {
-						if (!Objects.equals(lastCat, keyBinding.getCategory())) {
-							lastCat = keyBinding.getCategory();
-							//# if MC_VERSION_NUMBER >= 12109
-							children.add(listWidget.new CategoryEntry(keyBinding.getCategory()));
-							//# elif MC_VERSION_NUMBER >= 11900
-							//- children.add(listWidget.new CategoryEntry(Component.translatable(keyBinding.getCategory())));
-							//# else
-							//- children.add(listWidget.new CategoryEntry(new TranslatableComponent(keyBinding.getCategory())));
-							//# end
-							lastEntryCount++;
-						}
 						//# if MC_VERSION_NUMBER >= 11900
 						entry = c.newInstance(listWidget, keyBinding, Component.translatable(keyBinding.getName()));
-						//# else
+						//# elif MC_VERSION_NUMBER >= 11600
 						//- entry = c.newInstance(listWidget, keyBinding, new TranslatableComponent(keyBinding.getName()));
+						//# else
+						//- entry = c.newInstance(listWidget, keyBinding);
 						//# end
-						children.add(entry);
-						entries.add(entry);
-						lastEntryCount++;
+						allKeyEntries.add(entry);
 					}
 				} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 					Amecs.log(Level.ERROR, "An unexpected exception occurred during recompilation of controls list!", e);
@@ -185,16 +174,14 @@ public class SearchFieldControlsListWidget
 			//# end
 			boolean lastMatched = false;
 			boolean includeCat = false;
-			lastEntryCount = 1;
 			//# if MC_VERSION_NUMBER >= 11802
-			for (KeyBindsList.KeyEntry entry : entries) {
+			for (KeyBindsList.KeyEntry entry : allKeyEntries) {
 			//# else
-			//- for (ControlList.KeyEntry entry : entries) {
+			//- for (ControlList.KeyEntry entry : allKeyEntries) {
 			//# end
 				KeyMapping binding = ((IKeyBindingEntry) entry).amecs$getKeyBinding();
 				if (nmuk && lastMatched && NMUKProxy.isAlternative(binding)) {
 					children.add(entry);
-					lastEntryCount++;
 					continue;
 				}
 
@@ -218,29 +205,38 @@ public class SearchFieldControlsListWidget
 						children.add(listWidget.new CategoryEntry(cat));
 						//# elif MC_VERSION_NUMBER >= 11900
 						//- children.add(listWidget.new CategoryEntry(Component.translatable(cat)));
-						//# else
+						//# elif MC_VERSION_NUMBER >= 11600
 						//- children.add(listWidget.new CategoryEntry(new TranslatableComponent(cat)));
+						//# else
+						//- children.add(listWidget.new CategoryEntry(cat));
 						//# end
 						lastCat = cat;
-						lastEntryCount++;
 					}
 					children.add(entry);
-					lastEntryCount++;
 					lastMatched = true;
 				} else {
 					lastMatched = false;
 				}
 			}
-			if (lastEntryCount <= 1) {
-				//# if MC_VERSION_NUMBER >= 11900
-				MutableComponent noResultsText = Component.translatable(Amecs.MOD_ID + ".search.no_results");
-				//# else
+
+			// Inform about the empty result set, when only the search field itself is visible
+			if (children.size() <= 1) {
+				//# if MC_VERSION_NUMBER >= 12109
+				// Currently skipped, because since 1.21.9 category entries can no longer be abused for this
+				//# elif MC_VERSION_NUMBER >= 11600
+				//- //# if MC_VERSION_NUMBER >= 11900
+				//- MutableComponent noResultsText = Component.translatable(Amecs.MOD_ID + ".search.no_results");
+				//- //# else
 				//- MutableComponent noResultsText = new TranslatableComponent(Amecs.MOD_ID + ".search.no_results");
+				//- //# end
+				//- noResultsText.setStyle(noResultsText.getStyle().withColor(ChatFormatting.GRAY));
+				//- children.add(listWidget.new CategoryEntry(noResultsText));
+				//# else
+				//- children.add(listWidget.new CategoryEntry(Amecs.MOD_ID + ".search.no_results"));
 				//# end
-				noResultsText.setStyle(noResultsText.getStyle().withColor(ChatFormatting.GRAY));
-				// FIXME
-				// children.add(listWidget.new CategoryEntry(noResultsText));
 			}
+
+			lastChildrenCount = children.size();
 
 			//# if MC_VERSION_NUMBER >= 12109
 			listWidget.replaceEntries(children);
@@ -311,11 +307,12 @@ public class SearchFieldControlsListWidget
 	//- public boolean charTyped(char char_1, int int_1) {
 	//- 	return searchField.charTyped(char_1, int_1);
 	//- }
+
 	//- @Override
 	//- public void render(
 	//- 		//# if MC_VERSION_NUMBER >= 12000
 	//- 		GuiGraphics drawContext,
-	//- 		//# else
+	//- 		//# elif MC_VERSION_NUMBER >= 11600
 	//- 		PoseStack drawContext,
 	//- 		//# end
 	//- 		int index,
@@ -333,7 +330,14 @@ public class SearchFieldControlsListWidget
 	//- 	//# else
 	//- 	searchField.y = y;
 	//- 	//# end
-	//- 	searchField.render(drawContext, mouseX, mouseY, tickDelta);
+	//- 	searchField.render(
+	//- 			//# if MC_VERSION_NUMBER >= 11600
+	//- 			drawContext,
+	//- 			//# end
+	//- 			mouseX,
+	//- 			mouseY,
+	//- 			tickDelta
+	//- 	);
 	//- }
 	//# end
 
