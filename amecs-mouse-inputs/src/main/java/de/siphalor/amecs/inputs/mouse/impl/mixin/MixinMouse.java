@@ -19,8 +19,6 @@ package de.siphalor.amecs.inputs.mouse.impl.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-//- import de.siphalor.amecs.impl.KeyBindingManager;
-//- import de.siphalor.amecs.inputs.mouse.api.AmecsMouseInputs;
 import de.siphalor.amecs.inputs.mouse.impl.AmecsMouseInputsModule;
 import de.siphalor.amecs.inputs.mouse.impl.AmecsMouseInputsToPriorityProxy;
 import de.siphalor.amecs.inputs.mouse.impl.IMouse;
@@ -109,7 +107,13 @@ public class MixinMouse implements IMouse {
 			@Local(ordinal = 4) double scrollAmountY
 	) {
 	//# else
-	//- private void isSpectator_onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, double scrollAmountY) {
+	//- private void isSpectator_onMouseScroll(
+	//- 		long window,
+	//- 		double rawX,
+	//- 		double rawY,
+	//- 		CallbackInfo callbackInfo,
+	//- 		@Local(index = 7) double scrollAmountY
+	//- ) {
 	//# end
 		//# if MC_VERSION_NUMBER >= 12002
 		this.onScrollReceived(scrollAmountX, scrollAmountY);
