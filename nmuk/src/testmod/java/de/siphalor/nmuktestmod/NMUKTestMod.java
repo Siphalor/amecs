@@ -17,7 +17,7 @@
 
 package de.siphalor.nmuktestmod;
 
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.nmuk.api.NMUKAlternatives;
 import net.fabricmc.api.ModInitializer;
@@ -43,7 +43,7 @@ public class NMUKTestMod implements ModInitializer {
 				//# end
 		));
 		NMUKAlternatives.create(kbd, 85);
-		NMUKAlternatives.create(kbd, new AmecsKeyBindingWithKeyModifiers(
+		NMUKAlternatives.create(kbd, new AmecsKeyMappingWithKeyModifiers(
 				//# if MC_VERSION_NUMBER >= 12100
 				ResourceLocation.fromNamespaceAndPath(MOD_ID, "alt"),
 				//# else

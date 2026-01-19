@@ -28,14 +28,14 @@ import net.minecraft.resources.ResourceLocation;
  * A {@link KeyMapping} base class to be used when you want to define modifiers keys as default
  */
 @Environment(EnvType.CLIENT)
-public class AmecsKeyBindingWithKeyModifiers extends KeyMapping {
+public class AmecsKeyMappingWithKeyModifiers extends KeyMapping {
 	private final AmecsKeyModifierCombination defaultModifiers;
 
 	/**
 	 * Constructs a new amecs keybinding. And because how the vanilla key binding works. It is automatically registered.
 	 * <br>
 	 * See {@link KeyBindingUtils#unregisterKeyBinding(KeyMapping)} for how to unregister it
-	 * If you want to set the key's translationKey directly use {@link #AmecsKeyBindingWithKeyModifiers(String, InputConstants.Type, int, Category, AmecsKeyModifierCombination)} instead
+	 * If you want to set the key's translationKey directly use {@link #AmecsKeyMappingWithKeyModifiers(String, InputConstants.Type, int, Category, AmecsKeyModifierCombination)} instead
 	 *
 	 * @param id the id to use
 	 * @param type the input type which triggers this keybinding
@@ -43,7 +43,7 @@ public class AmecsKeyBindingWithKeyModifiers extends KeyMapping {
 	 * @param category the id of the category which should include this keybinding
 	 * @param defaultModifiers the default modifiers
 	 */
-	public AmecsKeyBindingWithKeyModifiers(
+	public AmecsKeyMappingWithKeyModifiers(
 			ResourceLocation id,
 			InputConstants.Type type,
 			int code,
@@ -68,7 +68,7 @@ public class AmecsKeyBindingWithKeyModifiers extends KeyMapping {
 	 * @param category the id of the category which should include this keybinding
 	 * @param defaultModifiers the default modifiers
 	 */
-	public AmecsKeyBindingWithKeyModifiers(
+	public AmecsKeyMappingWithKeyModifiers(
 			String id,
 			InputConstants.Type type,
 			int code,

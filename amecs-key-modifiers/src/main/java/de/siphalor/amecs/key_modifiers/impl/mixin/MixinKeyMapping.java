@@ -17,7 +17,7 @@
 package de.siphalor.amecs.key_modifiers.impl.mixin;
 
 //- import com.llamalad7.mixinextras.sugar.Local;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
@@ -256,7 +256,7 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 	@Inject(method = "isDefault", at = @At("HEAD"), cancellable = true)
 	public void isDefault(CallbackInfoReturnable<Boolean> cir) {
 		//noinspection ConstantValue
-		if (!((Object) this instanceof AmecsKeyBindingWithKeyModifiers)) {
+		if (!((Object) this instanceof AmecsKeyMappingWithKeyModifiers)) {
 			if (!keyModifiers.isUnset()) {
 				cir.setReturnValue(false);
 			}

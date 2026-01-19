@@ -17,7 +17,7 @@
 package de.siphalor.amecs.api;
 
 import de.siphalor.amecs.impl.OldKeyModifiersView;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,12 +28,12 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * A {@link net.minecraft.client.KeyMapping} base class to be used when you want to define modifiers keys as default
- * @deprecated Use {@link AmecsKeyBindingWithKeyModifiers} instead
+ * @deprecated Use {@link AmecsKeyMappingWithKeyModifiers} instead
  */
 @SuppressWarnings("removal")
 @Environment(EnvType.CLIENT)
 @Deprecated(forRemoval = true)
-public class AmecsKeyBinding extends AmecsKeyBindingWithKeyModifiers {
+public class AmecsKeyBinding extends AmecsKeyMappingWithKeyModifiers {
 	/**
 	 * Constructs a new amecs keybinding. And because how the vanilla key binding works. It is automatically registered.
 	 * <br>

@@ -1,7 +1,7 @@
 package de.siphalor.amecs.keybinding;
 
 import de.siphalor.amecs.Amecs;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -10,8 +10,8 @@ import net.minecraft.network.chat.Component;
 //- import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
-public class ToggleAutoJumpKeyBinding extends AmecsKeyBindingWithKeyModifiers {
-	public ToggleAutoJumpKeyBinding(
+public class ToggleAutoJumpKeyMapping extends AmecsKeyMappingWithKeyModifiers {
+	public ToggleAutoJumpKeyMapping(
 			ResourceLocation id,
 			InputConstants.Type type,
 			int code,

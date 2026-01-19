@@ -1,10 +1,10 @@
 package de.siphalor.amecs;
 
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyBindingWithKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyBindingEntry;
-import de.siphalor.amecs.keybinding.SkinLayerKeyBinding;
-import de.siphalor.amecs.keybinding.ToggleAutoJumpKeyBinding;
+import de.siphalor.amecs.keybinding.SkinLayerKeyMapping;
+import de.siphalor.amecs.keybinding.ToggleAutoJumpKeyMapping;
 import de.siphalor.amecs.mixin.ControlsListWidgetKeyBindingEntryAccessor;
 import java.util.Arrays;
 import java.util.Locale;
@@ -56,7 +56,7 @@ public class Amecs implements ClientModInitializer {
 	//- private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
 	//# end
 
-	public static final KeyMapping ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyBindingWithKeyModifiers(
+	public static final KeyMapping ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyMappingWithKeyModifiers(
 			//# if MC_VERSION_NUMBER >= 12100
 			ResourceLocation.fromNamespaceAndPath(MOD_ID, "alternative_escape"),
 			//# else
@@ -74,7 +74,7 @@ public class Amecs implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBindingHelper.registerKeyBinding(new ToggleAutoJumpKeyBinding(
+        KeyBindingHelper.registerKeyBinding(new ToggleAutoJumpKeyMapping(
 				//# if MC_VERSION_NUMBER >= 12100
 				ResourceLocation.fromNamespaceAndPath(MOD_ID, "toggle_auto_jump"),
 				//# else
@@ -91,7 +91,7 @@ public class Amecs implements ClientModInitializer {
 		));
 
         Arrays.stream(PlayerModelPart.values())
-                .map(playerModelPart -> new SkinLayerKeyBinding(
+                .map(playerModelPart -> new SkinLayerKeyMapping(
 						//# if MC_VERSION_NUMBER >= 12100
 						ResourceLocation.fromNamespaceAndPath(MOD_ID, "toggle_" + playerModelPart.getId().toLowerCase(Locale.ENGLISH)),
 						//# else

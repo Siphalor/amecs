@@ -16,8 +16,8 @@ public class AmecsKeyModifiersApi {
 	 * @return a reference to the default modifiers
 	 */
 	public static AmecsKeyModifierCombination getDefaultModifiers(KeyMapping mapping) {
-		if (mapping instanceof AmecsKeyBindingWithKeyModifiers) {
-			return ((AmecsKeyBindingWithKeyModifiers) mapping).getDefaultAmecsKeyModifiers();
+		if (mapping instanceof AmecsKeyMappingWithKeyModifiers) {
+			return ((AmecsKeyMappingWithKeyModifiers) mapping).getDefaultAmecsKeyModifiers();
 		}
 		return AmecsKeyModifierCombination.NO_MODIFIERS;
 	}
@@ -27,8 +27,8 @@ public class AmecsKeyModifiersApi {
 	}
 
 	public static void resetBoundModifiers(KeyMapping mapping) {
-		if (mapping instanceof AmecsKeyBindingWithKeyModifiers) {
-			((AmecsKeyBindingWithKeyModifiers) mapping).resetKeyBinding();
+		if (mapping instanceof AmecsKeyMappingWithKeyModifiers) {
+			((AmecsKeyMappingWithKeyModifiers) mapping).resetKeyBinding();
 		} else {
 			((IKeyMapping) mapping).amecs$getBoundKeyModifiers().unset();
 		}
