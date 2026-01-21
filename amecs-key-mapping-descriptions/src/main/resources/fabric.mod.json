@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "amecs_key_mapping_descriptions",
+	"version": "${version}",
+	"name": "Amecs Core - Key Mappings Descriptions",
+	"description": "Provides an API to add descriptions to key mappings in the form of tooltips.",
+	"authors": ["Siphalor"],
+	"license": "Apache-2.0",
+	"icon": "assets/amecs-core/logo.png",
+	"environment": "client",
+	"entrypoints": {},
+	"mixins": [ "amecs_key_mapping_descriptions.mixins.json" ],
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	}
+}

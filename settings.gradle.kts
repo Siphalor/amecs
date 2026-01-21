@@ -43,8 +43,9 @@ dependencyResolutionManagement {
 rootProject.name = "amecs"
 
 include("amecs-key-modifiers")
-include("amecs-priority-key-mappings")
+include("amecs-key-mapping-descriptions")
 include("amecs-mouse-inputs")
+include("amecs-priority-key-mappings")
 
 include("amecs-api-legacy")
 
