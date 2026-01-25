@@ -28,7 +28,7 @@ import net.minecraft.client.Minecraft;
  *
  * @see InputEventHandler#handleInput(Minecraft)
  * @see #handleInputEvents
- * @deprecated TODO
+ * @deprecated Currently no replacement exists since this is just based on a simple Mixin to {@link Minecraft#handleKeybinds()}
  */
 @SuppressWarnings("removal")
 @Environment(EnvType.CLIENT)

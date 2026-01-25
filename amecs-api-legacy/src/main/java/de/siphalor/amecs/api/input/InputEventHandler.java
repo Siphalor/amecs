@@ -26,7 +26,7 @@ import net.minecraft.client.Minecraft;
  *
  * @see #handleInput
  * @see InputHandlerManager
- * @deprecated TODO
+ * @deprecated Currently no replacement exists since this is just based on a simple Mixin to {@link Minecraft#handleKeybinds()}
  */
 @Environment(EnvType.CLIENT)
 @Deprecated(forRemoval = true)

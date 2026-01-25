@@ -31,7 +31,6 @@ import net.minecraft.client.KeyMapping;
 /**
  * Utility methods and constants for Amecs and vanilla key bindings
  * @deprecated Use {@link AmecsKeyModifiersApi} instead
- * TODO
  */
 @SuppressWarnings({"unused", "removal"})
 @Environment(EnvType.CLIENT)
@@ -96,6 +95,7 @@ public class KeyBindingUtils {
 	 *
 	 * @param deltaY the vertical (y) scroll amount {@link #getLastScrollAmount}
 	 * @return the key object
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static InputConstants.Key getKeyFromVerticalScroll(double deltaY) {
 		if (deltaY == 0D) {
@@ -110,6 +110,7 @@ public class KeyBindingUtils {
 	 *
 	 * @param deltaX the horizontal (x) scroll amount {@link #getLastScrollAmount}
 	 * @return the key object
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static InputConstants.Key getKeyFromHorizontalScroll(double deltaX) {
 		if (deltaX == 0D) {
@@ -123,6 +124,7 @@ public class KeyBindingUtils {
 	 * Gets the "official" idToKeys map
 	 *
 	 * @return the map (use with care)
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static Map<String, KeyMapping> getIdToKeyBindingMap() {
 		return AmecsKeyModifiersModule.getIdToKeyBindingMap();
@@ -138,6 +140,7 @@ public class KeyBindingUtils {
 	 *
 	 * @param keyBinding the keybinding
 	 * @return whether the keyBinding was removed. It is not removed if it was not contained
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static boolean unregisterKeyBinding(KeyMapping keyBinding) {
 		return unregisterKeyBinding(keyBinding.getName());
@@ -151,6 +154,7 @@ public class KeyBindingUtils {
 	 * @param id the translation key
 	 * @return whether the keyBinding was removed. It is not removed if it was not contained
 	 * @see #unregisterKeyBinding(KeyMapping)
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static boolean unregisterKeyBinding(String id) {
 		KeyMapping keyBinding = getIdToKeyBindingMap().remove(id);
@@ -167,6 +171,7 @@ public class KeyBindingUtils {
 	 *
 	 * @param keyBinding the keybinding
 	 * @return whether the keybinding was added. It is not added if it is already contained
+	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
 	public static boolean registerHiddenKeyBinding(KeyMapping keyBinding) {
 		return AmecsKeyMappingManager.register(keyBinding);
@@ -177,6 +182,7 @@ public class KeyBindingUtils {
 	 *
 	 * @param keyBinding the key binding
 	 * @return the key modifiers
+	 * @deprecated Use {@link AmecsKeyModifiersApi#getBoundModifiers(KeyMapping)} instead
 	 */
 	public static KeyModifiers getBoundModifiers(KeyMapping keyBinding) {
 		return new OldKeyModifiersView(AmecsKeyModifiersApi.getBoundModifiers(keyBinding));
@@ -188,11 +194,15 @@ public class KeyBindingUtils {
 	 *
 	 * @param keyBinding the key binding
 	 * @return a reference to the default modifiers
+	 * @deprecated Use {@link AmecsKeyModifiersApi#getDefaultModifiers(KeyMapping)} instead
 	 */
 	public static KeyModifiers getDefaultModifiers(KeyMapping keyBinding) {
 		return new OldKeyModifiersView(AmecsKeyModifiersApi.getDefaultModifiers(keyBinding));
 	}
 
+	/**
+	 * @deprecated Use {@link AmecsKeyModifiersApi#resetBoundModifiers(KeyMapping)} instead
+	 */
 	public static void resetBoundModifiers(KeyMapping keyBinding) {
 		AmecsKeyModifiersApi.resetBoundModifiers(keyBinding);
 	}
