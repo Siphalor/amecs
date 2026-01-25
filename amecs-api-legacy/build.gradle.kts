@@ -30,6 +30,11 @@ publishing {
 						groupId = "de.siphalor.amecs.amecs-api-legacy"
 						artifactId = "amecs-api-legacy-mc${projectInfo.minecraftVersionDescriptor.get()}"
 						version = projectInfo.shortVersion.get()
+						message = """
+							Amecs' API has been split and restructured.
+							Please see the following document for more information:
+							https://github.com/Siphalor/amecs/blob/cross-version/amecs-api-legacy/MIGRATION.md
+						""".trimIndent()
 					}
 				}
 			}
