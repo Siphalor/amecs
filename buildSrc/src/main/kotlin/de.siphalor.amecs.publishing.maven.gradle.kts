@@ -11,6 +11,13 @@ val projectInfo = extensions.getByType<ProjectInfoExtension>()
 publishing {
 	publications {
 		create<MavenPublication>("mod") {
+			afterEvaluate {
+				if ("${project.group}".endsWith(".${project.name}")) {
+					groupId = "${project.group}"
+				} else {
+					groupId = "${project.group}.${project.name}"
+				}
+			}
 			artifactId = "${project.name}-mc${projectInfo.minecraftVersionDescriptor.get()}"
 			version = projectInfo.shortVersion.get()
 

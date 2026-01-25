@@ -1,8 +1,13 @@
+import de.siphalor.amecs.gradle.ProjectInfoExtension
+import org.gradle.kotlin.dsl.getByType
+
 plugins {
 	id("de.siphalor.amecs.base")
 	id("de.siphalor.amecs.publishing.maven")
 	id("de.siphalor.amecs.publishing.mod")
 }
+
+group = "de.siphalor.amecs"
 
 projectInfo {
 	modId = "amecs"
@@ -45,5 +50,26 @@ tasks.processResources {
 	from(layout.settingsDirectory.file("images/amecs-logo-128.png")) {
 		into("assets/amecs")
 		rename { "logo.png" }
+	}
+}
+
+val projectInfo = extensions.getByType<ProjectInfoExtension>()
+publishing {
+	publications {
+		create<MavenPublication>("relocation") {
+			pom {
+				groupId = "de.siphalor.amecs"
+				artifactId = "amecs-mc${projectInfo.minecraftVersionDescriptor.get()}"
+				version = projectInfo.shortVersion.get()
+
+				distributionManagement {
+					relocation {
+						groupId = "de.siphalor.amecs.amecs-bundle"
+						artifactId = "amecs-bundle-mc${projectInfo.minecraftVersionDescriptor.get()}"
+						version = projectInfo.shortVersion.get()
+					}
+				}
+			}
+		}
 	}
 }

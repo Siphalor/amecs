@@ -10,8 +10,6 @@ plugins {
 	id("de.siphalor.amecs.project-info")
 }
 
-group = "de.siphalor.amecs"
-
 val projectInfo = extensions.getByType<ProjectInfoExtension>()
 val mcProps = Properties().apply {
 	val propFile = project.layout.settingsDirectory.file("gradle/mc-${projectInfo.minecraftVersionDescriptor.get()}/gradle.properties")

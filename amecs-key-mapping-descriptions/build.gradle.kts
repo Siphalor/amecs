@@ -1,5 +1,6 @@
 plugins {
 	id("de.siphalor.amecs.core")
+	id("de.siphalor.amecs.publishing.maven")
 }
 
 dependencies {
