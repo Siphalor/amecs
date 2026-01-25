@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.api.input;
 
+import de.siphalor.amecs.impl.AmecsLegacyDeprecationEmitter;
 import java.util.LinkedHashSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -51,6 +52,7 @@ public class InputHandlerManager {
 	}
 
 	public static boolean registerInputEventHandler(InputEventHandler handler) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		return INPUT_HANDLERS.add(handler);
 	}
 

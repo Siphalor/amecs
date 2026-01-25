@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.api;
 
+import de.siphalor.amecs.impl.AmecsLegacyDeprecationEmitter;
 import de.siphalor.amecs.impl.OldKeyModifiersView;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
@@ -63,6 +64,7 @@ public class KeyModifiers {
 	}
 
 	public static KeyModifiers getCurrentlyPressed() {
+		AmecsLegacyDeprecationEmitter.invoke();
 		return new OldKeyModifiersView(AmecsKeyModifiersModule.CURRENT_MODIFIERS);
 	}
 
@@ -74,6 +76,7 @@ public class KeyModifiers {
 	 */
 	public KeyModifiers() {
 		this(new boolean[KeyModifier.getModifierCount()]);
+		AmecsLegacyDeprecationEmitter.invoke();
 	}
 
 	/**
@@ -85,6 +88,7 @@ public class KeyModifiers {
 	 */
 	@ApiStatus.Internal
 	public KeyModifiers(boolean[] value) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		if (value.length != KeyModifier.getModifierCount()) {
 			throw new IllegalArgumentException("value.length != KeyModifier.getModifierCount(): " + KeyModifier.getModifierCount());
 		}
@@ -113,6 +117,7 @@ public class KeyModifiers {
 	 */
 	@Deprecated
 	public boolean isPressed() {
+		AmecsLegacyDeprecationEmitter.invoke();
 		return equals(new OldKeyModifiersView(AmecsKeyModifiersModule.CURRENT_MODIFIERS));
 	}
 
@@ -122,6 +127,7 @@ public class KeyModifiers {
 	 * @return whether the given modifiers are also set in this object
 	 */
 	public boolean contains(KeyModifiers other) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		for (int i = 0; i < value.length; i++) {
 			if (other.value[i] && !this.value[i]) {
 				return false;
@@ -227,12 +233,14 @@ public class KeyModifiers {
 	}
 
 	public void set(KeyModifier keyModifier, boolean value) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		if (keyModifier != KeyModifier.NONE) {
 			this.value[keyModifier.id] = value;
 		}
 	}
 
 	public boolean get(KeyModifier keyModifier) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		if (keyModifier == KeyModifier.NONE) {
 			return true;
 		}
@@ -245,6 +253,7 @@ public class KeyModifiers {
 	 * @return value == 0
 	 */
 	public boolean isUnset() {
+		AmecsLegacyDeprecationEmitter.invoke();
 		return !ArrayUtils.contains(value, true);
 	}
 
@@ -252,6 +261,7 @@ public class KeyModifiers {
 	 * Clears all flags
 	 */
 	public void unset() {
+		AmecsLegacyDeprecationEmitter.invoke();
 		Arrays.fill(value, false);
 	}
 
@@ -261,6 +271,7 @@ public class KeyModifiers {
 	 * @param keyBinding the key binding from where to extract the key code
 	 */
 	public void cleanup(KeyMapping keyBinding) {
+		AmecsLegacyDeprecationEmitter.invoke();
 		InputConstants.Key key = ((IKeyMapping) keyBinding).amecs$getBoundKey();
 		set(KeyModifier.fromKey(key), false);
 	}

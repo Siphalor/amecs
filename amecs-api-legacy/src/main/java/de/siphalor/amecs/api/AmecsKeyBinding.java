@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.api;
 
+import de.siphalor.amecs.impl.AmecsLegacyDeprecationEmitter;
 import de.siphalor.amecs.impl.OldKeyModifiersView;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
@@ -58,6 +59,7 @@ public class AmecsKeyBinding extends AmecsKeyMappingWithKeyModifiers {
 			KeyModifiers defaultModifiers
 	) {
 		super(id, type, code, category, mapModifiersToNew(defaultModifiers));
+		AmecsLegacyDeprecationEmitter.invoke();
 	}
 
 	/**
@@ -83,6 +85,7 @@ public class AmecsKeyBinding extends AmecsKeyMappingWithKeyModifiers {
 			KeyModifiers defaultModifiers
 	) {
 		super(id, type, code, category, mapModifiersToNew(defaultModifiers));
+		AmecsLegacyDeprecationEmitter.invoke();
 	}
 
 	private static AmecsKeyModifierCombination mapModifiersToNew(KeyModifiers keyModifiers) {
@@ -96,6 +99,7 @@ public class AmecsKeyBinding extends AmecsKeyMappingWithKeyModifiers {
 	}
 
 	public KeyModifiers getDefaultModifiers() {
+		AmecsLegacyDeprecationEmitter.invoke();
 		return new OldKeyModifiersView(getDefaultAmecsKeyModifiers());
 	}
 }

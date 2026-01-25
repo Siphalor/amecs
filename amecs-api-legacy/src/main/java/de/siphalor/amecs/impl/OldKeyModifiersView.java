@@ -33,6 +33,8 @@ public class OldKeyModifiersView extends KeyModifiers {
 		setAlt(newKeyModifiers.getAlt());
 		setControl(newKeyModifiers.getControl());
 		setShift(newKeyModifiers.getShift());
+
+		AmecsLegacyDeprecationEmitter.invoke();
 	}
 
 	@Override
