@@ -27,3 +27,10 @@ dependencies {
 
 	compileOnly(project(":amecs-key-modifiers"))
 }
+
+tasks.processResources {
+	from(layout.settingsDirectory.file("images/nmuk-logo-128.png")) {
+		into("assets/nmuk")
+		rename { "logo.png" }
+	}
+}

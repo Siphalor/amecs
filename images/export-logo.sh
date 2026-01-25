@@ -10,3 +10,7 @@ export_png() {
 
 export_png core-logo 48
 export_png core-logo 128
+export_png amecs-logo 48
+export_png amecs-logo 128
+export_png nmuk-logo 48
+export_png nmuk-logo 128

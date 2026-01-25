@@ -40,3 +40,10 @@ dependencies {
 
 	compileOnly(project(":nmuk", configuration = "namedElements"))
 }
+
+tasks.processResources {
+	from(layout.settingsDirectory.file("images/amecs-logo-128.png")) {
+		into("assets/amecs")
+		rename { "logo.png" }
+	}
+}

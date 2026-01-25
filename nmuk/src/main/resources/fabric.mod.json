@@ -14,7 +14,7 @@
 		"issues": "https://github.com/Siphalor/nmuk/issues"
 	},
 	"license": "Apache-2.0",
-	"icon": "assets/nmuk/icon.png",
+	"icon": "assets/nmuk/logo.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [],
