@@ -1,4 +1,4 @@
-package de.siphalor.amecs.key_modifiers.api;/*
+/*
  * Copyright 2020 Siphalor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package de.siphalor.amecs.key_modifiers.api;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package de.siphalor.amecs.key_modifiers.api;
 
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
