@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Siphalor
+ * Copyright 2026 Siphalor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,13 @@
 
 package de.siphalor.amecs.impl;
 
-import de.siphalor.amecs.impl.compat.controlling.AmecsControllingIntegration;
+import lombok.CustomLog;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.ApiStatus;
 
-@Environment(EnvType.CLIENT)
-@ApiStatus.Internal
-public class AmecsAPI implements ClientModInitializer {
-	public static final String MOD_ID = "amecsapi";
-	public static final String MOD_NAME = "Amecs API";
-
-	public static String makeKeyID(String keyName) {
-		return "key." + MOD_ID + "." + keyName;
-	}
-
+@CustomLog
+public class AmecsApiLegacyDummy implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		log.info("Using empty dummy of amecsapi");
 	}
 }
