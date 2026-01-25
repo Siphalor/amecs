@@ -1,5 +1,5 @@
 {
-    "amecs.key.categories.skin_layers": "Amecs Skinschichten",
+    "key.category.amecs.skin_layers": "Amecs Skinschichten",
     "key.amecs.toggle_auto_jump": "Automatisches Springen umschalten",
     "key.amecs.toggle_cape": "Cape umschalten",
     "key.amecs.toggle_hat": "Hut umschalten",

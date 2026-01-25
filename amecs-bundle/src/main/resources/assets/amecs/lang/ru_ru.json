@@ -3,7 +3,7 @@
     "key.amecs.toggle_jacket": "Переключить куртку",
     "key.amecs.toggle_left_pants_leg": "Переключить левую штанину",
     "key.amecs.toggle_left_sleeve": "Переключить левый рукав",
-    "amecs.key.categories.skin_layers": "Слои скина",
+    "key.category.amecs.skin_layers": "Слои скина",
     "amecs.key.mouse.scroll.down": "Пролистать вниз",
     "amecs.key.mouse.scroll.up": "Пролистать вверх",
     "amecs.toggled.on": "Включено %s",

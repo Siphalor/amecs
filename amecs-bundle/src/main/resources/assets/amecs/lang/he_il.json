@@ -1,7 +1,7 @@
 {
     "amecs.key.mouse.scroll.up": "גלול למלה",
     "amecs.key.mouse.scroll.down": "גלול למטה",
-    "amecs.key.categories.skin_layers": "שכבות עור",
+    "key.category.amecs.skin_layers": "שכבות עור",
     "key.amecs.toggle_auto_jump": "החלף קפיצה אוטומטית",
     "key.amecs.toggle_cape": "החלף גלימה",
     "key.amecs.toggle_hat": "החלף כובע",

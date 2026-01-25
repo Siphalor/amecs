@@ -1,6 +1,6 @@
 {
     "amecs.key.mouse.scroll.up": "Прогорнути Вгору",
-    "amecs.key.categories.skin_layers": "Шари Скіну",
+    "key.category.amecs.skin_layers": "Шари Скіну",
     "amecs.key.mouse.scroll.down": "Прогорнути Вниз",
     "key.amecs.toggle_right_sleeve": "Перемкнути Правий Рукав",
     "amecs.toggled.on": "Увімкнено %s",

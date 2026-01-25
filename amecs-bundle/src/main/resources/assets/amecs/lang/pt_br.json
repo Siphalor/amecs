@@ -1,5 +1,5 @@
 {
-    "amecs.key.categories.skin_layers": "Camadas de skins do Amecs",
+    "key.category.amecs.skin_layers": "Camadas de skins do Amecs",
     "key.amecs.toggle_auto_jump": "Ativar/Desativar pulo automático",
     "key.amecs.toggle_cape": "Ativar/Desativar capa",
     "key.amecs.toggle_hat": "Ativar/Desativar chapéu",

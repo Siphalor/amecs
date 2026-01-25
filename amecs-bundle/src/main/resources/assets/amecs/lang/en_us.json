@@ -1,5 +1,5 @@
 {
-    "amecs.key.categories.skin_layers": "Amecs Skin Layers",
+    "key.category.amecs.skin_layers": "Amecs Skin Layers",
     "key.amecs.toggle_auto_jump": "Toggle Auto Jump",
     "key.amecs.toggle_cape": "Toggle Cape",
     "key.amecs.toggle_hat": "Toggle Hat",

@@ -69,7 +69,7 @@ public class Amecs implements ClientModInitializer {
 			ResourceLocation.fromNamespaceAndPath(MOD_ID, "skin_layers")
 	);
 	//# else
-	//- private static final String SKIN_LAYER_CATEGORY = MOD_ID + ".key.categories.skin_layers";
+	//- private static final String SKIN_LAYER_CATEGORY = "key.category." + MOD_ID + ".skin_layers";
 	//# end
 
 	public static final KeyMapping ESCAPE_KEYBINDING = KeyBindingHelper.registerKeyBinding(new AmecsKeyMappingWithKeyModifiers(
