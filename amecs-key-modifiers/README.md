@@ -11,13 +11,63 @@ Allows users and modders to define modifier keys for key mappings
 
 ## About
 
-Modifier keys can be set by the user for all keybindings, including Vanilla ones.
+Modifier keys can be set by the user for all key mappings, including Vanilla ones.
 
 ## Usage
 
-If you want to define a keybinding that uses modifier keys for its default value, you can extend the [`AmecsKeyBinding`](../src/main/java/de/siphalor/amecs/api/AmecsKeyBinding.java) class.
+### Defining Key Mappings with Default Modifiers
 
-If you want to further integrate this library, check the [`KeyBindingUtils`](../src/main/java/de/siphalor/amecs/api/KeyBindingUtils.java) class.
+If you want to define a key mapping that uses modifier keys for its default value, you can use the [`AmecsKeyMappingWithKeyModifiers`](src/main/java/de/siphalor/amecs/key_modifiers/api/AmecsKeyMappingWithKeyModifiers.java) class.
+
+```java
+KeyMapping myKeyMapping = new AmecsKeyMappingWithKeyModifiers(
+    new ResourceLocation("my-mod", "my_key"),
+    InputConstants.Type.KEYSYM,
+    GLFW.GLFW_KEY_G,
+    Category.MISC,
+    new AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL, AmecsKeyModifiers.ALT)
+);
+```
+
+### Accessing Modifiers
+
+If you want to interact with the modifiers of a key mapping, use the [`AmecsKeyModifiersApi`](src/main/java/de/siphalor/amecs/key_modifiers/api/AmecsKeyModifiersApi.java) class.
+
+```java
+// Get the currently bound modifiers
+AmecsKeyModifierCombination boundModifiers = AmecsKeyModifiersApi.getBoundModifiers(keyMapping);
+
+// Check if a specific modifier is set
+boolean isControlPressed = boundModifiers.get(AmecsKeyModifiers.CONTROL);
+
+// Get the default modifiers
+AmecsKeyModifierCombination defaultModifiers = AmecsKeyModifiersApi.getDefaultModifiers(keyMapping);
+```
+
+### Working with Modifier Combinations
+
+The [`AmecsKeyModifierCombination`](src/main/java/de/siphalor/amecs/key_modifiers/api/AmecsKeyModifierCombination.java) class represents a set of modifiers.
+
+```java
+// Create a combination
+AmecsKeyModifierCombination combo = new AmecsKeyModifierCombination(AmecsKeyModifiers.SHIFT, AmecsKeyModifiers.ALT);
+
+// Check if no modifiers are set
+boolean isUnset = combo.isUnset();
+
+// Get currently pressed modifiers
+AmecsKeyModifierCombination pressed = AmecsKeyModifierCombination.getCurrentlyPressed();
+```
+
+### Custom Modifiers
+
+You can register your own modifiers using the [`AmecsKeyModifiers`](src/main/java/de/siphalor/amecs/key_modifiers/api/AmecsKeyModifiers.java) class.
+Note that this must be done during early initialization before the API is sealed.
+
+```java
+AmecsKeyModifier myModifier = new DefaultKeyModifier("my_modifier", -1, GLFW.GLFW_KEY_F1);
+AmecsKeyModifiers.register(myModifier);
+```
 
 ## License
 
