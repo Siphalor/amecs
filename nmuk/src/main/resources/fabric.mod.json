@@ -28,7 +28,11 @@
 	"depends": {
 		"fabricloader": ">=0.4.0"
 	},
+	"breaks": {
+		"amecsapi": "<1.8.0-"
+	},
 	"conflicts": {
-		"amecsapi": "<=1.7.999"
+		"transition": "*",
+		"trender": "*"
 	}
 }

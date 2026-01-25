@@ -12,4 +12,7 @@ dependencies {
 	modRuntimeOnly(fabricApi.module("fabric-resource-loader-v0", mcLibs.versions.fabric.api.get()))
 
 	modCompileOnly(mcLibs.bundles.compatibility)
+
+	include(project(":amecs-api-legacy-dummy"))
+	runtimeOnly(project(":amecs-api-legacy-dummy", configuration = "namedElements"))
 }

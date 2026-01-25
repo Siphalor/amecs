@@ -6,6 +6,7 @@ plugins {
 	alias(libs.plugins.licenser)
 	alias(libs.plugins.loom)
 	alias(libs.plugins.jcyo)
+	id("de.siphalor.amecs.repositories")
 	id("de.siphalor.amecs.project-info")
 }
 
@@ -30,24 +31,6 @@ loom {
 
 tasks.validateAccessWidener {
 	enabled = false
-}
-
-repositories {
-	maven {
-		name = "Siphalor's Maven"
-		url = uri("https://maven.siphalor.de")
-		mavenContent {
-			includeGroupAndSubgroups("de.siphalor")
-		}
-	}
-	maven {
-		name = "BlameJared"
-		url = uri("https://maven.blamejared.com")
-		mavenContent {
-			includeGroupAndSubgroups("com.blamejared")
-		}
-	}
-	mavenLocal()
 }
 
 val testmodSourceSet = sourceSets.register("testmod") {

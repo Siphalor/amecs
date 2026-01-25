@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "amecsapi",
+	"version": "0.0.0",
+	"name": "Amecs Core - Legacy Dummy",
+	"description": "Empty placeholder for the old \"amecsapi\" mod id. So that other mods' detection mechanisms don't break.",
+	"authors": [ "Siphalor"],
+	"license": "Apache-2.0",
+	"environment": "client",
+	"custom": {
+		"modmenu:api": true,
+		"modmenu": {
+			"badges": [
+				"library"
+			],
+			"parent": {
+				"id": "amecs-core",
+				"name": "Amecs Core",
+				"description": "Mods focused on key binding improvements",
+				"icon": "assets/amecs-core/logo.png",
+				"badges": [ "library" ]
+			}
+		}
+	}
+}

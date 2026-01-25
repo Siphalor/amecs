@@ -30,11 +30,13 @@ dependencies {
 	for (module in listOf(
 		":amecs-api-legacy",
 		":amecs-key-modifiers",
-		":amecs-mouse-inputs",
 		":amecs-priority-key-mappings",
 	)) {
 		implementation(project(module, configuration = "namedElements"))
-		include(project(module))
 	}
+
+	// The legacy module right now embeds all the other modules
+	include(project(":amecs-api-legacy"))
+
 	compileOnly(project(":nmuk", configuration = "namedElements"))
 }

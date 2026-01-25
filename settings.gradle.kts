@@ -48,6 +48,7 @@ include("amecs-mouse-inputs")
 include("amecs-priority-key-mappings")
 
 include("amecs-api-legacy")
+include("amecs-api-legacy-dummy")
 
 include("amecs-bundle")
 include("nmuk")

@@ -28,5 +28,10 @@
 				"badges": [ "library" ]
 			}
 		}
+	},
+	"breaks": {
+		"amecsapi": ">0.0.0 <1.8.0-",
+		"amecs": "<1.6.0-",
+		"nmuk": "<1.2.2"
 	}
 }
