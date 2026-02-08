@@ -28,6 +28,7 @@
 	],
 	"accessWidener" : "amecs.accesswidener",
 	"depends": {
+		"amecsapi": ">=1.8.0-",
 		"fabricloader": ">=0.4.0"
 	},
 	"custom": {

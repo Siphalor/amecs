@@ -30,6 +30,10 @@
 		}
 	},
 	"depends": {
+		"amecs_key_mapping_descriptions": "*",
+		"amecs_key_modifiers": "*",
+		"amecs_mouse_inputs": "*",
+		"amecs_priority_key_mappings": "*",
 		"fabricloader": ">=0.17.0",
 		"fabric-api-base": "*",
 		"fabric-key-binding-api-v1": "*",
