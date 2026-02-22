@@ -18,14 +18,18 @@ Amecs API has been split into various seperate libraries/mods.
 
 This means that you will have to change your dependencies to point to the correct libraries:
 
-_ `amecs_key_mapping_descriptions`: Contains the descriptions the key mappings
-_ `amecs_key_modifiers`: Contains the best known part of Amecs, the ability for users or modders to define key modifiers
-_ `amecs_mouse_inputs`: Contains additional mouse input codes
-_ `amecs_priority_key_mappings`: Contains a system that allows running key mappings before the usual handling
+- `amecs_key_mapping_descriptions`: Contains the descriptions the key mappings
+- `amecs_key_modifiers`: Contains the best known part of Amecs, the ability for users or modders to define key modifiers
+- `amecs_mouse_inputs`: Contains additional mouse input codes
+- `amecs_priority_key_mappings`: Contains a system that allows running key mappings before the usual handling
 
 While for the time being, the old mod id `amecsapi` will still be provided through a dummy mod,
 this will also be removed in 2027.
 If you want to react to Amecs functionalities in your mod, you should check for the new mod ids instead.
+
+The migration should mostly be straightforward, as the classes and packages have primarily been renamed
+to fit better with Mojang's naming conventions and be more consistent overall.  
+See the specific Javadocs on the classes and methods in the legacy module for more details.
 
 Until 2027 a legacy implementation of the old API will continue to be provided by the `amecs_api_legacy` module.
 This legacy module will emit warnings/errors when the old API is still used.
