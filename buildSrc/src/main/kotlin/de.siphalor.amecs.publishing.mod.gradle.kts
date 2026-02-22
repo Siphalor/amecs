@@ -10,6 +10,7 @@ plugins {
 
 val projectInfo = extensions.getByType<ProjectInfoExtension>()
 
+// providers.gradleProperty doesn't respect subprojects, so we can't use it here. https://github.com/gradle/gradle/issues/23572
 publisher {
 	apiKeys {
 		project.findProperty("modrinth.token")?.let { modrinth(it as String) }
@@ -17,13 +18,13 @@ publisher {
 		project.findProperty("github.token")?.let { github(it as String) }
 	}
 
-	curseID = providers.gradleProperty("curseforge.id")
-	modrinthID = providers.gradleProperty("modrinth.id")
+	curseID = project.findProperty("curseforge.id")?.toString()
+	modrinthID = project.findProperty("modrinth.id")?.toString()
 
 	artifact.set(tasks.remapJar)
 
-	projectVersion = projectInfo.shortVersion
-	versionType = providers.gradleProperty("version.type")
+	projectVersion = project.version.toString()
+	versionType = project.findProperty("version.type")?.toString()
 	loaders = listOf("fabric")
 	curseEnvironment = "client"
 
