@@ -15,5 +15,5 @@ dependencies {
 	modCompileOnly(mcLibs.bundles.compatibility)
 
 	include(project(":amecs-api-legacy-dummy"))
-	runtimeOnly(project(":amecs-api-legacy-dummy", configuration = "namedElements"))
+	localRuntime(project(":amecs-api-legacy-dummy", configuration = "namedElements"))
 }
