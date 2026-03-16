@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed persisted key modifiers in the new format not being read in correctly. (#111)
 - Fixed legacy dummy mod being exposed as a Maven dependency.
 
 ## [1.0.0] - 2026-01-25

@@ -207,7 +207,7 @@ public class AmecsKeyModifierOptions {
 				// finally, the new format
 				AmecsKeyModifier modifier = AmecsKeyModifiers.getByName(part);
 				if (modifier != null) {
-					keyModifiers.set(modifier, false);
+					keyModifiers.set(modifier, true);
 				} else {
 					log.warn("Encountered unknown key modifier {} in config file, modifier will not be applied", part);
 				}
