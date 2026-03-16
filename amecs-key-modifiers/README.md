@@ -15,6 +15,12 @@ Modifier keys can be set by the user for all key mappings, including Vanilla one
 
 ## Usage
 
+### Development Setup
+
+Navigate to [the maven repository](https://maven.siphalor.de/de/siphalor/amecs/amecs-key-modifiers)
+and select the correct package for the version of Minecraft you are developing for.
+You can then copy the dependency definition from the top of the page.
+
 ### Defining Key Mappings with Default Modifiers
 
 If you want to define a key mapping that uses modifier keys for its default value, you can use the [`AmecsKeyMappingWithKeyModifiers`](src/main/java/de/siphalor/amecs/key_modifiers/api/AmecsKeyMappingWithKeyModifiers.java) class.

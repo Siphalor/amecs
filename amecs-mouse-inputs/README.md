@@ -22,6 +22,12 @@ The following mouse input codes are added:
 - `514`: Scroll left (Minecraft 1.20.2+)
 - `515`: Scroll right (Minecraft 1.20.2+)
 
+### Development Setup
+
+Navigate to [the maven repository](https://maven.siphalor.de/de/siphalor/amecs/amecs-mouse-inputs)
+and select the correct package for the version of Minecraft you are developing for.
+You can then copy the dependency definition from the top of the page.
+
 ## License
 
 This mod is licensed under [the Apache 2.0 license](../LICENSE).

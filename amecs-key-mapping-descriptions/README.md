@@ -17,6 +17,12 @@ Keybinding descriptions are a way to provide a description for a keybinding that
 
 You can add descriptions by defining translations for the keybinding's translation key with the suffix `.amecs.description`.
 
+### Development Setup
+
+Navigate to [the maven repository](https://maven.siphalor.de/de/siphalor/amecs/amecs-key-mapping-descriptions)
+and select the correct package for the version of Minecraft you are developing for.
+You can then copy the dependency definition from the top of the page.
+
 ## License
 
 This mod is licensed under [the Apache 2.0 license](../LICENSE).

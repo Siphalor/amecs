@@ -24,6 +24,12 @@ You can make use of priority keybindings by implementing the [`PriorityKeyBindin
 Please always carefully check if your priority keybinding takes action in the right context.  
 For example, you oftentimes don't want to execute your priority keybinding when the chat is open.
 
+### Development Setup
+
+Navigate to [the maven repository](https://maven.siphalor.de/de/siphalor/amecs/amecs-priority-key-mappings)
+and select the correct package for the version of Minecraft you are developing for.
+You can then copy the dependency definition from the top of the page.
+
 ## License
 
 This mod is licensed under [the Apache 2.0 license](../LICENSE).
