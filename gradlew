@@ -114,6 +114,72 @@ case "$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
+MIN_JAVA_VERSION=24
+
+java_major_version () {
+    java_cmd=$1
+    version=$("$java_cmd" -version 2>&1 | sed -n 's/.*version "\(.*\)".*/\1/p' | sed -n '1p')
+    major=${version%%[!0-9]*}
+    if [ "$major" = "1" ]; then
+        remainder=${version#1.}
+        major=${remainder%%[!0-9]*}
+    fi
+    printf '%s\n' "$major"
+}
+
+java_meets_minimum_version () {
+    java_cmd=$1
+    major=$(java_major_version "$java_cmd")
+    [ -n "$major" ] && [ "$major" -ge "$MIN_JAVA_VERSION" ]
+}
+
+find_java_home_24_plus () {
+    for candidate in \
+        "$JAVA_HOME_25_X64" \
+        "$JAVA_HOME_24_X64" \
+        /usr/lib/jvm/java-25* \
+        /usr/lib/jvm/jdk-25* \
+        /usr/lib/jvm/java-24* \
+        /usr/lib/jvm/jdk-24* \
+        /Library/Java/JavaVirtualMachines/jdk-25*.jdk/Contents/Home \
+        /Library/Java/JavaVirtualMachines/jdk-24*.jdk/Contents/Home
+    do
+        [ -n "$candidate" ] || continue
+        [ -d "$candidate" ] || continue
+        if [ -x "$candidate/bin/java" ] && java_meets_minimum_version "$candidate/bin/java"; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+    return 1
+}
+
+if [ -n "$JAVA_HOME" ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+        test_java_cmd=$JAVA_HOME/jre/sh/java
+    else
+        test_java_cmd=$JAVA_HOME/bin/java
+    fi
+    if [ -x "$test_java_cmd" ] && ! java_meets_minimum_version "$test_java_cmd"; then
+        detected_java_home=$(find_java_home_24_plus)
+        if [ -n "$detected_java_home" ] ; then
+            JAVA_HOME=$detected_java_home
+        fi
+    fi
+elif command -v java >/dev/null 2>&1 ; then
+    if ! java_meets_minimum_version java; then
+        detected_java_home=$(find_java_home_24_plus)
+        if [ -n "$detected_java_home" ] ; then
+            JAVA_HOME=$detected_java_home
+        fi
+    fi
+else
+    detected_java_home=$(find_java_home_24_plus)
+    if [ -n "$detected_java_home" ] ; then
+        JAVA_HOME=$detected_java_home
+    fi
+fi
+
 
 
 # Determine the Java command to use to start the JVM.
