@@ -127,8 +127,10 @@ public class AmecsKeyModifierCombination {
 	 * @return whether the given modifiers are also set in this object
 	 */
 	public boolean contains(AmecsKeyModifierCombination other) {
-		for (int i = 0; i < value.length; i++) {
-			if (other.value[i] && !this.value[i]) {
+		for (int i = 0; i < Math.max(value.length, other.value.length); i++) {
+			boolean thisValue = i < value.length && value[i];
+			boolean otherValue = i < other.value.length && other.value[i];
+			if (thisValue != otherValue) {
 				return false;
 			}
 		}
