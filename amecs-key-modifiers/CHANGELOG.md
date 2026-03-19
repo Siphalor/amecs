@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix key modifiers of modded key bindings not saving correctly.
 - Fixed a crash when comparing key modifier combinations with different internal lengths.
   This can happen when the modifier combinations are constructed at different times during
   the modifier registration process. (#112)

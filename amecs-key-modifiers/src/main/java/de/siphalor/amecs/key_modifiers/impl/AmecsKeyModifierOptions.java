@@ -64,7 +64,7 @@ public class AmecsKeyModifierOptions {
 
 		List<KeyMapping> bindingsWithChangedModifiers = new ArrayList<>(allKeyBindings.length);
 		for (KeyMapping keyBinding : allKeyBindings) {
-			if (!keyBinding.isDefault()) {
+			if (!AmecsKeyModifiersApi.getBoundModifiers(keyBinding).equals(AmecsKeyModifiersApi.getDefaultModifiers(keyBinding))) {
 				bindingsWithChangedModifiers.add(keyBinding);
 			}
 		}
@@ -100,6 +100,9 @@ public class AmecsKeyModifierOptions {
 		initLegacyModifiers();
 
 		File optionsFile = OLD_OPTIONS_FILE.exists() ? OLD_OPTIONS_FILE : OPTIONS_FILE;
+		if (!optionsFile.exists()) {
+			return;
+		}
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(optionsFile))) {
 			String line;
