@@ -48,7 +48,7 @@ import net.minecraft.network.chat.Component;
 @ApiStatus.Internal
 public class NMUKKeyBindingHelper {
 	public static final Multimap<KeyMapping, KeyMapping> defaultAlternatives = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
-	private static final boolean isAmecsLoaded = FabricLoader.getInstance().isModLoaded("amecsapi");
+	private static final boolean isAmecsLoaded = FabricLoader.getInstance().isModLoaded("amecs_key_modifiers");
 
 	public static void removeKeyBinding(KeyMapping binding) {
 		GameOptionsAccessor options = (GameOptionsAccessor) Minecraft.getInstance().options;
