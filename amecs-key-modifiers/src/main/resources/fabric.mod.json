@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecs_key_modifiers",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs Core - Key Modifiers",
 	"description": "Allows binding key combinations with modifiers like shift, alt or ctrl pressed at the same time.",
 	"authors": ["Siphalor"],
@@ -13,7 +13,7 @@
 		"main": [ "de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersEarlyInit" ],
 		"client": [ "de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule" ]
 	},
-	"mixins": [ "amecs_key_modifiers.mixins.json" ${extra_mixins} ],
+	"mixins": [ "amecs_key_modifiers.mixins.json" ],
 	"custom": {
 		"modmenu:api": true,
 		"modmenu": {

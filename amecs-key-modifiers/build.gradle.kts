@@ -6,7 +6,7 @@ plugins {
 dependencies {
 	for (mod in listOf(
 		"fabric-api-base",
-		"fabric-key-binding-api-v1",
+		smcmtk.mcProps.getting("fabric.api.key_mapping_module").get(),
 	)) {
 		modImplementation(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))
 	}

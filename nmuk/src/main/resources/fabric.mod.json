@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "nmuk",
-	"version": "${version}",
+	"version": "",
 	"name": "No More Useless Keys",
 	"description": "Add multiple key combinations per keybinding",
 	"authors": [

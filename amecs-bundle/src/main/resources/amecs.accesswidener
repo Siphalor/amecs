@@ -1,6 +1,7 @@
-accessWidener v1 named
+accessWidener v1 official
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
 accessible method net/minecraft/client/gui/screens/options/controls/KeyBindsList$Entry refreshEntry ()V
 accessible method net/minecraft/client/gui/screens/controls/KeyBindsList$Entry refreshEntry ()V
+accessible method net/minecraft/client/gui/screens/options/controls/KeyBindsList$Entry refreshEntry ()V
 accessible method net/minecraft/client/gui/screens/controls/KeyBindsList$KeyEntry <init> (Lnet/minecraft/client/gui/screens/controls/KeyBindsList;Lnet/minecraft/client/KeyMapping;Lnet/minecraft/network/chat/Component;)V
 accessible method net/minecraft/client/gui/screens/controls/ControlList$KeyEntry <init> (Lnet/minecraft/client/gui/screens/controls/ControlList;Lnet/minecraft/client/gui/screens/controls/ControlList;Lnet/minecraft/client/KeyMapping;Lnet/minecraft/network/chat/Component;)V

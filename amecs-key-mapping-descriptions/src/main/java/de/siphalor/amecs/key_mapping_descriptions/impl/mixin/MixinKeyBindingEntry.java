@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.key_mapping_descriptions.impl.mixin;
 
+//- import com.llamalad7.mixinextras.sugar.Local;
 //- import java.util.ArrayList;
 //- import java.util.Arrays;
 //- import java.util.List;
@@ -29,12 +30,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+//- import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 //- import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 //- import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//- import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//- import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetTooltipHolder;
@@ -57,7 +60,11 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 //# else
 //- @Mixin(ControlList.KeyEntry.class)
 //# end
-public class MixinKeyBindingEntry {
+public abstract class MixinKeyBindingEntry
+	//# if MC_VERSION_NUMBER >= 260100
+	extends KeyBindsList.Entry
+	//# end
+{
 	@Unique
 	private static final String OLD_DESCRIPTION_SUFFIX = ".amecsapi.description";
 	@Unique
@@ -117,28 +124,40 @@ public class MixinKeyBindingEntry {
 		}
 	}
 
-	//# if MC_VERSION_NUMBER >= 12109
-	@Inject(method = "renderContent", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	public void onRendered(
-			GuiGraphics context,
+	//# if MC_VERSION_NUMBER >= 260100
+	@Inject(method = "extractcContext", at = @At("RETURN"))
+	public void extractContext(
+			GuiGraphicsExtractor context,
 			int mouseX,
 			int mouseY,
 			boolean hovered,
 			float delta,
-			CallbackInfo callbackInfo,
-			int x,
-			int y
+			CallbackInfo callbackInfo
 	) {
-		//# elif MC_VERSION_NUMBER >= 12000
-		//- @Inject(method = "render", at = @At("RETURN"))
-		//- public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-		//# elif MC_VERSION_NUMBER >= 11600
-		//- @Inject(method = "render", at = @At("RETURN"))
-		//- public void onRendered(PoseStack poseStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-		//# else
-		//- @Inject(method = "render", at = @At("RETURN"))
-		//- public void onRendered(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
-		//# end
+		int x = getContentX();
+		int y = changeButton.getY();
+	//# elif MC_VERSION_NUMBER >= 12109
+	//- @Inject(method = "renderContent", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
+	//- public void onRendered(
+	//- 		GuiGraphics context,
+	//- 		int mouseX,
+	//- 		int mouseY,
+	//- 		boolean hovered,
+	//- 		float delta,
+	//- 		CallbackInfo callbackInfo,
+	//- 		int x,
+	//- 		int y
+	//- ) {
+	//# elif MC_VERSION_NUMBER >= 12000
+	//- @Inject(method = "render", at = @At("RETURN"))
+	//- public void onRendered(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# elif MC_VERSION_NUMBER >= 11600
+	//- @Inject(method = "render", at = @At("RETURN"))
+	//- public void onRendered(PoseStack poseStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# else
+	//- @Inject(method = "render", at = @At("RETURN"))
+	//- public void onRendered(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float delta, CallbackInfo callbackInfo) {
+	//# end
 		if (description != null) {
 			//# if MC_VERSION_NUMBER >= 12109
 			description.refreshTooltipForNextRenderPass(

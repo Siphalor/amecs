@@ -16,25 +16,25 @@
 
 package de.siphalor.amecs.key_modifiers.impl.compat.controlling;
 
-import com.blamejared.controlling.api.event.ControllingEvents;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
-import de.siphalor.amecs.key_modifiers.impl.KeyBindingEditGuiHelper;
+//- import com.blamejared.controlling.api.event.ControllingEvents;
+//- import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
+//- import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
+//- import de.siphalor.amecs.key_modifiers.impl.KeyBindingEditGuiHelper;
 
 //# if CONTROLLING_INTEGRATION
-public class AmecsControllingIntegration {
-	public static void initialize() {
-		ControllingEvents.IS_KEY_CODE_MODIFIER_EVENT.register(
-				event -> AmecsKeyModifiers.fromKey(event.key()) != null
-		);
-		ControllingEvents.SET_TO_DEFAULT_EVENT.register(event -> {
-			AmecsKeyModifiersApi.resetBoundModifiers(event.mapping());
-			return false;
-		});
-		ControllingEvents.SET_KEY_EVENT.register(event -> {
-			KeyBindingEditGuiHelper.handleKeyPress(event.mapping(), event.key());
-			return true;
-		});
-	}
-}
+//- public class AmecsControllingIntegration {
+//- 	public static void initialize() {
+//- 		ControllingEvents.IS_KEY_CODE_MODIFIER_EVENT.register(
+//- 				event -> AmecsKeyModifiers.fromKey(event.key()) != null
+//- 		);
+//- 		ControllingEvents.SET_TO_DEFAULT_EVENT.register(event -> {
+//- 			AmecsKeyModifiersApi.resetBoundModifiers(event.mapping());
+//- 			return false;
+//- 		});
+//- 		ControllingEvents.SET_KEY_EVENT.register(event -> {
+//- 			KeyBindingEditGuiHelper.handleKeyPress(event.mapping(), event.key());
+//- 			return true;
+//- 		});
+//- 	}
+//- }
 //# end

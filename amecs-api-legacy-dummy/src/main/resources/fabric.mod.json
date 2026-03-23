@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecsapi",
-	"version": "0.0.0",
+	"version": "",
 	"name": "Amecs Core - Legacy Dummy",
 	"description": "Empty placeholder for the old \"amecsapi\" mod id. So that other mods' detection mechanisms don't break.",
 	"authors": [ "Siphalor"],

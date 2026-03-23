@@ -25,7 +25,8 @@ import de.siphalor.nmuk.impl.mixin.KeybindsScreenAccessor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Level;
@@ -73,7 +74,11 @@ public class NMUKKeyBindingHelper {
 			newKeysAll[keysAll.length] = binding;
 			options.setKeyMappings(newKeysAll);
 		} else {
-			KeyBindingHelper.registerKeyBinding(binding);
+			//# if MC_VERSION_NUMBER >= 260100
+			KeyMappingHelper.registerKeyMapping(binding);
+			//# else
+			//- KeyBindingHelper.registerKeyBinding(binding);
+			//# end
 		}
 		KeyMapping.ALL.put(binding.getName(), binding);
 		KeyMapping.resetMapping();

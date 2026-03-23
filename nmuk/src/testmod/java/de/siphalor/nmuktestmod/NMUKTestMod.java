@@ -20,18 +20,26 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.nmuk.api.NMUKAlternatives;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 public class NMUKTestMod implements ModInitializer {
 	public static final String MOD_ID = "nmuk_testmod";
 
 	@Override
 	public void onInitialize() {
-		KeyMapping kbd = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+		KeyMapping kbd =
+				//# if MC_VERSION_NUMBER >= 260100
+				KeyMappingHelper.registerKeyMapping
+				//# else
+				//- KeyBindingHelper.registerKeyBinding
+				//# end
+				(new KeyMapping(
 				MOD_ID + ".test",
 				InputConstants.Type.KEYSYM,
 				86,
@@ -43,8 +51,10 @@ public class NMUKTestMod implements ModInitializer {
 		));
 		NMUKAlternatives.create(kbd, 85);
 		NMUKAlternatives.create(kbd, new AmecsKeyMappingWithKeyModifiers(
-				//# if MC_VERSION_NUMBER >= 12100
-				ResourceLocation.fromNamespaceAndPath(MOD_ID, "alt"),
+				//# if MC_VERSION_NUMBER >= 260100
+				Identifier.fromNamespaceAndPath(MOD_ID, "alt"),
+				//# elif MC_VERSION_NUMBER >= 12100
+				//- ResourceLocation.fromNamespaceAndPath(MOD_ID, "alt"),
 				//# else
 				//- new ResourceLocation(MOD_ID, "alt"),
 				//# end

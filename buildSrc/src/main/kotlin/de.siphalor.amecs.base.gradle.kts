@@ -1,34 +1,23 @@
 import de.siphalor.amecs.gradle.ProjectInfoExtension
 import de.siphalor.jcyo.gradle.JcyoTask
+import de.siphalor.minecraft_modding_toolkit.gradle.project_plugin.filter.JsonMergeFilterReader
+import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import java.util.*
 
 plugins {
 	alias(libs.plugins.licenser)
-	alias(libs.plugins.loom)
+	alias(mcLibs.plugins.smcmtk)
+	alias(mcLibs.plugins.fabric.loom)
 	alias(libs.plugins.jcyo)
 	id("de.siphalor.amecs.repositories")
 	id("de.siphalor.amecs.project-info")
 }
 
 val projectInfo = extensions.getByType<ProjectInfoExtension>()
-val mcProps = Properties().apply {
-	val propFile = project.layout.settingsDirectory.file("gradle/mc-${projectInfo.minecraftVersionDescriptor.get()}/gradle.properties")
-	load(propFile.asFile.inputStream())
-}
 
 license {
 	rule(layout.settingsDirectory.file("LICENSE_HEADER"))
 	include("**/*.java")
-}
-
-loom {
-	this.accessWidenerPath = projectInfo.modId
-		.map { file("src/main/resources/${it}.accesswidener") }
-		.filter { it.exists() }
-}
-
-tasks.validateAccessWidener {
-	enabled = false
 }
 
 val testmodSourceSet = sourceSets.register("testmod") {
@@ -40,8 +29,14 @@ val compatibilityCheckSourceSet = sourceSets.register("compatibilityCheck") {
 	runtimeClasspath += testmodSourceSet.get().runtimeClasspath
 }
 
-loom.createRemapConfigurations(testmodSourceSet.get())
-loom.createRemapConfigurations(compatibilityCheckSourceSet.get())
+smcmtk {
+	useMojangMappings()
+	createModConfigurations(listOf(sourceSets.main.get(), testmodSourceSet.get(), compatibilityCheckSourceSet.get()))
+}
+
+tasks.validateAccessWidener {
+	enabled = false
+}
 
 dependencies {
 	annotationProcessor(libs.lombok)
@@ -50,7 +45,6 @@ dependencies {
 	testCompileOnly(libs.lombok)
 
 	minecraft(mcLibs.minecraft)
-	mappings(loom.officialMojangMappings())
 	"modImplementation"(libs.fabric.loader)
 
 	"testmodImplementation"(sourceSets.main.map { it.output })
@@ -63,16 +57,13 @@ dependencies {
 
 tasks.processResources {
 	inputs.property("version", project.version)
-	val extraMixins = (mcProps["mixins.extra"]?.toString()?.split(",")?.map { it.trim() } ?: listOf())
+	val extraMixins = (smcmtk.mcProps.getting("mixins.extra").orNull?.split(",")?.map { it.trim() } ?: listOf())
 		.filter { file("src/main/mixins/$it").exists() }
 
 	inputs.property("extraMixins", extraMixins)
 
 	filesMatching("fabric.mod.json") {
-		expand(
-			"version" to project.version,
-			"extra_mixins" to if (extraMixins.isEmpty()) "" else "," + extraMixins.joinToString(",") { "\"$it\"" }
-		)
+		filter<JsonMergeFilterReader>("merge" to mapOf("version" to project.version, "mixins" to extraMixins))
 	}
 
 	if (extraMixins.isNotEmpty()) {
@@ -102,11 +93,6 @@ tasks.register<Jar>("sourcesJar") {
 java.withSourcesJar()
 
 afterEvaluate {
-	val jcyoVars = mcProps.stringPropertyNames()
-		.filter { it.startsWith("preprocessor.") }
-		.map { it to mcProps[it] }
-		.associate { (key, value) -> key.substring("preprocessor.".length) to value.toString() }
-
 	tasks.withType<JavaCompile>() {
 		val compileTask = this
 		val scope = name.removeSurrounding("compile", "Java")
@@ -116,7 +102,7 @@ afterEvaluate {
 		if (sources.exists()) {
 			val jcyoTask = tasks.register<JcyoTask>("jcyo${scope}") {
 				inputDirectory = sources
-				variables = jcyoVars
+				variables = smcmtk.mcProps.map { props -> props.filterKeys { it.startsWith("preprocessor.") } .mapKeys { it.key.substring("preprocessor.".length)} }
 				importOrder = listOf(
 					"",
 					"com.mojang|net.minecraft",

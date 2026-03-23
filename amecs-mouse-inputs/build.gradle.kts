@@ -8,10 +8,9 @@ val testmodModifiersSourceSet = sourceSets.register("testmodModifiers") {
 	runtimeClasspath += sourceSets.main.get().runtimeClasspath
 }
 
-loom {
-	accessWidenerPath.set(file("src/main/resources/amecs_mouse_inputs.accesswidener"))
-
-	createRemapConfigurations(testmodModifiersSourceSet.get())
+smcmtk {
+	createModConfigurations(listOf(testmodModifiersSourceSet.get()))
+	useAccessWidener(project.layout.projectDirectory.file("src/main/resources/amecs_mouse_inputs.accesswidener"))
 }
 
 dependencies {

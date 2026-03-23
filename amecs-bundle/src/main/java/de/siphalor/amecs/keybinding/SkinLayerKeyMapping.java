@@ -22,14 +22,19 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.PlayerModelPart;
 
 public class SkinLayerKeyMapping extends AmecsKeyMappingWithKeyModifiers {
 	private final PlayerModelPart playerModelPart;
 
 	public SkinLayerKeyMapping(
-			ResourceLocation id,
+			//# if MC_VERSION_NUMBER >= 260100
+			Identifier id,
+			//# else
+			//- ResourceLocation id,
+			//# end
 			InputConstants.Type type,
 			int code,
 			//# if MC_VERSION_NUMBER >= 12109

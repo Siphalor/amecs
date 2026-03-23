@@ -56,17 +56,36 @@ public abstract class MixinKeyBindingEntry
 	@Final
 	private KeyMapping key;
 
+	//# if MC_VERSION_NUMBER >= 260100
 	@Inject(
-			method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+			method = "lambda$new$2(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/screens/options/controls/KeyBindsList;Lnet/minecraft/client/gui/components/Button;)V",
 			at = @At("HEAD")
 	)
-	public void onResetButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+	private static void onResetButtonClicked(KeyMapping keyBinding, KeyBindsList listWidget, Button buttonWidget, CallbackInfo callbackInfo) {
+	//# else
+	//- @Inject(
+	//- 		method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+	//- 		at = @At("HEAD")
+	//- )
+	//- public void onResetButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+	//# end
 		AmecsKeyModifiersApi.resetBoundModifiers(keyBinding);
 	}
 
-	@Inject(method = "method_19871(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V", at = @At("HEAD"))
-	public void onEditButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
-		key.setKey(InputConstants.UNKNOWN);
+	//# if MC_VERSION_NUMBER >= 260100
+	@Inject(
+			method = "lambda$new$0(Lnet/minecraft/client/gui/screens/options/controls/KeyBindsList;Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+			at = @At("HEAD")
+	)
+	private static void onEditButtonClicked(KeyBindsList listWidget, KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+	//# else
+	//- @Inject(
+	//- 		method = "method_19871(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+	//- 		at = @At("HEAD")
+	//- )
+	//- public void onEditButtonClicked(KeyMapping keyBinding, Button buttonWidget, CallbackInfo callbackInfo) {
+	//# end
+		keyBinding.setKey(InputConstants.UNKNOWN);
 	}
 
 	@Override

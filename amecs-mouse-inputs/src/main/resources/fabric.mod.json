@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecs_mouse_inputs",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs Core - Mouse Inputs",
 	"description": "Allows binding certain extra mouse inputs like scrolling to key bindings.",
 	"authors": ["Siphalor"],

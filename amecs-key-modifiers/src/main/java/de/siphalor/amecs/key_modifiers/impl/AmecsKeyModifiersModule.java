@@ -18,13 +18,13 @@ package de.siphalor.amecs.key_modifiers.impl;
 
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 //- import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.impl.compat.controlling.AmecsControllingIntegration;
+//- import de.siphalor.amecs.key_modifiers.impl.compat.controlling.AmecsControllingIntegration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import lombok.CustomLog;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
+//- import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.client.KeyMapping;
 
@@ -38,10 +38,10 @@ public class AmecsKeyModifiersModule implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		//# if CONTROLLING_INTEGRATION
-		FabricLoader loader = FabricLoader.getInstance();
-		if (loader.isModLoaded("controlling")) {
-			AmecsControllingIntegration.initialize();
-		}
+		//- FabricLoader loader = FabricLoader.getInstance();
+		//- if (loader.isModLoaded("controlling")) {
+		//- 	AmecsControllingIntegration.initialize();
+		//- }
 		//# end
 	}
 

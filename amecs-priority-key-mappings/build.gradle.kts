@@ -13,7 +13,7 @@ dependencies {
 	compileOnly(project(":amecs-key-modifiers", configuration = "namedElements"))
 	modRuntimeOnly(fabricApi.module("fabric-resource-loader-v0", mcLibs.versions.fabric.api.get()))
 
-	"modTestmodImplementation"(fabricApi.module("fabric-key-binding-api-v1", mcLibs.versions.fabric.api.get()))
+	"modTestmodImplementation"(fabricApi.module(smcmtk.mcProps.getting("fabric.api.key_mapping_module").get(), mcLibs.versions.fabric.api.get()))
 
 	"testmodModifiersImplementation"(sourceSets.main.map { it.output })
 	"testmodModifiersImplementation"(testmodSourceSet.map { it.output })

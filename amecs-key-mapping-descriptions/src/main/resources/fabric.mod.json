@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecs_key_mapping_descriptions",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs Core - Key Mappings Descriptions",
 	"description": "Provides an API to add descriptions to key mappings in the form of tooltips.",
 	"authors": ["Siphalor"],

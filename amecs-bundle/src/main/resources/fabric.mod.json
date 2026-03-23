@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecs",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs",
 	"description": "A lot of keybind utilities",
 	"authors": [

@@ -22,7 +22,8 @@ import net.fabricmc.api.Environment;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 /**
  * A {@link KeyMapping} base class to be used when you want to define modifiers keys as default
@@ -44,7 +45,11 @@ public class AmecsKeyMappingWithKeyModifiers extends KeyMapping {
 	 * @param defaultModifiers the default modifiers
 	 */
 	public AmecsKeyMappingWithKeyModifiers(
-			ResourceLocation id,
+			//# if MC_VERSION_NUMBER >= 260100
+			Identifier id,
+			//# else
+			//- ResourceLocation id,
+			//# end
 			InputConstants.Type type,
 			int code,
 			//# if MC_VERSION_NUMBER >= 12109

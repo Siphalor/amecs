@@ -6,6 +6,10 @@ plugins {
 
 group = "de.siphalor.nmuk"
 
+smcmtk {
+	useAccessWidener(project.layout.projectDirectory.file("src/main/resources/nmuk.accesswidener"))
+}
+
 loom {
 	runs {
 		create("testmodClient") {
@@ -19,7 +23,7 @@ loom {
 dependencies {
 	for (mod in listOf(
 		"fabric-api-base",
-		"fabric-key-binding-api-v1",
+		smcmtk.mcProps.getting("fabric.api.key_mapping_module").get(),
 		"fabric-resource-loader-v0"
 	)) {
 		modImplementation(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))

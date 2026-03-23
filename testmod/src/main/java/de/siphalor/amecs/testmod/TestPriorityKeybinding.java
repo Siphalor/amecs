@@ -25,14 +25,19 @@ import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import java.util.function.BooleanSupplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 public class TestPriorityKeybinding extends AmecsKeyMappingWithKeyModifiers implements AmecsPriorityKeyMapping {
 	private final BooleanSupplier action;
 	private final BooleanSupplier releaseAction;
 
 	public TestPriorityKeybinding(
-			ResourceLocation id,
+			//# if MC_VERSION_NUMBER >= 260100
+			Identifier id,
+			//# else
+			//- ResourceLocation id,
+			//# end
 			InputConstants.Type type,
 			int code,
 			//# if MC_VERSION_NUMBER >= 12109

@@ -2,7 +2,7 @@ import de.siphalor.amecs.gradle.ProjectInfoExtension
 import org.gradle.kotlin.dsl.getByType
 
 plugins {
-	alias(libs.plugins.loom)
+	alias(mcLibs.plugins.fabric.loom)
 	alias(libs.plugins.modPublisher)
 	alias(libs.plugins.changelog)
 	id("de.siphalor.amecs.project-info")
@@ -21,7 +21,7 @@ publisher {
 	curseID = project.findProperty("curseforge.id")?.toString()
 	modrinthID = project.findProperty("modrinth.id")?.toString()
 
-	artifact.set(tasks.remapJar)
+	artifact.set(tasks.findByName("remapJar") ?: tasks.jar)
 
 	projectVersion = project.version.toString()
 	versionType = project.findProperty("version.type")?.toString()

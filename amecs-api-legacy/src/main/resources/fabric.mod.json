@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecsapi",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs Core - Legacy API",
 	"description": "The deprecated legacy API of Amecs",
 	"authors": [

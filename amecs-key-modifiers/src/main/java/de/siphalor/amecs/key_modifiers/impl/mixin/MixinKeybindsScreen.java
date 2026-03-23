@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
@@ -49,6 +48,11 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+//# if MC_VERSION_NUMBER >= 260100
+import net.minecraft.util.Util;
+//# else
+//- import net.minecraft.Util;
+//# end
 
 @SuppressWarnings("WeakerAccess")
 @Environment(EnvType.CLIENT)

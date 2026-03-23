@@ -17,12 +17,15 @@
 package de.siphalor.nmuk.impl.mixin;
 
 import com.google.common.collect.ImmutableList;
+import de.siphalor.nmuk.NMUK;
 import de.siphalor.nmuk.impl.IKeyBinding;
 import de.siphalor.nmuk.impl.NMUKKeyBindingHelper;
+import de.siphalor.nmuk.impl.duck.KeyBindingEntryAccessor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import lombok.val;
+import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,7 +37,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //- import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//- import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -62,6 +66,7 @@ public abstract class MixinKeyBindingEntry
 		//# else
 		//- extends ControlList.Entry
 		//# end
+		implements KeyBindingEntryAccessor
 		{
 	@Unique
 	private static final String REMOVE_LITERAL = "x";
@@ -110,18 +115,23 @@ public abstract class MixinKeyBindingEntry
 	//- private String name;
 	//# end
 	// This is a synthetic field containing the outer class instance
-	@Shadow(aliases = "field_2742", remap = false)
+	@Shadow(aliases = /*# if MC_VERSION_NUMBER >= 260100 */"this$0"/*# else *//*- "field_2742" *//*# end */, remap = false)
 	@Final
 	//# if MC_VERSION_NUMBER >= 11800
 	private KeyBindsList listWidget;
 	//# else
 	//- private ControlList listWidget;
-	//- 		@Shadow
-	//- 		@Final
-	//- 		private KeyMapping key;
-	//- 		//# end
+	//- @Shadow
+	//- @Final
+	//- private KeyMapping key;
+	//# end
 	@Unique
 	private Button alternativesButton;
+
+	@Override
+	public Button nmuk$getResetButton() {
+		return resetButton;
+	}
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void onConstruct(
@@ -196,9 +206,11 @@ public abstract class MixinKeyBindingEntry
 		);
 		if (altEntry != null) {
 			//# if MC_VERSION_NUMBER >= 12109
-			val entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
+			var entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
+			//# elif MC_VERSION_NUMBER >= 11800
+			//- List<KeyBindsList.Entry> entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
 			//# else
-			//- val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
+			//- List<ControlList.Entry> entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
 			//# end
 			for (int i = 0, entriesSize = entries.size(); i < entriesSize; i++) {
 				// noinspection ConstantConditions
@@ -215,8 +227,19 @@ public abstract class MixinKeyBindingEntry
 		}
 	}
 
-	@Inject(method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V", at = @At("HEAD"))
-	private void resetButtonPressed(KeyMapping keyBinding, Button widget, CallbackInfo ci) {
+	//# if MC_VERSION_NUMBER >= 260100
+	@Inject(
+			method = "lambda$new$2(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/screens/options/controls/KeyBindsList;Lnet/minecraft/client/gui/components/Button;)V",
+			at = @At("HEAD")
+	)
+	private static void resetButtonPressed(KeyMapping keyBinding, KeyBindsList listWidget, Button resetButton, CallbackInfo ci) {
+	//# else
+	//- @Inject(
+	//- 		method = "method_19870(Lnet/minecraft/client/KeyMapping;Lnet/minecraft/client/gui/components/Button;)V",
+	//- 		at = @At("HEAD")
+	//- )
+	//- private void resetButtonPressed(KeyMapping keyBinding, Button widget, CallbackInfo ci) {
+	//# end
 		//# if MC_VERSION_NUMBER >= 12109
 		if (((IKeyBinding) keyBinding).nmuk_getParent() == null && Minecraft.getInstance().hasShiftDown()) {
 		//# else
@@ -229,8 +252,23 @@ public abstract class MixinKeyBindingEntry
 			//# else
 			//- val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
 			//# end
-			// noinspection ConstantConditions
-			int entryPos = entries.indexOf(this);
+
+			//# if MC_VERSION_NUMBER >= 260100
+			int entryPos = -1;
+			for (int i = 0; i < entries.size(); i++) {
+				if (entries.get(i) instanceof KeyBindingEntryAccessor entryAccessor && entryAccessor.nmuk$getResetButton() == resetButton) {
+					entryPos = i;
+					break;
+				}
+			}
+			if (entryPos == -1) {
+				NMUK.log(Level.ERROR, "Failed to resolve key binding reset button entry position");
+				return;
+			}
+			//# else
+			//- // noinspection ConstantConditions
+			//- int entryPos = entries.indexOf(this);
+			//# end
 
 			int index;
 			for (Iterator<KeyMapping> iterator = alternatives.iterator(); iterator.hasNext(); ) {
@@ -268,8 +306,10 @@ public abstract class MixinKeyBindingEntry
 		}
 	}
 
-	//# if MC_VERSION_NUMBER >= 12109
-	@ModifyVariable(method = "renderContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
+	//# if MC_VERSION_NUMBER >= 260100
+	@ModifyVariable(method = "extractContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
+	//# elif MC_VERSION_NUMBER >= 12109
+	//- @ModifyVariable(method = "renderContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
 	//# elif MC_VERSION_NUMBER >= 12005
 	//- @ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0), ordinal = 7)
 	//# else
@@ -279,14 +319,18 @@ public abstract class MixinKeyBindingEntry
 		return original - 30;
 	}
 
-	//# if MC_VERSION_NUMBER >= 12109
-	@Inject(method = "renderContent", at = @At("RETURN"))
+	//# if MC_VERSION_NUMBER >= 260100
+	@Inject(method = "extractContent", at = @At("RETURN"))
+	//# elif MC_VERSION_NUMBER >= 12109
+	//- @Inject(method = "renderContent", at = @At("RETURN"))
 	//# else
 	//- @Inject(method = "render", at = @At("RETURN"))
 	//# end
 	public void render(
-			//# if MC_VERSION_NUMBER >= 12000
-			GuiGraphics context,
+			//# if MC_VERSION_NUMBER >= 260100
+			GuiGraphicsExtractor context,
+			//# elif MC_VERSION_NUMBER >= 12000
+			//- GuiGraphics context,
 			//# elif MC_VERSION_NUMBER >= 11600
 			//- PoseStack context,
 			//# end
@@ -310,8 +354,10 @@ public abstract class MixinKeyBindingEntry
 		//- alternativesButton.y = resetButton.y;
 		//- alternativesButton.x = resetButton.x + resetButton.getWidth() + 10;
 		//# end
-		//# if MC_VERSION_NUMBER >= 11600
-		alternativesButton.render(context, mouseX, mouseY, tickDelta);
+		//# if MC_VERSION_NUMBER >= 260100
+		alternativesButton.extractRenderState(context, mouseX, mouseY, tickDelta);
+		//# elif MC_VERSION_NUMBER >= 11600
+		//- alternativesButton.render(context, mouseX, mouseY, tickDelta);
 		//# else
 		//- alternativesButton.render(mouseX, mouseY, tickDelta);
 		//# end

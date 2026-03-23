@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "amecs_priority_key_mappings",
-	"version": "${version}",
+	"version": "",
 	"name": "Amecs Core - Priority Key Mappings",
 	"description": "Allows other mods to declare key bindings that run before any checks.",
 	"authors": ["Siphalor"],

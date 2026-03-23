@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.Util;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 //# if MC_VERSION_NUMBER >= 12100
@@ -38,6 +37,11 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 //# end
 import net.minecraft.client.input.KeyEvent;
+//# if MC_VERSION_NUMBER >= 260100
+import net.minecraft.util.Util;
+//# else
+//- import net.minecraft.Util;
+//# end
 
 @Environment(EnvType.CLIENT)
 @Mixin(KeyboardHandler.class)

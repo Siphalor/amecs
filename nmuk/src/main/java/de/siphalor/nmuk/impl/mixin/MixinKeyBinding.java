@@ -135,7 +135,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 	}
 
 	//# if MC_VERSION_NUMBER >= 12109
-	@Inject(method = "method_74182", at = @At("HEAD"), cancellable = true)
+	@Inject(
+			method = /*# if MC_VERSION_NUMBER >= 260100 */"lambda$click$0"/*# else *//*- "method_74182" *//*# end */,
+			at = @At("HEAD"),
+			cancellable = true
+	)
 	private static void onKeyPressed(KeyMapping binding, CallbackInfo callbackInfo) {
 	//# else
 	//- @Inject(

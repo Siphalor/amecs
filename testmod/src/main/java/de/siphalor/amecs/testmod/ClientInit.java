@@ -18,19 +18,27 @@ package de.siphalor.amecs.testmod;
 
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 public class ClientInit implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		KeyBindingHelper.registerKeyBinding(new TestPriorityKeybinding(
-				//# if MC_VERSION_NUMBER >= 12100
-				ResourceLocation.fromNamespaceAndPath("amecsapi-testmod", "priority"),
+		//# if MC_VERSION_NUMBER >= 260100
+		KeyMappingHelper.registerKeyMapping(new TestPriorityKeybinding(
+		//# else
+		//- KeyBindingHelper.registerKeyBinding(new TestPriorityKeybinding(
+		//# end
+				//# if MC_VERSION_NUMBER >= 260100
+				Identifier.fromNamespaceAndPath("amecsapi-testmod", "priority"),
+				//# elif MC_VERSION_NUMBER >= 12100
+				//- ResourceLocation.fromNamespaceAndPath("amecsapi-testmod", "priority"),
 				//# else
 				//- new ResourceLocation("amecsapi-testmod", "priority"),
 				//# end

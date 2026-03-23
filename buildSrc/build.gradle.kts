@@ -9,7 +9,6 @@ repositories {
 		name = "Fabric"
 		url = uri("https://maven.fabricmc.net/")
 		mavenContent {
-			includeGroupAndSubgroups("fabric-loom")
 			includeGroupAndSubgroups("net.fabricmc")
 		}
 	}
@@ -28,11 +27,12 @@ repositories {
 	}
 	gradlePluginPortal()
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
 	implementation(pluginMarker(libs.plugins.changelog))
-	implementation(pluginMarker(libs.plugins.loom))
+	implementation(pluginMarker(mcLibs.plugins.fabric.loom))
 	implementation(pluginMarker(libs.plugins.licenser))
 	implementation(pluginMarker(libs.plugins.jcyo))
 	implementation(pluginMarker(libs.plugins.modPublisher))

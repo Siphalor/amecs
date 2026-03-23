@@ -18,7 +18,8 @@ package de.siphalor.amecs.priority_key_mappings_testmod;
 
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
@@ -28,7 +29,12 @@ public class AmecsPriorityKeyMappingsTestmod implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		KeyBindingHelper.registerKeyBinding(new TestKeyBinding(
+		//# if MC_VERSION_NUMBER >= 260100
+		KeyMappingHelper.registerKeyMapping
+		//# else
+		//- KeyBindingHelper.registerKeyBinding
+		//# end
+				(new TestKeyBinding(
 				MOD_ID + ".test",
 				GLFW.GLFW_KEY_U,
 				//# if MC_VERSION_NUMBER >= 12109

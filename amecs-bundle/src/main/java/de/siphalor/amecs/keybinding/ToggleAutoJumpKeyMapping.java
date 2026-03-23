@@ -24,11 +24,16 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 //- import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 public class ToggleAutoJumpKeyMapping extends AmecsKeyMappingWithKeyModifiers {
 	public ToggleAutoJumpKeyMapping(
-			ResourceLocation id,
+			//# if MC_VERSION_NUMBER >= 260100
+			Identifier id,
+			//# else
+			//- ResourceLocation id,
+			//# end
 			InputConstants.Type type,
 			int code,
 			//# if MC_VERSION_NUMBER >= 12109

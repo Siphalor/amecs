@@ -33,7 +33,8 @@ import org.apache.logging.log4j.Level;
 //- import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//- import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -299,61 +300,68 @@ public class SearchFieldControlsListWidget
 		searchField.setY(y);
 	}
 
+	//# if MC_VERSION_NUMBER >= 260100
 	@Override
-	public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-		searchField.renderWidget(guiGraphics, mouseX, mouseY, tickDelta);
+	public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+		searchField.extractWidgetRenderState(graphics, mouseX, mouseY, tickDelta);
 	}
 	//# else
 	//- @Override
+	//- public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+	//- 	searchField.renderWidget(guiGraphics, mouseX, mouseY, tickDelta);
+	//- }
+	//# end
+	//# else
+	//- @Override
 	//- public boolean mouseClicked(double double_1, double double_2, int int_1) {
-	//- 	return searchField.mouseClicked(double_1, double_2, int_1);
+		//- return searchField.mouseClicked(double_1, double_2, int_1);
 	//- }
 
 	//- @Override
 	//- public boolean mouseReleased(double double_1, double double_2, int int_1) {
-	//- 	return searchField.mouseReleased(double_1, double_2, int_1);
+		//- return searchField.mouseReleased(double_1, double_2, int_1);
 	//- }
 
 	//- @Override
 	//- public boolean keyPressed(int int_1, int int_2, int int_3) {
-	//- 	return searchField.keyPressed(int_1, int_2, int_3);
+		//- return searchField.keyPressed(int_1, int_2, int_3);
 	//- }
 
 	//- @Override
 	//- public boolean charTyped(char char_1, int int_1) {
-	//- 	return searchField.charTyped(char_1, int_1);
+		//- return searchField.charTyped(char_1, int_1);
 	//- }
 
 	//- @Override
 	//- public void render(
-	//- 		//# if MC_VERSION_NUMBER >= 12000
-	//- 		GuiGraphics drawContext,
-	//- 		//# elif MC_VERSION_NUMBER >= 11600
-	//- 		PoseStack drawContext,
-	//- 		//# end
-	//- 		int index,
-	//- 		int y,
-	//- 		int x,
-	//- 		int entryWidth,
-	//- 		int entryHeight,
-	//- 		int mouseX,
-	//- 		int mouseY,
-	//- 		boolean var8,
-	//- 		float tickDelta
+		//- 	//# if MC_VERSION_NUMBER >= 12000
+		//- 	GuiGraphics drawContext,
+		//- 	//# elif MC_VERSION_NUMBER >= 11600
+		//- 	PoseStack drawContext,
+		//- 	//# end
+		//- 	int index,
+		//- 	int y,
+		//- 	int x,
+		//- 	int entryWidth,
+		//- 	int entryHeight,
+		//- 	int mouseX,
+		//- 	int mouseY,
+		//- 	boolean var8,
+		//- 	float tickDelta
 	//- ) {
-	//- 	//# if MC_VERSION_NUMBER >= 11903
-	//- 	searchField.setY(y);
-	//- 	//# else
-	//- 	searchField.y = y;
-	//- 	//# end
-	//- 	searchField.render(
-	//- 			//# if MC_VERSION_NUMBER >= 11600
-	//- 			drawContext,
-	//- 			//# end
-	//- 			mouseX,
-	//- 			mouseY,
-	//- 			tickDelta
-	//- 	);
+		//- //# if MC_VERSION_NUMBER >= 11903
+		//- searchField.setY(y);
+		//- //# else
+		//- searchField.y = y;
+		//- //# end
+		//- searchField.render(
+		//- 		//# if MC_VERSION_NUMBER >= 11600
+		//- 		drawContext,
+		//- 		//# end
+		//- 		mouseX,
+		//- 		mouseY,
+		//- 		tickDelta
+		//- );
 	//- }
 	//# end
 
