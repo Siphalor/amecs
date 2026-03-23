@@ -19,11 +19,13 @@ package de.siphalor.amecs.priority_key_mappings.impl;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import de.siphalor.amecs.priority_key_mappings.impl.mixin.KeyMappingAccessor;
 import java.util.Collections;
+import java.util.List;
+//- import java.util.Optional;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.mojang.blaze3d.platform.InputConstants;
-//- import net.minecraft.client.KeyMapping;
+import net.minecraft.client.KeyMapping;
 
 public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 	private static final boolean KEY_MODIFIERS_MODULE_PRESENT = FabricLoader.getInstance().isModLoaded("amecs_key_modifiers");
@@ -39,7 +41,7 @@ public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 		if (KEY_MODIFIERS_MODULE_PRESENT) {
 			return AmecsPriorityToKeyModifiersProxy.onPressed(key);
 		} else {
-			return KeyMappingAccessor.getMAP().getOrDefault(key, Collections.emptyList()).stream()
+			return getMappingsForKeyVanilla(key).stream()
 					.anyMatch(mapping -> {
 						if (!(mapping instanceof AmecsPriorityKeyMapping)) {
 							return false;
@@ -53,7 +55,7 @@ public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 		if (KEY_MODIFIERS_MODULE_PRESENT) {
 			return AmecsPriorityToKeyModifiersProxy.onReleased(key);
 		} else {
-			return KeyMappingAccessor.getMAP().getOrDefault(key, Collections.emptyList()).stream()
+			return getMappingsForKeyVanilla(key).stream()
 					.anyMatch(mapping -> {
 						if (!(mapping instanceof AmecsPriorityKeyMapping)) {
 							return false;
@@ -61,5 +63,15 @@ public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 						return ((AmecsPriorityKeyMapping) mapping).onReleasedPriority();
 					});
 		}
+	}
+
+	private static List<KeyMapping> getMappingsForKeyVanilla(InputConstants.Key key) {
+		//# if MC_VERSION_NUMBER >= 12109
+		return KeyMappingAccessor.getMAP().getOrDefault(key, Collections.emptyList());
+		//# else
+		//- return Optional.ofNullable(KeyMappingAccessor.getMAP().get(key))
+		//- 		.map(Collections::singletonList)
+		//- 		.orElse(Collections.emptyList());
+		//# end
 	}
 }

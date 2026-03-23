@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for Minecraft 26.1
 
+### Fixed
+
+- Fixed crash on Minecraft 1.21.8 and below when modifiers module was not loaded (#114)
+
 
 ## [1.0.0] - 2026-01-25
 

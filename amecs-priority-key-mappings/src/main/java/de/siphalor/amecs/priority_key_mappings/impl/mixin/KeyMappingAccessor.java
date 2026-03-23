@@ -28,7 +28,11 @@ import net.minecraft.client.KeyMapping;
 @Mixin(KeyMapping.class)
 public interface KeyMappingAccessor {
 	@Accessor
+	//# if MC_VERSION_NUMBER >= 12109
 	static @NotNull Map<InputConstants.Key, List<KeyMapping>> getMAP() {
+	//# else
+	//- static @NotNull Map<InputConstants.Key, KeyMapping> getMAP() {
+	//# end
 		//noinspection DataFlowIssue
 		return null;
 	}
