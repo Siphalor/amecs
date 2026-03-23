@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for Minecraft 26.1
+
 ### Fixed
 
 - Fixed a crash when comparing key modifier combinations with different internal lengths. (#112)
