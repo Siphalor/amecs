@@ -22,6 +22,10 @@ publishing {
 			version = projectInfo.shortVersion.get()
 
 			from(components["java"])
+
+			pom {
+				url = "https://github.com/Siphalor/amecs"
+			}
 		}
 	}
 
