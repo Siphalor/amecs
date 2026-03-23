@@ -34,7 +34,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 
-@Mixin(value = Options.class, priority = 800)
+@Mixin(Options.class)
 public class MixinGameOptions {
 	@Unique
 	private File nmukOptionsFile;
@@ -90,7 +90,9 @@ public class MixinGameOptions {
 
 	@Inject(
 			method = "load",
-			at = @At("RETURN")
+			at = @At("RETURN"),
+			// Load before Amecs Key Modifiers, so we can create the key bindings accordingly
+			order = 800
 	)
 	public void load(CallbackInfo ci) {
 		if (nmukOptionsFile == null) {
