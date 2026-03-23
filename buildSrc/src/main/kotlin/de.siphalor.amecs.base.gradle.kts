@@ -56,14 +56,15 @@ dependencies {
 }
 
 tasks.processResources {
-	inputs.property("version", project.version)
+	val version = project.version
+	inputs.property("version", version)
 	val extraMixins = (smcmtk.mcProps.getting("mixins.extra").orNull?.split(",")?.map { it.trim() } ?: listOf())
 		.filter { file("src/main/mixins/$it").exists() }
 
 	inputs.property("extraMixins", extraMixins)
 
 	filesMatching("fabric.mod.json") {
-		filter<JsonMergeFilterReader>("merge" to mapOf("version" to project.version, "mixins" to extraMixins))
+		filter<JsonMergeFilterReader>("merge" to mapOf("version" to version, "mixins" to extraMixins))
 	}
 
 	if (extraMixins.isNotEmpty()) {
