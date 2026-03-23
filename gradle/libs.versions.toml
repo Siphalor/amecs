@@ -3,7 +3,7 @@ changelogPlugin = "2.5.0"
 fabric-loader = "0.18.4"
 jcyo = "0.6.0"
 licenser = "2.2.2"
-lombok = "1.18.38"
+lombok = "1.18.44"
 modPublisher = "2.1.8"
 
 [plugins]
