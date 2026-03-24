@@ -207,20 +207,23 @@ public abstract class MixinKeyBindingEntry
 		if (altEntry != null) {
 			//# if MC_VERSION_NUMBER >= 12109
 			var entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
-			//# elif MC_VERSION_NUMBER >= 11800
-			//- List<KeyBindsList.Entry> entries = new ArrayList<>(NMUKKeyBindingHelper.getControlsListWidgetEntries());
 			//# else
-			//- List<ControlList.Entry> entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
+			//- val entries = NMUKKeyBindingHelper.getControlsListWidgetEntries();
 			//# end
+			boolean added = false;
 			for (int i = 0, entriesSize = entries.size(); i < entriesSize; i++) {
 				// noinspection ConstantConditions
 				if (entries.get(i) == this) {
 					i += ((IKeyBinding) binding).nmuk_getAlternativesCount();
 					entries.add(i, altEntry);
+					added = true;
 					break;
 				}
 			}
-			//# if MC_VERSION_NUMBER >= 12109
+			if (!added) {
+				NMUK.log(Level.ERROR, "Failed to add visual representation of key binding alternative entry");
+			}
+			//# if MC_VERSION_NUMBER >= 12103
 			listWidget.replaceEntries(entries);
 			listWidget.refreshEntries();
 			//# end
