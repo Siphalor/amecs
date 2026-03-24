@@ -15,29 +15,3 @@ dependencies {
 	implementation(project(":amecs-priority-key-mappings", configuration = "namedElements"))
 	include(project(":amecs-priority-key-mappings"))
 }
-
-val projectInfo = extensions.getByType<ProjectInfoExtension>()
-publishing {
-	publications {
-		create<MavenPublication>("relocation") {
-			pom {
-				groupId = "de.siphalor.amecs-api"
-				artifactId = "amecs-api-mc${projectInfo.minecraftVersionDescriptor.get()}"
-				version = projectInfo.shortVersion.get()
-
-				distributionManagement {
-					relocation {
-						groupId = "de.siphalor.amecs.amecs-api-legacy"
-						artifactId = "amecs-api-legacy-mc${projectInfo.minecraftVersionDescriptor.get()}"
-						version = projectInfo.shortVersion.get()
-						message = """
-							Amecs' API has been split and restructured.
-							Please see the following document for more information:
-							https://github.com/Siphalor/amecs/blob/cross-version/amecs-api-legacy/MIGRATION.md
-						""".trimIndent()
-					}
-				}
-			}
-		}
-	}
-}

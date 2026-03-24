@@ -56,24 +56,3 @@ tasks.processResources {
 		rename { "logo.png" }
 	}
 }
-
-val projectInfo = extensions.getByType<ProjectInfoExtension>()
-publishing {
-	publications {
-		create<MavenPublication>("relocation") {
-			pom {
-				groupId = "de.siphalor.amecs"
-				artifactId = "amecs-mc${projectInfo.minecraftVersionDescriptor.get()}"
-				version = projectInfo.shortVersion.get()
-
-				distributionManagement {
-					relocation {
-						groupId = "de.siphalor.amecs.amecs-bundle"
-						artifactId = "amecs-bundle-mc${projectInfo.minecraftVersionDescriptor.get()}"
-						version = projectInfo.shortVersion.get()
-					}
-				}
-			}
-		}
-	}
-}
