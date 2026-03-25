@@ -1,4 +1,5 @@
-import de.siphalor.amecs.gradle.ProjectInfoExtension
+import de.siphalor.minecraft_modding_toolkit.gradle.project_plugin.filter.JsonMergeFilterReader
+import org.gradle.kotlin.dsl.filter
 
 plugins {
 	id("de.siphalor.amecs.core")
@@ -14,4 +15,12 @@ dependencies {
 	include(project(":amecs-mouse-inputs"))
 	implementation(project(":amecs-priority-key-mappings", configuration = "namedElements"))
 	include(project(":amecs-priority-key-mappings"))
+}
+
+tasks.processResources {
+	filesMatching("fabric.mod.json") {
+		filter<JsonMergeFilterReader>("merge" to mapOf("depends" to mapOf(
+			smcmtk.mcProps.getting("fabric.api.key_mapping_module").get() to "*"
+		)))
+	}
 }

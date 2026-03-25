@@ -1,5 +1,4 @@
-import de.siphalor.amecs.gradle.ProjectInfoExtension
-import org.gradle.kotlin.dsl.getByType
+import de.siphalor.minecraft_modding_toolkit.gradle.project_plugin.filter.JsonMergeFilterReader
 
 plugins {
 	id("de.siphalor.amecs.base")
@@ -54,5 +53,10 @@ tasks.processResources {
 	from(layout.settingsDirectory.file("images/amecs-logo-128.png")) {
 		into("assets/amecs")
 		rename { "logo.png" }
+	}
+	filesMatching("fabric.mod.json") {
+		filter<JsonMergeFilterReader>("merge" to mapOf("depends" to mapOf(
+			smcmtk.mcProps.getting("fabric.api.key_mapping_module").get() to "*"
+		)))
 	}
 }
