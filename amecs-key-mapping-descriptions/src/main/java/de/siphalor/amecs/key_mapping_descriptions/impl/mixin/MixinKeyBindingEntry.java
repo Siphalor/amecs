@@ -125,7 +125,7 @@ public abstract class MixinKeyBindingEntry
 	}
 
 	//# if MC_VERSION_NUMBER >= 260100
-	@Inject(method = "extractcContext", at = @At("RETURN"))
+	@Inject(method = "extractContent", at = @At("RETURN"))
 	public void extractContext(
 			GuiGraphicsExtractor context,
 			int mouseX,
