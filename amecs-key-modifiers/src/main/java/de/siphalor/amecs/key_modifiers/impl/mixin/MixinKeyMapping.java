@@ -24,7 +24,6 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.ModifierPrefixTextProvider;
-import de.siphalor.amecs.key_modifiers.impl.NOPMap;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
 import java.util.Map;
 import net.fabricmc.api.EnvType;
@@ -64,13 +63,6 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 	@Shadow
 	@Final
 	private static Map<String, KeyMapping> ALL;
-
-	// set it to a NOPMap meaning everything done with this map is ignored. Because setting it to null would cause problems
-	// ... even if we remove the put in the KeyMapping constructor. Because maybe in the future this map is used elsewhere or a other mod uses it
-	@Shadow
-	@Final
-	@Mutable
-	private static Map<InputConstants.Key, KeyMapping> MAP = NOPMap.nopMap();
 
 	@Unique
 	private final AmecsKeyModifierCombination keyModifiers = new AmecsKeyModifierCombination();
