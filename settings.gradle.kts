@@ -36,6 +36,8 @@ smcmtk {
 
 rootProject.name = "amecs"
 
+includeBuild("build-logic")
+
 include("amecs-key-modifiers")
 include("amecs-key-mapping-descriptions")
 include("amecs-mouse-inputs")
