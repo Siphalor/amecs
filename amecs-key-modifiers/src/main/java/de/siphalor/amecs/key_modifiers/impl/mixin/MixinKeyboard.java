@@ -67,8 +67,10 @@ public class MixinKeyboard {
 			CallbackInfo callbackInfo
 	) {
 		// Key released
-		//# if MC_VERSION_NUMBER >= 11800
-		if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen screen) {
+		//# if MC_VERSION_NUMBER >= 260200
+		if (action == 0 && Minecraft.getInstance().gui.screen() instanceof KeyBindsScreen screen) {
+		//# elif MC_VERSION_NUMBER >= 11800
+		//- if (action == 0 && Minecraft.getInstance().screen instanceof KeyBindsScreen screen) {
 		//# else
 		//- if (action == 0 && Minecraft.getInstance().screen instanceof ControlsScreen) {
 		//- 	ControlsScreen screen = (ControlsScreen) Minecraft.getInstance().screen;

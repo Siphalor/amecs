@@ -38,6 +38,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
 //# if MC_VERSION_NUMBER >= 12100
 import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
@@ -79,14 +80,19 @@ public class SearchFieldControlsListWidget
 			//# end
 			Minecraft minecraft
 	) {
-		assert minecraft.screen != null;
+		//# if MC_VERSION_NUMBER >= 260200
+		Screen screen = minecraft.gui.screen();
+		//# else
+		//- Screen screen = minecraft.screen;
+		//# end
+		assert screen != null;
 
 		//# if MC_VERSION_NUMBER >= 12109
 		setHeight(20);
 		//# end
 		searchField = new EditBox(
 				minecraft.font,
-				minecraft.screen.width / 2 - 125,
+				screen.width / 2 - 125,
 				0,
 				250,
 				20,

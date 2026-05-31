@@ -138,7 +138,11 @@ public class NMUKKeyBindingHelper {
 
 	//# if MC_VERSION_NUMBER >= 11800
 	public static List<KeyBindsList.Entry> getControlsListWidgetEntries() {
-		Screen screen = Minecraft.getInstance().screen;
+		//# if MC_VERSION_NUMBER >= 260200
+		Screen screen = Minecraft.getInstance().gui.screen();
+		//# else
+		//- Screen screen = Minecraft.getInstance().screen;
+		//# end
 		if (screen instanceof KeybindsScreenAccessor) {
 			//noinspection unchecked
 			return (List<KeyBindsList.Entry>) (Object)

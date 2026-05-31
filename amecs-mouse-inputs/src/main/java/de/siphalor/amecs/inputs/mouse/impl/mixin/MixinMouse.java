@@ -164,7 +164,16 @@ public class MixinMouse implements IMouse {
 		return false;
 	}
 
-	@Inject(method = "onScroll", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	@Inject(method = "onScroll", at = @At(
+			//# if MC_VERSION_NUMBER >= 260200
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/Gui;overlay()Lnet/minecraft/client/gui/screens/Overlay;",
+			//# else
+			//- value = "FIELD",
+			//- target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;",
+			//# end
+			ordinal = 0
+	), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	//# if MC_VERSION_NUMBER >= 12002
 	private void onMouseScroll(long window, double rawX, double rawY, CallbackInfo callbackInfo, boolean discreteScroll, double sensitivity, double scrollAmountX, double scrollAmountY) {
 	//# else
@@ -179,8 +188,10 @@ public class MixinMouse implements IMouse {
 		//# end
 
 		// check if we have scroll input for the options screen
-		//# if MC_VERSION_NUMBER >= 11800
-		if (minecraft.screen instanceof KeyBindsScreen) {
+		//# if MC_VERSION_NUMBER >= 260200
+		if (minecraft.gui.screen() instanceof KeyBindsScreen) {
+		//# elif MC_VERSION_NUMBER >= 11800
+		//- if (minecraft.screen instanceof KeyBindsScreen) {
 		//# else
 		//- if (minecraft.screen instanceof ControlsScreen) {
 		//# end
@@ -201,9 +212,14 @@ public class MixinMouse implements IMouse {
 
 	@Unique
 	private boolean handleScrollInKeybindsScreen(CallbackInfo callbackInfo, InputConstants.Key primaryKeyCode) {
-		assert minecraft.screen != null;
+		//# if MC_VERSION_NUMBER >= 260200
+		Screen screen = minecraft.gui.screen();
+		//# else
+		//- Screen screen = minecraft.screen;
+		//# end
+		assert screen != null;
 		//# if MC_VERSION_NUMBER >= 11800
-		KeyMapping focusedBinding = ((KeyBindsScreen) minecraft.screen).selectedKey;
+		KeyMapping focusedBinding = ((KeyBindsScreen) screen).selectedKey;
 		//# else
 		//- KeyMapping focusedBinding = ((ControlsScreen) minecraft.screen).selectedKey;
 		//# end
@@ -211,12 +227,12 @@ public class MixinMouse implements IMouse {
 			// This is a bit hacky, but the easiest way out
 			// If the selected binding != null, the mouse x and y will always be ignored - so we can just pass anything
 			//# if MC_VERSION_NUMBER >= 12109
-			minecraft.screen.mouseClicked(
+			screen.mouseClicked(
 					new MouseButtonEvent(0D, 0D, new MouseButtonInfo(primaryKeyCode.getValue(), 0)),
 					true
 			);
 			//# else
-			//- minecraft.screen.mouseClicked(-1, -1, primaryKeyCode.getValue());
+			//- screen.mouseClicked(-1, -1, primaryKeyCode.getValue());
 			//# end
 			callbackInfo.cancel();
 			return true;

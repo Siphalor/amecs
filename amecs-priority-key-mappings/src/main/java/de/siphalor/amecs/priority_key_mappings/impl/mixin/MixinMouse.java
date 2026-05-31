@@ -40,8 +40,13 @@ public class MixinMouse {
 			//- method = "onPress",
 			//# end
 			at = @At(
-					value = "FIELD",
-					target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;",
+					//# if MC_VERSION_NUMBER >= 260200
+					value = "INVOKE",
+					target = "Lnet/minecraft/client/gui/Gui;overlay()Lnet/minecraft/client/gui/screens/Overlay;",
+					//# else
+					//- value = "FIELD",
+					//- target = "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;",
+					//# end
 					ordinal = 0,
 					opcode = Opcodes.GETFIELD
 			),

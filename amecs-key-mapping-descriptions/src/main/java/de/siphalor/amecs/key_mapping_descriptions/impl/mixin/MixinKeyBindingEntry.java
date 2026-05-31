@@ -48,7 +48,8 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
 //- import net.minecraft.client.gui.screens.controls.KeyBindsList;
 //# end
-import net.minecraft.client.resources.language.I18n;
+//- import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 //- import net.minecraft.network.chat.TextComponent;
@@ -94,11 +95,20 @@ public abstract class MixinKeyBindingEntry
 			CallbackInfo callbackInfo
 	) {
 		String descriptionKey = key.getName() + OLD_DESCRIPTION_SUFFIX;
-		if (!I18n.exists(descriptionKey)) {
+		//# if MC_VERSION_NUMBER >= 260200
+		Language language = Language.getInstance();
+		if (language.has(descriptionKey)) {
 			descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
 		}
-		if (!I18n.exists(descriptionKey)) {
+		if (!language.has(descriptionKey)) {
 			description = null;
+		//# else
+		//- if (!I18n.exists(descriptionKey)) {
+		//- 	descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
+		//- }
+		//- if (!I18n.exists(descriptionKey)) {
+		//- 	description = null;
+		//# end
 		} else {
 			//# if MC_VERSION_NUMBER >= 12106
 			description = new WidgetTooltipHolder();
