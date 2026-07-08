@@ -97,7 +97,7 @@ public abstract class MixinKeyBindingEntry
 		String descriptionKey = key.getName() + OLD_DESCRIPTION_SUFFIX;
 		//# if MC_VERSION_NUMBER >= 260200
 		Language language = Language.getInstance();
-		if (language.has(descriptionKey)) {
+		if (!language.has(descriptionKey)) {
 			descriptionKey = key.getName() + DESCRIPTION_SUFFIX;
 		}
 		if (!language.has(descriptionKey)) {
