@@ -66,11 +66,11 @@ public class SearchFieldControlsListWidget
 
 	private int lastChildrenCount = 0;
 	//# if MC_VERSION_NUMBER >= 11802
-	private final Set<KeyBindsList.KeyEntry> allKeyEntries =
+	private final List<KeyBindsList.KeyEntry> allKeyEntries =
 	//# else
-	//- private final Set<ControlList.KeyEntry> allKeyEntries =
+	//- private final List<ControlList.KeyEntry> allKeyEntries =
 	//# end
-			new TreeSet<>(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
+			new ArrayList<>();
 
 	public SearchFieldControlsListWidget(
 			//# if MC_VERSION_NUMBER >= 11802
@@ -174,6 +174,8 @@ public class SearchFieldControlsListWidget
 					Amecs.log(Level.ERROR, "An unexpected exception occurred during recompilation of controls list!", e);
 				}
 			}
+
+			allKeyEntries.sort(Comparator.comparing(o -> ((IKeyBindingEntry) o).amecs$getKeyBinding()));
 
 			children.clear();
 
