@@ -1,7 +1,7 @@
 [versions]
-fabric-api = "0.150.1+26.2"
+fabric-api = "0.158.0+26.2"
 java = "21"
-minecraft = "26.2-pre-2"
+minecraft = "26.2"
 
 [libraries]
 #controlling = { group = "com.blamejared.controlling", name = "Controlling-fabric-1.21.9", version = "27.0.2" }
