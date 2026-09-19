@@ -81,7 +81,7 @@ public class AmecsKeyMappingManager {
 		for (AmecsKeyMappingManagerLayer layer : LAYERS) {
 			layer.getAllMappings().forEach(keyBinding -> {
 				InputConstants.Key key = ((IKeyMapping) keyBinding).amecs$getBoundKey();
-				boolean pressed = !keyBinding.isUnbound();
+				boolean pressed = !keyBinding.isUnbound() && key.getValue() > 0;
 				//# if MC_VERSION_NUMBER >= 260300
 				pressed = pressed && key.getType() == InputConstants.Type.KEYBOARD;
 				pressed = pressed && InputConstants.isKeyDown(key.getValue());
