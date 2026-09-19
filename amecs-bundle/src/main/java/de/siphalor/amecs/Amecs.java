@@ -76,7 +76,11 @@ public class Amecs implements ClientModInitializer {
 
 	public static final KeyMapping ESCAPE_KEYBINDING = registerKeyMapping(new AmecsKeyMappingWithKeyModifiers(
 			createId("alternative_escape"),
-			InputConstants.Type.KEYSYM,
+			//# if MC_VERSION_NUMBER >= 260300
+			InputConstants.Type.KEYBOARD,
+			//# else
+			//- InputConstants.Type.KEYSYM,
+			//# end
 			-1,
 			//# if MC_VERSION_NUMBER >= 12109
 			KeyMapping.Category.MISC,
@@ -90,7 +94,11 @@ public class Amecs implements ClientModInitializer {
     public void onInitializeClient() {
         registerKeyMapping(new ToggleAutoJumpKeyMapping(
 				createId("toggle_auto_jump"),
-				InputConstants.Type.KEYSYM,
+				//# if MC_VERSION_NUMBER >= 260300
+				InputConstants.Type.KEYBOARD,
+				//# else
+				//- InputConstants.Type.KEYSYM,
+				//# end
 				66,
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MOVEMENT,
@@ -103,7 +111,11 @@ public class Amecs implements ClientModInitializer {
         Arrays.stream(PlayerModelPart.values())
                 .map(playerModelPart -> new SkinLayerKeyMapping(
 						createId("toggle_" + playerModelPart.getId().toLowerCase(Locale.ENGLISH)),
-						InputConstants.Type.KEYSYM,
+						//# if MC_VERSION_NUMBER >= 260300
+						InputConstants.Type.KEYBOARD,
+						//# else
+						//- InputConstants.Type.KEYSYM,
+						//# end
 						-1,
 						SKIN_LAYER_CATEGORY,
 						playerModelPart

@@ -22,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+//- import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -31,9 +32,15 @@ public class AmecsKeyModifiers {
 	static final List<AmecsKeyModifier> MODIFIERS = new ArrayList<>(5);
 	private static boolean sealed = false;
 
-	public static AmecsKeyModifier ALT = new DefaultKeyModifier("alt", 0, 342, 346);
-	public static AmecsKeyModifier SHIFT = new DefaultKeyModifier("shift", 2, 340, 344);
-	public static AmecsKeyModifier CONTROL = new DefaultKeyModifier("control", 1, 341, 345);
+	//# if MC_VERSION_NUMBER >= 11700
+	public static AmecsKeyModifier ALT = new DefaultKeyModifier("alt", 0, InputConstants.KEY_LALT, InputConstants.KEY_RALT);
+	public static AmecsKeyModifier SHIFT = new DefaultKeyModifier("shift", 2, InputConstants.KEY_LSHIFT, InputConstants.KEY_RSHIFT);
+	public static AmecsKeyModifier CONTROL = new DefaultKeyModifier("control", 1, InputConstants.KEY_LCONTROL, InputConstants.KEY_RCONTROL);
+	//# else
+	//- public static AmecsKeyModifier ALT = new DefaultKeyModifier("alt", 0, GLFW.GLFW_KEY_LEFT_ALT, GLFW.GLFW_KEY_RIGHT_ALT);
+	//- public static AmecsKeyModifier SHIFT = new DefaultKeyModifier("shift", 2, GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
+	//- public static AmecsKeyModifier CONTROL = new DefaultKeyModifier("control", 1, GLFW.GLFW_KEY_LEFT_CONTROL, GLFW.GLFW_KEY_RIGHT_CONTROL);
+	//# end
 
 	public static void register(AmecsKeyModifier keyModifier) {
 		requireUnsealed();
@@ -74,7 +81,14 @@ public class AmecsKeyModifiers {
 	public static @Nullable AmecsKeyModifier fromKey(InputConstants.Key key) {
 		requireSealed();
 
-		if (key == null || key.getType() != InputConstants.Type.KEYSYM) {
+		if (
+			key == null
+				//# if MC_VERSION_NUMBER >= 260300
+				|| key.getType() != InputConstants.Type.KEYBOARD
+				//# else
+				//- || key.getType() != InputConstants.Type.KEYSYM
+				//# end
+		) {
 			return null;
 		}
 		return fromKeyCode(key.getValue());

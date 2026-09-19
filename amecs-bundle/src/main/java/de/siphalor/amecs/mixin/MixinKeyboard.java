@@ -17,11 +17,12 @@
 package de.siphalor.amecs.mixin;
 
 import de.siphalor.amecs.Amecs;
-import org.lwjgl.glfw.GLFW;
+//- import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.input.KeyEvent;
 
@@ -35,7 +36,7 @@ public class MixinKeyboard {
 	)
 	public KeyEvent modifyPressedKey(KeyEvent keyEvent) {
 		if (Amecs.ESCAPE_KEYBINDING.matches(keyEvent)) {
-			return new KeyEvent(GLFW.GLFW_KEY_ESCAPE, -1, keyEvent.modifiers());
+			return new KeyEvent(InputConstants.KEY_ESCAPE, -1, keyEvent.modifiers());
 		}
 		return keyEvent;
 	}

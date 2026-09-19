@@ -20,7 +20,8 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.ClientModInitializer;
 //- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-import org.lwjgl.glfw.GLFW;
+//- import org.lwjgl.glfw.GLFW;
+//- import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
@@ -42,8 +43,16 @@ public class ClientInit implements ClientModInitializer {
 				//# else
 				//- new ResourceLocation("amecsapi-testmod", "priority"),
 				//# end
-				InputConstants.Type.KEYSYM,
-				GLFW.GLFW_KEY_Z,
+				//# if MC_VERSION_NUMBER >= 260300
+				InputConstants.Type.KEYBOARD,
+				//# else
+				//- InputConstants.Type.KEYSYM,
+				//# end
+				//# if MC_VERSION_NUMBER >= 11700
+				InputConstants.KEY_Z,
+				//# else
+				//- GLFW.GLFW_KEY_Z,
+				//# end
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MISC,
 				//# else

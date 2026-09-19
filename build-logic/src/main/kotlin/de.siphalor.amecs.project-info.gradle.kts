@@ -9,7 +9,7 @@ val mcProps = mcVersionDescriptor.flatMap { descriptor ->
 
 val projectInfo = extensions.create<ProjectInfoExtension>("projectInfo").apply {
 	modId = project.name
-	shortVersion = "${properties["version"]}"
+	shortVersion = "${property("version")}"
 
 	minecraftVersionDescriptor = mcVersionDescriptor
 	minecraftVersion = mcLibs.versions.minecraft.get()

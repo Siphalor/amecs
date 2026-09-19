@@ -31,13 +31,17 @@ import net.minecraft.client.KeyMapping;
  */
 public class NMUKAlternatives {
 	/**
-	 * Create an alternative keybinding with the given code and {@link InputConstants.Type#KEYSYM}.
+	 * Create an alternative keybinding with the given code and {@link InputConstants.Type#KEYBOARD}.
 	 *
 	 * @param base The base keybinding to create an alternative for
 	 * @param code The keycode to use as default for the alternative
 	 */
 	public static void create(KeyMapping base, int code) {
-		create(base, InputConstants.Type.KEYSYM, code);
+		//# if MC_VERSION_NUMBER >= 260300
+		create(base, InputConstants.Type.KEYBOARD, code);
+		//# else
+		//- create(base, InputConstants.Type.KEYSYM, code);
+		//# end
 	}
 
 	/**

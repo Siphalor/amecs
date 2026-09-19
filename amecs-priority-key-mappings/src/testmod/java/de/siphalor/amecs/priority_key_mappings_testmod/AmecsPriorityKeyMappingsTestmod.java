@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.priority_key_mappings_testmod;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import net.fabricmc.api.ClientModInitializer;
 //- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -36,7 +37,11 @@ public class AmecsPriorityKeyMappingsTestmod implements ClientModInitializer {
 		//# end
 				(new TestKeyBinding(
 				MOD_ID + ".test",
+				//# if MC_VERSION_NUMBER >= 11700
+				InputConstants.KEY_U,
+				//# else
 				GLFW.GLFW_KEY_U,
+				// # end
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MISC
 				//# else

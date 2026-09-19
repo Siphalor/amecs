@@ -47,6 +47,9 @@ dependencies {
 	include(project(":amecs-api-legacy"))
 
 	compileOnly(project(":nmuk", configuration = "namedElements"))
+
+	localRuntime(project(":amecs-key-mapping-descriptions", configuration = "namedElements"))
+	localRuntime(project(":amecs-mouse-inputs", configuration = "namedElements"))
 }
 
 tasks.processResources {
