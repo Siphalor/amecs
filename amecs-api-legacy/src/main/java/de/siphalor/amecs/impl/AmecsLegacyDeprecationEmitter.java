@@ -16,36 +16,63 @@
 
 package de.siphalor.amecs.impl;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Properties;
 import lombok.AccessLevel;
 import lombok.CustomLog;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import net.fabricmc.loader.api.FabricLoader;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @CustomLog
 public class AmecsLegacyDeprecationEmitter {
+	private static final File CONFIG_FILE = FabricLoader.getInstance()
+			.getConfigDir()
+			.resolve("amecs_legacy_deprecation.properties")
+			.toFile();
 	private static final ReportingLevel REPORTING_LEVEL;
 	private static final String MESSAGE =
 			"Amecs API Legacy Implementation is deprecated, but still being used. "
 					+ "Support will be dropped in 2027, please see "
 					+ "https://github.com/Siphalor/amecs/blob/cross-version/amecs-api-legacy/MIGRATION.md";
+	private static boolean shouldWriteConfig;
 
 	private static int reports;
 
 	static {
-		ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
-		if (now.isBefore(LocalDate.of(2026, 1, 1).atStartOfDay(ZoneOffset.UTC))) { // TODO: feb
-			REPORTING_LEVEL = ReportingLevel.DISABLED;
-		} else if (now.isBefore(LocalDate.of(2026, 5, 1).atStartOfDay(ZoneOffset.UTC))) {
-			REPORTING_LEVEL = ReportingLevel.WARN;
-		} else if (now.isBefore(LocalDate.of(2026, 8, 1).atStartOfDay(ZoneOffset.UTC))) {
-			REPORTING_LEVEL = ReportingLevel.WARN_MORE;
-		} else {
-			REPORTING_LEVEL = ReportingLevel.ERROR_MORE;
+		ReportingLevel level = null;
+		if (CONFIG_FILE.isFile()) {
+			Properties properties = new Properties();
+			try {
+				properties.load(new FileReader(CONFIG_FILE));
+				if (properties.containsKey("level")) {
+					level = ReportingLevel.valueOf(properties.getProperty("level"));
+				}
+			} catch (Exception e) {
+				log.warn("Failed to read config for Amecs API Legacy's deprecation system", e);
+			}
 		}
+		if (level == null) {
+			shouldWriteConfig = true;
+			ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
+			if (now.isBefore(LocalDate.of(2026, 1, 1).atStartOfDay(ZoneOffset.UTC))) {
+				level = ReportingLevel.DISABLED;
+			} else if (now.isBefore(LocalDate.of(2026, 5, 1).atStartOfDay(ZoneOffset.UTC))) {
+				level = ReportingLevel.WARN;
+			} else if (now.isBefore(LocalDate.of(2026, 12, 1).atStartOfDay(ZoneOffset.UTC))) {
+				level = ReportingLevel.WARN_MORE;
+			} else {
+				level = ReportingLevel.ERROR_MORE;
+			}
+		}
+		REPORTING_LEVEL = level;
 		log.debug("Amecs Legacy Deprecation Reporting Level set to {}", REPORTING_LEVEL);
 	}
 
@@ -54,20 +81,34 @@ public class AmecsLegacyDeprecationEmitter {
 			reports++;
 
 			Exception e = new RuntimeException();
-			if (REPORTING_LEVEL == ReportingLevel.ERROR_MORE) {
+			if (REPORTING_LEVEL == ReportingLevel.ERROR || REPORTING_LEVEL == ReportingLevel.ERROR_MORE) {
 				log.error("{}", MESSAGE, e);
 			} else {
 				log.warn("{}", MESSAGE, e);
 			}
+
+			if (shouldWriteConfig) {
+				shouldWriteConfig = false;
+				writeConfigFile();
+			}
 		}
+	}
+
+	private static void writeConfigFile() {
+		try (Writer writer = new FileWriter(CONFIG_FILE)) {
+			writer.write("# Override the reporting level of Amecs Legacy Deprecation warnings.\n"
+					+ "# Available options are DISABLED, WARN, WARN_MORE, ERROR, ERROR_MORE\nlevel=");
+			writer.write(REPORTING_LEVEL.name());
+		} catch (Exception ignored) {}
 	}
 
 	@RequiredArgsConstructor
 	enum ReportingLevel {
 		DISABLED(0),
 		WARN(1),
-		WARN_MORE(10),
-		ERROR_MORE(10),
+		WARN_MORE(5),
+		ERROR(1),
+		ERROR_MORE(5),
 		;
 		private final int maxReports;
 	}
