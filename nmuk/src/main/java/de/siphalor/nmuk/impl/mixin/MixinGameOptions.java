@@ -162,16 +162,12 @@ public class MixinGameOptions {
 			NMUK.log(Level.ERROR, "Failed to load nmuk options file");
 		}
 
-		//# if MC_VERSION_NUMBER >= 11600
-		Set<KeyMapping> newAllKeyMappings = new TreeSet<>(Arrays.asList(keyMappings));
-		//# else
-		//- Set<KeyMapping> newAllKeyMappings = new IdentityHashSet<>(keyMappings.length + newAlternatives.size());
-		//- newAllKeyMappings.addAll(Arrays.asList(keyMappings));
-		//# end
+		List<KeyMapping> newAllKeyMappings = new ArrayList<>(keyMappings.length + newAlternatives.size());
+		newAllKeyMappings.addAll(Arrays.asList(keyMappings));
 
-		newAllKeyMappings.addAll(newAlternatives);
-
-		for (KeyMapping keyMapping : keyMappings) {
+		Iterator<KeyMapping> iterator = newAllKeyMappings.iterator();
+		while (iterator.hasNext()) {
+			KeyMapping keyMapping = iterator.next();
 			if (!encounteredKeyBindingNames.contains(keyMapping.getName())) {
 				KeyMapping parent = ((IKeyBinding) keyMapping).nmuk_getParent();
 				if (parent == null) {
@@ -180,22 +176,24 @@ public class MixinGameOptions {
 
 				List<KeyMapping> alternatives = ((IKeyBinding) parent).nmuk_getAlternatives();
 				alternatives.remove(keyMapping);
-				newAllKeyMappings.remove(keyMapping);
 				KeyMapping.ALL.remove(keyMapping.getName());
+				iterator.remove();
 			}
 		}
 
+		newAllKeyMappings.addAll(newAlternatives);
+
 		//# if MC_VERSION_NUMBER >= 11600
-		keyMappings = newAllKeyMappings.toArray(new KeyMapping[0]);
+		newAllKeyMappings.sort(Comparator.naturalOrder());
 		//# else
-		//- List<KeyMapping> sortedKeyMappings = new ArrayList<>(newAllKeyMappings);
-		//- sortedKeyMappings.sort(
+		//- newAllKeyMappings.sort(
 		//- 		Comparator.<KeyMapping, Integer>comparing(km -> KeyBindingAccessor.getCATEGORY_SORT_ORDER().getOrDefault(km.getCategory(), 99))
 		//- 				.thenComparing(KeyMapping::getCategory)
 		//- 				.thenComparing(KeyMapping::getName)
 		//- );
-		//- keyMappings = sortedKeyMappings.toArray(new KeyMapping[0]);
 		//# end
+
+		keyMappings = newAllKeyMappings.toArray(new KeyMapping[0]);
 
 		KeyMapping.resetMapping();
 	}
