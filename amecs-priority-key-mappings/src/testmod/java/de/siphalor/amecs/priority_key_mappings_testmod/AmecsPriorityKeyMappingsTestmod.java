@@ -41,7 +41,7 @@ public class AmecsPriorityKeyMappingsTestmod implements ClientModInitializer {
 				InputConstants.KEY_U,
 				//# else
 				GLFW.GLFW_KEY_U,
-				// # end
+				//# end
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MISC
 				//# else
