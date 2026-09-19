@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [Unreleased]
+
+### Fixed
+
+- Re-enabled support for Controlling on Minecraft 26.1+,
+  although currently broken because of a bug in Controlling's API: https://github.com/jaredlll08/Controlling/issues/240
+
+
 ## [1.0.2] - 2026-03-24
 
 ### Added

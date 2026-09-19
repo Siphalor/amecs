@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed sort order of key bindings being messed up due to sorting issues. (#127)
 - Fixed search bar not being centered when resizing the window. (#126)
+- Re-enabled support for Controlling on Minecraft 26.1+,
+  although currently broken because of a bug in Controlling's API: https://github.com/jaredlll08/Controlling/issues/240
 
 
 ## [1.6.5] - 2026-03-25

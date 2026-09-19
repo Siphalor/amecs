@@ -16,22 +16,31 @@
 
 package de.siphalor.amecs.key_modifiers.impl.mixin.compat.controlling;
 
-//- import com.blamejared.controlling.client.NewKeyBindsList;
-//- import org.spongepowered.asm.mixin.Mixin;
-//- import org.spongepowered.asm.mixin.injection.At;
-//- import org.spongepowered.asm.mixin.injection.Inject;
-//- import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.blamejared.controlling.client.NewKeyBindsList;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-//- import com.mojang.blaze3d.platform.InputConstants;
-//- import net.minecraft.client.KeyMapping;
-//- import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.components.Button;
 
 //# if CONTROLLING_INTEGRATION
-//- @Mixin(value = NewKeyBindsList.KeyEntry.class, remap = false)
-//- public abstract class MixinControllingKeyBindingEntry {
-//- 	@Inject(method = "lambda$new$0", at = @At("HEAD"))
-//- 	public void onEditButtonClicked(KeyMapping keyBinding, Button button, CallbackInfo callbackInfo) {
-//- 		keyBinding.setKey(InputConstants.UNKNOWN);
-//- 	}
-//- }
+@Mixin(value = NewKeyBindsList.KeyEntry.class, remap = false)
+public abstract class MixinControllingKeyBindingEntry {
+	@Inject(method = "lambda$new$0", at = @At("HEAD"))
+	//# if MC_VERSION_NUMBER >= 260000
+	private static void onEditButtonClicked(
+			NewKeyBindsList list,
+			KeyMapping keyBinding,
+			Button button,
+			CallbackInfo callbackInfo
+	) {
+	//# else
+	//- public void onEditButtonClicked(KeyMapping keyBinding, Button button, CallbackInfo callbackInfo) {
+	//# end
+		keyBinding.setKey(InputConstants.UNKNOWN);
+	}
+}
 //# end
