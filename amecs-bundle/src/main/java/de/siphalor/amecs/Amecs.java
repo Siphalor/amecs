@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//- import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 //- import net.minecraft.ChatFormatting;
@@ -81,7 +82,11 @@ public class Amecs implements ClientModInitializer {
 			//# else
 			//- InputConstants.Type.KEYSYM,
 			//# end
-			-1,
+			//# if MC_VERSION_NUMBER >= 11700
+			InputConstants.UNKNOWN.getValue(),
+			//# else
+			//- -1,
+			//# end
 			//# if MC_VERSION_NUMBER >= 12109
 			KeyMapping.Category.MISC,
 			//# else
@@ -99,7 +104,11 @@ public class Amecs implements ClientModInitializer {
 				//# else
 				//- InputConstants.Type.KEYSYM,
 				//# end
-				66,
+				//# if MC_VERSION_NUMBER >= 11700
+				InputConstants.KEY_B,
+				//# else
+				//- GLFW.GLFW_KEY_B,
+				//# end
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MOVEMENT,
 				//# else
@@ -116,7 +125,11 @@ public class Amecs implements ClientModInitializer {
 						//# else
 						//- InputConstants.Type.KEYSYM,
 						//# end
-						-1,
+						//# if MC_VERSION_NUMBER >= 11700
+						InputConstants.UNKNOWN.getValue(),
+						//# else
+						//- -1,
+						//# end
 						SKIN_LAYER_CATEGORY,
 						playerModelPart
 				))
