@@ -41,7 +41,11 @@ public class NMUKTestMod implements ModInitializer {
 				//# end
 				(new KeyMapping(
 				MOD_ID + ".test",
-				InputConstants.Type.KEYSYM,
+				//# if MC_VERSION_NUMBER >= 260300
+				InputConstants.Type.KEYBOARD,
+				//# else
+				//- InputConstants.Type.KEYSYM,
+				//# end
 				86,
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MOVEMENT
@@ -58,7 +62,11 @@ public class NMUKTestMod implements ModInitializer {
 				//# else
 				//- new ResourceLocation(MOD_ID, "alt"),
 				//# end
-				InputConstants.Type.KEYSYM,
+				//# if MC_VERSION_NUMBER >= 260300
+				InputConstants.Type.KEYBOARD,
+				//# else
+				//- InputConstants.Type.KEYSYM,
+				//# end
 				86,
 				//# if MC_VERSION_NUMBER >= 12109
 				KeyMapping.Category.MOVEMENT,
