@@ -130,7 +130,7 @@ public class AmecsKeyModifierCombination {
 		for (int i = 0; i < Math.max(value.length, other.value.length); i++) {
 			boolean thisValue = i < value.length && value[i];
 			boolean otherValue = i < other.value.length && other.value[i];
-			if (thisValue != otherValue) {
+			if (otherValue && !thisValue) {
 				return false;
 			}
 		}
