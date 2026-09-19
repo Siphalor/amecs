@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
 - Fixed sort order of key bindings being messed up due to sorting issues. (#127)
+- Fixed search bar not being centered when resizing the window. (#126)
 
 
 ## [1.6.5] - 2026-03-25

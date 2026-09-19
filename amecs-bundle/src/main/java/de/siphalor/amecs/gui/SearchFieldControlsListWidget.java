@@ -38,7 +38,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.screens.Screen;
+//- import net.minecraft.client.gui.screens.Screen;
 //- import net.minecraft.client.gui.screens.controls.ControlList;
 //# if MC_VERSION_NUMBER >= 12100
 import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
@@ -62,6 +62,14 @@ public class SearchFieldControlsListWidget
 		//- extends ControlList.Entry
 		//# end
 {
+	private static final int SEARCH_FIELD_WIDTH = 250;
+
+	//# if MC_VERSION_NUMBER >= 12004
+	private final KeyBindsList container;
+	//# else
+	//- private final Screen container;
+	//# end
+
 	private final EditBox searchField;
 
 	private int lastChildrenCount = 0;
@@ -74,27 +82,26 @@ public class SearchFieldControlsListWidget
 
 	public SearchFieldControlsListWidget(
 			//# if MC_VERSION_NUMBER >= 11802
-			KeyBindsList listWidget,
+			KeyBindsList keyBindsList,
 			//# else
-			//- ControlList listWidget,
+			//- ControlList keyBindsList,
 			//# end
 			Minecraft minecraft
 	) {
-		//# if MC_VERSION_NUMBER >= 260200
-		Screen screen = minecraft.gui.screen();
+		//# if MC_VERSION_NUMBER >= 12004
+		this.container = keyBindsList;
 		//# else
-		//- Screen screen = minecraft.screen;
+		//- this.container = minecraft.screen;
 		//# end
-		assert screen != null;
 
 		//# if MC_VERSION_NUMBER >= 12109
 		setHeight(20);
 		//# end
 		searchField = new EditBox(
 				minecraft.font,
-				screen.width / 2 - 125,
+				calculateXPosition(),
 				0,
-				250,
+				SEARCH_FIELD_WIDTH,
 				20,
 				//# if MC_VERSION_NUMBER >= 11900
 				Component.empty()
@@ -113,12 +120,12 @@ public class SearchFieldControlsListWidget
 			}
 
 			searchText = searchText.trim();
-			listWidget.setScrollAmount(0);
+			keyBindsList.setScrollAmount(0);
 
 			//# if MC_VERSION_NUMBER >= 12109
-			val children = new ArrayList<>(listWidget.children());
+			val children = new ArrayList<>(keyBindsList.children());
 			//# else
-			//- val children = listWidget.children();
+			//- val children = keyBindsList.children();
 			//# end
 			if (allKeyEntries.isEmpty()) {
 				//# if MC_VERSION_NUMBER >= 11802
@@ -162,11 +169,11 @@ public class SearchFieldControlsListWidget
 
 					for (KeyMapping keyBinding : keyBindings) {
 						//# if MC_VERSION_NUMBER >= 11900
-						entry = c.newInstance(listWidget, keyBinding, Component.translatable(keyBinding.getName()));
+						entry = c.newInstance(keyBindsList, keyBinding, Component.translatable(keyBinding.getName()));
 						//# elif MC_VERSION_NUMBER >= 11600
-						//- entry = c.newInstance(listWidget, keyBinding, new TranslatableComponent(keyBinding.getName()));
+						//- entry = c.newInstance(keyBindsList, keyBinding, new TranslatableComponent(keyBinding.getName()));
 						//# else
-						//- entry = c.newInstance(listWidget, keyBinding);
+						//- entry = c.newInstance(keyBindsList, keyBinding);
 						//# end
 						allKeyEntries.add(entry);
 					}
@@ -227,13 +234,13 @@ public class SearchFieldControlsListWidget
 				) {
 					if (!cat.equals(lastCat)) {
 						//# if MC_VERSION_NUMBER >= 12109
-						children.add(listWidget.new CategoryEntry(cat));
+						children.add(keyBindsList.new CategoryEntry(cat));
 						//# elif MC_VERSION_NUMBER >= 11900
-						//- children.add(listWidget.new CategoryEntry(Component.translatable(cat)));
+						//- children.add(keyBindsList.new CategoryEntry(Component.translatable(cat)));
 						//# elif MC_VERSION_NUMBER >= 11600
-						//- children.add(listWidget.new CategoryEntry(new TranslatableComponent(cat)));
+						//- children.add(keyBindsList.new CategoryEntry(new TranslatableComponent(cat)));
 						//# else
-						//- children.add(listWidget.new CategoryEntry(cat));
+						//- children.add(keyBindsList.new CategoryEntry(cat));
 						//# end
 						lastCat = cat;
 					}
@@ -255,16 +262,16 @@ public class SearchFieldControlsListWidget
 				//- MutableComponent noResultsText = new TranslatableComponent(Amecs.MOD_ID + ".search.no_results");
 				//- //# end
 				//- noResultsText.setStyle(noResultsText.getStyle().withColor(ChatFormatting.GRAY));
-				//- children.add(listWidget.new CategoryEntry(noResultsText));
+				//- children.add(keyBindsList.new CategoryEntry(noResultsText));
 				//# else
-				//- children.add(listWidget.new CategoryEntry(Amecs.MOD_ID + ".search.no_results"));
+				//- children.add(keyBindsList.new CategoryEntry(Amecs.MOD_ID + ".search.no_results"));
 				//# end
 			}
 
 			lastChildrenCount = children.size();
 
 			//# if MC_VERSION_NUMBER >= 12109
-			listWidget.replaceEntries(children);
+			keyBindsList.replaceEntries(children);
 			//# end
 		});
 	}
@@ -311,67 +318,82 @@ public class SearchFieldControlsListWidget
 	//# if MC_VERSION_NUMBER >= 260100
 	@Override
 	public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+		updatePosition();
 		searchField.extractWidgetRenderState(graphics, mouseX, mouseY, tickDelta);
 	}
 	//# else
 	//- @Override
 	//- public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+	//- 	updatePosition();
 	//- 	searchField.renderWidget(guiGraphics, mouseX, mouseY, tickDelta);
 	//- }
 	//# end
+
+	private void updatePosition() {
+		searchField.setX(calculateXPosition());
+	}
+
 	//# else
 	//- @Override
 	//- public boolean mouseClicked(double double_1, double double_2, int int_1) {
-		//- return searchField.mouseClicked(double_1, double_2, int_1);
+	//- 	return searchField.mouseClicked(double_1, double_2, int_1);
 	//- }
 
 	//- @Override
 	//- public boolean mouseReleased(double double_1, double double_2, int int_1) {
-		//- return searchField.mouseReleased(double_1, double_2, int_1);
+	//- 	return searchField.mouseReleased(double_1, double_2, int_1);
 	//- }
 
 	//- @Override
 	//- public boolean keyPressed(int int_1, int int_2, int int_3) {
-		//- return searchField.keyPressed(int_1, int_2, int_3);
+	//- 	return searchField.keyPressed(int_1, int_2, int_3);
 	//- }
 
 	//- @Override
 	//- public boolean charTyped(char char_1, int int_1) {
-		//- return searchField.charTyped(char_1, int_1);
+	//- 	return searchField.charTyped(char_1, int_1);
 	//- }
 
 	//- @Override
 	//- public void render(
-		//- 	//# if MC_VERSION_NUMBER >= 12000
-		//- 	GuiGraphics drawContext,
-		//- 	//# elif MC_VERSION_NUMBER >= 11600
-		//- 	PoseStack drawContext,
-		//- 	//# end
-		//- 	int index,
-		//- 	int y,
-		//- 	int x,
-		//- 	int entryWidth,
-		//- 	int entryHeight,
-		//- 	int mouseX,
-		//- 	int mouseY,
-		//- 	boolean var8,
-		//- 	float tickDelta
+	//- 		//# if MC_VERSION_NUMBER >= 12000
+	//- 		GuiGraphics drawContext,
+	//- 		//# elif MC_VERSION_NUMBER >= 11600
+	//- 		PoseStack drawContext,
+	//- 		//# end
+	//- 		int index,
+	//- 		int y,
+	//- 		int x,
+	//- 		int entryWidth,
+	//- 		int entryHeight,
+	//- 		int mouseX,
+	//- 		int mouseY,
+	//- 		boolean var8,
+	//- 		float tickDelta
 	//- ) {
-		//- //# if MC_VERSION_NUMBER >= 11903
-		//- searchField.setY(y);
-		//- //# else
-		//- searchField.y = y;
-		//- //# end
-		//- searchField.render(
-		//- 		//# if MC_VERSION_NUMBER >= 11600
-		//- 		drawContext,
-		//- 		//# end
-		//- 		mouseX,
-		//- 		mouseY,
-		//- 		tickDelta
-		//- );
+	//- 	//# if MC_VERSION_NUMBER >= 11903
+	//- 	searchField.setY(y);
+	//- 	//# else
+	//- 	searchField.y = y;
+	//- 	//# end
+	//- 	searchField.render(
+	//- 			//# if MC_VERSION_NUMBER >= 11600
+	//- 			drawContext,
+	//- 			//# end
+	//- 			mouseX,
+	//- 			mouseY,
+	//- 			tickDelta
+	//- 	);
 	//- }
 	//# end
+
+	private int calculateXPosition() {
+		//# if MC_VERSION_NUMBER >= 12004
+		return (container.getWidth() - SEARCH_FIELD_WIDTH) / 2;
+		//# else
+		//- return (container.width - SEARCH_FIELD_WIDTH) / 2;
+		//# end
+	}
 
 	//# if MC_VERSION_NUMBER >= 11904
 	@Override
