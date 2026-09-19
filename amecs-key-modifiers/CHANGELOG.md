@@ -10,8 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Re-enabled support for Controlling on Minecraft 26.1+,
-  although currently broken because of a bug in Controlling's API: https://github.com/jaredlll08/Controlling/issues/240
+- Re-enabled support for Controlling on Minecraft 26.1+.
 - Fix incorrect `AmecsKeyModifierCombination#contains` check.
   This could result in key mappings being released earlier than they are supposed to when tapping other modifiers. (#125)
 
