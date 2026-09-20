@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed certain modded key bindings being partially removed from the key binding list due to sorting issues. (#115)
+- Removed conflict warning for TRansition and TRender
 
 
 ## [1.2.4] - 2026-03-24

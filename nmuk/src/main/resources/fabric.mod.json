@@ -30,9 +30,5 @@
 	},
 	"breaks": {
 		"amecsapi": "<1.8.0-"
-	},
-	"conflicts": {
-		"transition": "*",
-		"trender": "*"
 	}
 }
