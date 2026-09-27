@@ -40,6 +40,7 @@ includeBuild("build-logic")
 
 include("amecs-key-modifiers")
 include("amecs-key-mapping-descriptions")
+include("amecs-key-mapping-matchers")
 include("amecs-mouse-inputs")
 include("amecs-priority-key-mappings")
 

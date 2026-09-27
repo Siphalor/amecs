@@ -29,6 +29,7 @@ dependencies {
 		modImplementation(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))
 	}
 
+	compileOnly(project(":amecs-key-mapping-matchers"))
 	compileOnly(project(":amecs-key-modifiers"))
 }
 

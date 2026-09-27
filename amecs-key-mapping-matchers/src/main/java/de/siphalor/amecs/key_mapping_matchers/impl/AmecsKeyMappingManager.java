@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package de.siphalor.amecs.key_modifiers.impl;
+package de.siphalor.amecs.key_mapping_matchers.impl;
 
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
-import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
+import com.google.common.base.Suppliers;
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchResult;
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchersApi;
+import de.siphalor.amecs.key_mapping_matchers.impl.duck.IKeyMapping;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Supplier;
+import lombok.CustomLog;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
@@ -33,9 +36,25 @@ import net.minecraft.client.Minecraft;
 
 @Environment(EnvType.CLIENT)
 @ApiStatus.Internal
+@CustomLog
 public class AmecsKeyMappingManager {
 	private static final List<AmecsKeyMappingManagerLayer> LAYERS = new ArrayList<>();
 	private static final List<KeyMapping> PRESSED_MAPPINGS = new ArrayList<>(10);
+	public static final Supplier<Map<String, KeyMapping>> officialIdToKeyBindingMap = Suppliers.memoize(() -> {
+		try {
+			// reflections accessors should be initialized statically if they are static
+			// but in this case its fine because we only do this once because it is cached in a static field
+
+			// noinspection JavaReflectionMemberAccess
+			Method method = KeyMapping.class.getDeclaredMethod("amecs$getIdToKeyBindingMap");
+			method.setAccessible(true);
+			// noinspection unchecked
+			return (Map<String, KeyMapping>) method.invoke(null);
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			log.error("Failed to get access to key bindings", e);
+			return Collections.emptyMap();
+		}
+	});
 
 	static {
 		LAYERS.add(new AmecsKeyMappingManagerLayer());
@@ -113,7 +132,7 @@ public class AmecsKeyMappingManager {
 
 	public static void updateKeysByCode() {
 		LAYERS.forEach(AmecsKeyMappingManagerLayer::clear);
-		AmecsKeyModifiersModule.getIdToKeyBindingMap().values().forEach(AmecsKeyMappingManager::register);
+		officialIdToKeyBindingMap.get().values().forEach(AmecsKeyMappingManager::register);
 	}
 
 	public static void setKeyBindingPressed(KeyMapping keyBinding, boolean pressed) {
@@ -132,38 +151,38 @@ public class AmecsKeyMappingManager {
 	}
 
 	public static void unpressAll() {
-		AmecsKeyModifiersModule.getIdToKeyBindingMap().values().forEach(keyBinding -> ((IKeyMapping) keyBinding).amecs$reset());
+		officialIdToKeyBindingMap.get().values().forEach(keyBinding -> ((IKeyMapping) keyBinding).amecs$reset());
 	}
 
 	public static void setKeyPressed(InputConstants.Key keyCode, boolean pressed) {
-		AmecsKeyModifier modifier = AmecsKeyModifiers.fromKeyCode(keyCode.getValue());
-		if (modifier != null) {
-			AmecsKeyModifiersModule.CURRENT_MODIFIERS.set(modifier, pressed);
-		}
+		AmecsKeyMappingMatchersApi.ON_KEY_STATE_CHANGE.invoker().onChange(keyCode, pressed);
 
 		// Update keybindings with matching modifiers and the same keycode
 		for (AmecsKeyMappingManagerLayer layer : LAYERS) {
 			layer.getMappingsForInput(keyCode).forEach(keyBinding -> setKeyBindingPressed(keyBinding, pressed));
 		}
 
-		if (modifier != null && !pressed) {
-			handleReleasedModifier();
+		if (!pressed) {
+			updateActiveMappingsOnKeyRelease();
 		}
 	}
 
-	private static void handleReleasedModifier() {
+	private static void updateActiveMappingsOnKeyRelease() {
 		// Handle the case that a modifier has been released
-		PRESSED_MAPPINGS.removeIf(pressedKeyBinding -> {
-			AmecsKeyModifierCombination boundModifiers = AmecsKeyModifiersApi.getBoundModifiers(pressedKeyBinding);
-			if (!AmecsKeyModifiersModule.CURRENT_MODIFIERS.contains(boundModifiers)) {
+		Iterator<KeyMapping> iterator = PRESSED_MAPPINGS.iterator();
+		while (iterator.hasNext()) {
+			KeyMapping mapping = iterator.next();
+			AmecsKeyMappingMatchResult matchResult = AmecsKeyMappingMatchersApi.IS_ACTIVE.invoker()
+					.matchIsActive(mapping);
+			if (matchResult == AmecsKeyMappingMatchResult.NO_MATCH) {
+				iterator.remove();
+
 				//# if MC_VERSION_NUMBER >= 11500
-				pressedKeyBinding.setDown(false);
+				mapping.setDown(false);
 				//# else
-				//- ((IKeyMapping) pressedKeyBinding).amecs$setDown(false);
+				//- ((IKeyMapping) mapping).amecs$setDown(false);
 				//# end
-				return true;
 			}
-			return false;
-		});
+		}
 	}
 }

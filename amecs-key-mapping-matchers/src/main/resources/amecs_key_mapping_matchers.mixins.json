@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.key_mapping_matchers.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"MixinKeyMapping"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

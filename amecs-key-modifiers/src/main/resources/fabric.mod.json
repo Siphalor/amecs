@@ -29,6 +29,9 @@
 			}
 		}
 	},
+	"depends": {
+		"amecs_key_mapping_matchers": "*"
+	},
 	"breaks": {
 		"amecsapi": ">0.0.0 <1.8.0-",
 		"amecs": "<1.6.0-",

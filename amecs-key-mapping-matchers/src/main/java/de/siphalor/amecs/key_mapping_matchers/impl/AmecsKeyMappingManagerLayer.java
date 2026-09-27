@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package de.siphalor.amecs.key_modifiers.impl;
+package de.siphalor.amecs.key_mapping_matchers.impl;
 
-import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
-import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchResult;
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchersApi;
+import de.siphalor.amecs.key_mapping_matchers.impl.duck.IKeyMapping;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -64,17 +65,16 @@ public class AmecsKeyMappingManagerLayer {
 		Collection<KeyMapping> mappingsForInput = mappingsByInput.getOrDefault(input, Collections.emptyList());
 		if (mappingsForInput.isEmpty()) return Stream.empty();
 
-		// If there are two key bindings, alt + y and shift + y, and you press shift + alt + y, both will be triggered.
-		// This is intentional.
-		List<KeyMapping> matchingMappings = mappingsForInput.stream()
-				.filter(AmecsKeyMappingManagerLayer::areExactModifiersPressed)
-				.toList();
-		if (matchingMappings.isEmpty())
-			return mappingsForInput.stream().filter(mapping -> AmecsKeyModifiersApi.getBoundModifiers(mapping).isUnset());
-		return matchingMappings.stream();
-	}
-
-	private static boolean areExactModifiersPressed(KeyMapping keyBinding) {
-		return AmecsKeyModifiersApi.getBoundModifiers(keyBinding).equals(AmecsKeyModifiersModule.CURRENT_MODIFIERS);
+		List<KeyMapping> exactMatches = new  ArrayList<>();
+		List<KeyMapping> fuzzyMatches = new  ArrayList<>();
+		for (KeyMapping mapping : mappingsForInput) {
+			AmecsKeyMappingMatchResult matchResult = AmecsKeyMappingMatchersApi.IS_ACTIVE.invoker().matchIsActive(mapping);
+			if (matchResult == AmecsKeyMappingMatchResult.EXACT_MATCH) {
+				exactMatches.add(mapping);
+			} else if (exactMatches.isEmpty() && matchResult == AmecsKeyMappingMatchResult.FUZZY_MATCH) {
+				fuzzyMatches.add(mapping);
+			}
+		}
+		return (exactMatches.isEmpty() ? fuzzyMatches : exactMatches).stream();
 	}
 }

@@ -21,15 +21,12 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import de.siphalor.amecs.key_modifiers.impl.ModifierPrefixTextProvider;
 import de.siphalor.amecs.key_modifiers.impl.duck.IKeyMapping;
-import java.util.Map;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -52,70 +49,13 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 	@Shadow
 	private InputConstants.Key key;
 
-	@Shadow
-	private int clickCount;
-
-	//# if MC_VERSION_NUMBER < 11500
-	//- @Shadow
-	//- private boolean isDown;
-	//# end
-
-	@Shadow
-	@Final
-	private static Map<String, KeyMapping> ALL;
-
 	@Unique
 	private final AmecsKeyModifierCombination keyModifiers = new AmecsKeyModifierCombination();
-
-	@Override
-	public InputConstants.Key amecs$getBoundKey() {
-		return key;
-	}
-
-	@Override
-	public void amecs$incrementTimesPressed() {
-		clickCount++;
-	}
-
-	@Invoker("release")
-	@Override
-	public abstract void amecs$reset();
 
 	@Override
 	public AmecsKeyModifierCombination amecs$getBoundKeyModifiers() {
 		return keyModifiers;
 	}
-
-	//# if MC_VERSION_NUMBER < 11500
-	//- @Override
-	//- public void amecs$setDown(boolean pressed) {
-	//- 	isDown = pressed;
-	//- }
-	//# end
-
-	//# if MC_VERSION_NUMBER >= 12109
-	@Inject(
-			method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILnet/minecraft/client/KeyMapping$Category;)V",
-			at = @At("RETURN")
-	)
-	private void onConstructed(
-			String id,
-			InputConstants.Type type,
-			int defaultCode,
-			KeyMapping.Category category,
-			CallbackInfo ci
-	) {
-		AmecsKeyMappingManager.register((KeyMapping) (Object) this);
-	}
-	//# else
-	//- @Inject(
-	//- 		method = "<init>(Ljava/lang/String;Lcom/mojang/blaze3d/platform/InputConstants$Type;ILjava/lang/String;)V",
-	//- 		at = @At("RETURN")
-	//- )
-	//- private void onConstructed(String id, InputConstants.Type type, int defaultCode, String category, CallbackInfo callbackInfo) {
-	//- 	AmecsKeyMappingManager.register((KeyMapping) (Object) this);
-	//- }
-	//# end
 
 	//# if MC_VERSION_NUMBER >= 11600
 	@Inject(method = "getTranslatedKeyMessage", at = @At("TAIL"), cancellable = true)
@@ -198,36 +138,6 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 		}
 	}
 
-	@Inject(method = "click", at = @At("HEAD"), cancellable = true)
-	private static void onKeyPressed(InputConstants.Key keyCode, CallbackInfo callbackInfo) {
-		AmecsKeyMappingManager.onKeyPressed(keyCode);
-		callbackInfo.cancel();
-	}
-
-	@Inject(method = "set", at = @At("HEAD"), cancellable = true)
-	private static void setKeyPressed(InputConstants.Key keyCode, boolean pressed, CallbackInfo callbackInfo) {
-		AmecsKeyMappingManager.setKeyPressed(keyCode, pressed);
-		callbackInfo.cancel();
-	}
-
-	@Inject(method = "setAll", at = @At("HEAD"), cancellable = true)
-	private static void updatePressedStates(CallbackInfo callbackInfo) {
-		AmecsKeyMappingManager.updatePressedStates();
-		callbackInfo.cancel();
-	}
-
-	@Inject(method = "resetMapping", at = @At("HEAD"), cancellable = true)
-	private static void updateKeysByCode(CallbackInfo callbackInfo) {
-		AmecsKeyMappingManager.updateKeysByCode();
-		callbackInfo.cancel();
-	}
-
-	@Inject(method = "releaseAll", at = @At("HEAD"), cancellable = true)
-	private static void unpressAll(CallbackInfo callbackInfo) {
-		AmecsKeyMappingManager.unpressAll();
-		callbackInfo.cancel();
-	}
-
 	@Inject(method = "setKey", at = @At("RETURN"))
 	public void setKey(InputConstants.Key key, CallbackInfo callbackInfo) {
 		if (key == InputConstants.UNKNOWN) {
@@ -243,10 +153,5 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 				cir.setReturnValue(false);
 			}
 		}
-	}
-
-	@SuppressWarnings({"unused", "MissingUnique"})
-	private static Map<String, KeyMapping> amecs$getIdToKeyBindingMap() {
-		return ALL;
 	}
 }

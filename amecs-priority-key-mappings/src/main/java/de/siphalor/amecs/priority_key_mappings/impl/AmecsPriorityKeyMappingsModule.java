@@ -28,18 +28,18 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
-	private static final boolean KEY_MODIFIERS_MODULE_PRESENT = FabricLoader.getInstance().isModLoaded("amecs_key_modifiers");
+	private static final boolean KEY_MATCHERS_MODULE_PRESENT = FabricLoader.getInstance().isModLoaded("amecs_key_mapping_matchers");
 
 	@Override
 	public void onInitializeClient() {
-		if (KEY_MODIFIERS_MODULE_PRESENT) {
-			AmecsPriorityToKeyModifiersProxy.init();
+		if (KEY_MATCHERS_MODULE_PRESENT) {
+			AmecsPriorityToKeyMatchersProxy.init();
 		}
 	}
 
 	public static boolean onPressedPriority(InputConstants.Key key) {
-		if (KEY_MODIFIERS_MODULE_PRESENT) {
-			return AmecsPriorityToKeyModifiersProxy.onPressed(key);
+		if (KEY_MATCHERS_MODULE_PRESENT) {
+			return AmecsPriorityToKeyMatchersProxy.onPressed(key);
 		} else {
 			return getMappingsForKeyVanilla(key).stream()
 					.anyMatch(mapping -> {
@@ -52,8 +52,8 @@ public class AmecsPriorityKeyMappingsModule implements ClientModInitializer {
 	}
 
 	public static boolean onReleasedPriority(InputConstants.Key key) {
-		if (KEY_MODIFIERS_MODULE_PRESENT) {
-			return AmecsPriorityToKeyModifiersProxy.onReleased(key);
+		if (KEY_MATCHERS_MODULE_PRESENT) {
+			return AmecsPriorityToKeyMatchersProxy.onReleased(key);
 		} else {
 			return getMappingsForKeyVanilla(key).stream()
 					.anyMatch(mapping -> {

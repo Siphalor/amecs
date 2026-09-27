@@ -10,7 +10,7 @@ val testmodModifiersSourceSet = sourceSets.register("testmodModifiers") {
 }
 
 dependencies {
-	compileOnly(project(":amecs-key-modifiers", configuration = "namedElements"))
+	compileOnly(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
 	modRuntimeOnly(fabricApi.module("fabric-resource-loader-v0", mcLibs.versions.fabric.api.get()))
 
 	"modTestmodImplementation"(fabricApi.module(smcmtk.mcProps.getting("fabric.api.key_mapping_module").get(), mcLibs.versions.fabric.api.get()))
@@ -18,5 +18,6 @@ dependencies {
 	"testmodModifiersImplementation"(sourceSets.main.map { it.output })
 	"testmodModifiersImplementation"(testmodSourceSet.map { it.output })
 
+	"testmodModifiersRuntimeOnly"(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
 	"testmodModifiersRuntimeOnly"(project(":amecs-key-modifiers", configuration = "namedElements"))
 }

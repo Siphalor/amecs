@@ -9,6 +9,8 @@ plugins {
 dependencies {
 	implementation(project(":amecs-key-mapping-descriptions", configuration = "namedElements"))
 	include(project(":amecs-key-mapping-descriptions"))
+	implementation(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
+	include(project(":amecs-key-mapping-matchers"))
 	implementation(project(":amecs-key-modifiers", configuration = "namedElements"))
 	include(project(":amecs-key-modifiers"))
 	implementation(project(":amecs-mouse-inputs", configuration = "namedElements"))

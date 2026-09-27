@@ -18,9 +18,8 @@ package de.siphalor.amecs.api;
 
 import de.siphalor.amecs.impl.AmecsLegacyDeprecationEmitter;
 import de.siphalor.amecs.impl.OldKeyModifiersView;
+import de.siphalor.amecs.key_mapping_matchers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyModifiersModule;
 import java.util.Map;
 import lombok.CustomLog;
 import net.fabricmc.api.EnvType;
@@ -101,6 +100,7 @@ public class KeyBindingUtils {
 	 * @return the key object
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static InputConstants.Key getKeyFromVerticalScroll(double deltaY) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		if (deltaY == 0D) {
@@ -117,6 +117,7 @@ public class KeyBindingUtils {
 	 * @return the key object
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static InputConstants.Key getKeyFromHorizontalScroll(double deltaX) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		if (deltaX == 0D) {
@@ -132,9 +133,10 @@ public class KeyBindingUtils {
 	 * @return the map (use with care)
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static Map<String, KeyMapping> getIdToKeyBindingMap() {
 		AmecsLegacyDeprecationEmitter.invoke();
-		return AmecsKeyModifiersModule.getIdToKeyBindingMap();
+		return AmecsKeyMappingManager.officialIdToKeyBindingMap.get();
 	}
 
 	/**
@@ -149,6 +151,7 @@ public class KeyBindingUtils {
 	 * @return whether the keyBinding was removed. It is not removed if it was not contained
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static boolean unregisterKeyBinding(KeyMapping keyBinding) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		return unregisterKeyBinding(keyBinding.getName());
@@ -164,6 +167,7 @@ public class KeyBindingUtils {
 	 * @see #unregisterKeyBinding(KeyMapping)
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static boolean unregisterKeyBinding(String id) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		KeyMapping keyBinding = getIdToKeyBindingMap().remove(id);
@@ -182,6 +186,7 @@ public class KeyBindingUtils {
 	 * @return whether the keybinding was added. It is not added if it is already contained
 	 * @deprecated Currently no replacement exists, please reach out if you are interested.
 	 */
+	@Deprecated
 	public static boolean registerHiddenKeyBinding(KeyMapping keyBinding) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		return AmecsKeyMappingManager.register(keyBinding);
@@ -194,6 +199,7 @@ public class KeyBindingUtils {
 	 * @return the key modifiers
 	 * @deprecated Use {@link AmecsKeyModifiersApi#getBoundModifiers(KeyMapping)} instead
 	 */
+	@Deprecated
 	public static KeyModifiers getBoundModifiers(KeyMapping keyBinding) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		return new OldKeyModifiersView(AmecsKeyModifiersApi.getBoundModifiers(keyBinding));
@@ -207,6 +213,7 @@ public class KeyBindingUtils {
 	 * @return a reference to the default modifiers
 	 * @deprecated Use {@link AmecsKeyModifiersApi#getDefaultModifiers(KeyMapping)} instead
 	 */
+	@Deprecated
 	public static KeyModifiers getDefaultModifiers(KeyMapping keyBinding) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		return new OldKeyModifiersView(AmecsKeyModifiersApi.getDefaultModifiers(keyBinding));
@@ -215,6 +222,7 @@ public class KeyBindingUtils {
 	/**
 	 * @deprecated Use {@link AmecsKeyModifiersApi#resetBoundModifiers(KeyMapping)} instead
 	 */
+	@Deprecated
 	public static void resetBoundModifiers(KeyMapping keyBinding) {
 		AmecsLegacyDeprecationEmitter.invoke();
 		AmecsKeyModifiersApi.resetBoundModifiers(keyBinding);

@@ -16,8 +16,8 @@
 
 package de.siphalor.amecs.priority_key_mappings.impl;
 
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManager;
-import de.siphalor.amecs.key_modifiers.impl.AmecsKeyMappingManagerLayer;
+import de.siphalor.amecs.key_mapping_matchers.impl.AmecsKeyMappingManager;
+import de.siphalor.amecs.key_mapping_matchers.impl.AmecsKeyMappingManagerLayer;
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +25,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class AmecsPriorityToKeyModifiersProxy {
+public class AmecsPriorityToKeyMatchersProxy {
 	private static final AmecsKeyMappingManagerLayer PRIORITY_LAYER = new AmecsKeyMappingManagerLayer() {
 		@Override
 		public boolean accepts(KeyMapping mapping) {

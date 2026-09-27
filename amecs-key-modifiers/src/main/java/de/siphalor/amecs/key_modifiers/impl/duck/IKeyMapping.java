@@ -20,19 +20,9 @@ import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.mojang.blaze3d.platform.InputConstants;
+//- import com.mojang.blaze3d.platform.InputConstants;
 
 @Environment(EnvType.CLIENT)
-public interface IKeyMapping {
-	InputConstants.Key amecs$getBoundKey();
-
-	void amecs$incrementTimesPressed();
-
-	void amecs$reset();
-
+public interface IKeyMapping extends de.siphalor.amecs.key_mapping_matchers.impl.duck.IKeyMapping {
 	AmecsKeyModifierCombination amecs$getBoundKeyModifiers();
-
-	//# if MC_VERSION_NUMBER < 11500
-	//- void amecs$setDown(boolean pressed);
-	//# end
 }

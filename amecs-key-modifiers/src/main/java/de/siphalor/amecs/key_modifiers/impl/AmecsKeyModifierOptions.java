@@ -16,6 +16,7 @@
 
 package de.siphalor.amecs.key_modifiers.impl;
 
+import de.siphalor.amecs.key_mapping_matchers.impl.AmecsKeyMappingManager;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
@@ -132,7 +133,7 @@ public class AmecsKeyModifierOptions {
 				return;
 			}
 			id = id.substring(KEY_MODIFIERS_PREFIX.length());
-			KeyMapping mapping = AmecsKeyModifiersModule.getIdToKeyBindingMap().get(id);
+			KeyMapping mapping = AmecsKeyMappingManager.officialIdToKeyBindingMap.get().get(id);
 			if (mapping == null) {
 				log.warn("Unknown keybinding identifier in Amecs API options file: {}", id);
 				return;

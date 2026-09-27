@@ -12,6 +12,9 @@ dependencies {
 	}
 	modRuntimeOnly(fabricApi.module("fabric-resource-loader-v0", mcLibs.versions.fabric.api.get()))
 
+	implementation(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
+	include(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
+
 	modCompileOnly(mcLibs.bundles.compatibility)
 
 	include(project(":amecs-api-legacy-dummy"))

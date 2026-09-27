@@ -16,7 +16,12 @@
 
 package de.siphalor.amecs.key_modifiers.impl;
 
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchResult;
+import de.siphalor.amecs.key_mapping_matchers.api.AmecsKeyMappingMatchersApi;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifier;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers;
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiersApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -35,5 +40,23 @@ public class AmecsKeyModifiersEarlyInit implements ModInitializer {
 			AmecsKeyModifiers.register(AmecsKeyModifiers.CONTROL);
 			AmecsKeyModifiers.seal();
 		}
+
+		AmecsKeyMappingMatchersApi.ON_KEY_STATE_CHANGE.register((key, pressed) -> {
+			AmecsKeyModifier modifier = AmecsKeyModifiers.fromKeyCode(key.getValue());
+			if (modifier != null) {
+				AmecsKeyModifiersModule.CURRENT_MODIFIERS.set(modifier, pressed);
+			}
+		});
+
+		AmecsKeyMappingMatchersApi.IS_ACTIVE.register(mapping -> {
+			AmecsKeyModifierCombination boundModifiers = AmecsKeyModifiersApi.getBoundModifiers(mapping);
+			if (AmecsKeyModifiersModule.CURRENT_MODIFIERS.equals(boundModifiers)) {
+				return AmecsKeyMappingMatchResult.EXACT_MATCH;
+			} else if (AmecsKeyModifiersModule.CURRENT_MODIFIERS.contains(boundModifiers)) {
+				return AmecsKeyMappingMatchResult.FUZZY_MATCH;
+			} else {
+				return AmecsKeyMappingMatchResult.NO_MATCH;
+			}
+		});
 	}
 }
