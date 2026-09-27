@@ -26,10 +26,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 public interface IKeyMapping {
 	InputConstants.Key amecs$getBoundKey();
 
-	int amecs$getTimesPressed();
-
-	void amecs$setTimesPressed(int timesPressed);
-
 	void amecs$incrementTimesPressed();
 
 	void amecs$reset();

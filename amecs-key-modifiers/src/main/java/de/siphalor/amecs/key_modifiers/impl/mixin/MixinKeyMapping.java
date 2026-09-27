@@ -73,16 +73,6 @@ public abstract class MixinKeyMapping implements IKeyMapping {
 	}
 
 	@Override
-	public int amecs$getTimesPressed() {
-		return clickCount;
-	}
-
-	@Override
-	public void amecs$setTimesPressed(int timesPressed) {
-		this.clickCount = timesPressed;
-	}
-
-	@Override
 	public void amecs$incrementTimesPressed() {
 		clickCount++;
 	}
