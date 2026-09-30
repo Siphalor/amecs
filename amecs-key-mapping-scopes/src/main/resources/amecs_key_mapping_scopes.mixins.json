@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "de.siphalor.amecs.key_mapping_scopes.impl.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"MixinKeyMapping",
+		"MixinScreenHolder"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

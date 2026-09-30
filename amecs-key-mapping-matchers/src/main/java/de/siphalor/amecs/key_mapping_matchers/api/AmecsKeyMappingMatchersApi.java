@@ -1,11 +1,14 @@
 package de.siphalor.amecs.key_mapping_matchers.api;
 
+import java.util.function.Consumer;
 import lombok.AccessLevel;
 import lombok.CustomLog;
 import lombok.NoArgsConstructor;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.client.KeyMapping;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @CustomLog
@@ -40,6 +43,20 @@ public class AmecsKeyMappingMatchersApi {
 						listener.onChange(key, pressed);
 					} catch (Exception e) {
 						log.warn("Exception in key state listener", e);
+					}
+				}
+			}
+	);
+
+	@ApiStatus.Experimental
+	public static final Event<Consumer<KeyMapping>> ON_KEY_MAPPING_REGISTERED = EventFactory.createArrayBacked(
+			Consumer.class,
+			listeners -> mapping -> {
+				for (Consumer<KeyMapping> listener : listeners) {
+					try {
+						listener.accept(mapping);
+					} catch (Exception e) {
+						log.warn("Exception in key mapping registration listener", e);
 					}
 				}
 			}

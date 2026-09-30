@@ -73,6 +73,7 @@ public class AmecsKeyMappingManager {
 	 * @return whether the keyBinding was added. It is not added if it is already contained
 	 */
 	public static boolean register(KeyMapping mapping) {
+		AmecsKeyMappingMatchersApi.ON_KEY_MAPPING_REGISTERED.invoker().accept(mapping);
 		for (AmecsKeyMappingManagerLayer layer : LAYERS) {
 			if (layer.accepts(mapping)) {
 				return layer.register(mapping);
