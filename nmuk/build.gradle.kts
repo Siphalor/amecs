@@ -39,3 +39,7 @@ tasks.processResources {
 		rename { "logo.png" }
 	}
 }
+
+license {
+	projectCreationYear = 2021
+}

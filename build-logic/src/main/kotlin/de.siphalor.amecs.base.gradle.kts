@@ -17,6 +17,7 @@ val projectInfo = extensions.getByType<ProjectInfoExtension>()
 license {
 	rule(layout.settingsDirectory.file("LICENSE_HEADER"))
 	include("**/*.java")
+	projectCreationYear = 2019
 }
 
 val testmodSourceSet = sourceSets.register("testmod") {
