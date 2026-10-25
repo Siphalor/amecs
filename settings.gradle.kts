@@ -27,11 +27,11 @@ pluginManagement {
 }
 
 plugins {
-	id("de.siphalor.minecraft-modding-toolkit.settings-plugin") version("0.1.0")
+	id("de.siphalor.minecraft-modding-toolkit.settings-plugin") version("0.1.3")
 }
 
 smcmtk {
-	fabricLoomVersion = "1.15-SNAPSHOT"
+	fabricLoomVersion = "1.18-SNAPSHOT"
 }
 
 rootProject.name = "amecs"

@@ -20,9 +20,12 @@ dependencies {
 }
 
 tasks.processResources {
+	val keyMappingModule = smcmtk.mcProps.getting("fabric.api.key_mapping_module")
+	inputs.property("key-mapping-module", keyMappingModule)
+
 	filesMatching("fabric.mod.json") {
 		filter<JsonMergeFilterReader>("merge" to mapOf("depends" to mapOf(
-			smcmtk.mcProps.getting("fabric.api.key_mapping_module").get() to "*"
+			 keyMappingModule.get() to "*"
 		)))
 	}
 }

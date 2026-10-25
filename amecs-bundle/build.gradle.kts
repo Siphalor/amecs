@@ -20,8 +20,8 @@ loom {
 	runs {
 		create("testmodClient") {
 			client()
-			name("Testmod Client")
-			source(sourceSets.getByName("testmod"))
+			displayName = "Testmod Client"
+			sourceSet = "testmod"
 		}
 	}
 }
@@ -53,13 +53,16 @@ dependencies {
 }
 
 tasks.processResources {
+	val keyMappingModule = smcmtk.mcProps.getting("fabric.api.key_mapping_module")
+	inputs.property("key-mapping-module", keyMappingModule)
+
 	from(layout.settingsDirectory.file("images/amecs-logo-128.png")) {
 		into("assets/amecs")
 		rename { "logo.png" }
 	}
 	filesMatching("fabric.mod.json") {
 		filter<JsonMergeFilterReader>("merge" to mapOf("depends" to mapOf(
-			smcmtk.mcProps.getting("fabric.api.key_mapping_module").get() to "*"
+			keyMappingModule.get() to "*"
 		)))
 	}
 }

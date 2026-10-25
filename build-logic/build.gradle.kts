@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
 	implementation(pluginMarker(libs.plugins.changelog))
-	implementation(pluginMarker(mcLibs.plugins.fabric.loom))
+	compileOnly(pluginMarker(mcLibs.plugins.fabric.loom))
 	implementation(pluginMarker(libs.plugins.licenser))
 	implementation(pluginMarker(libs.plugins.jcyo))
 	implementation(pluginMarker(libs.plugins.modPublisher))
