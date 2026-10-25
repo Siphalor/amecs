@@ -1,7 +1,6 @@
 import de.siphalor.amecs.gradle.ProjectInfoExtension
 import de.siphalor.jcyo.gradle.JcyoTask
 import de.siphalor.minecraft_modding_toolkit.gradle.project_plugin.filter.JsonMergeFilterReader
-import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import java.util.*
 
 plugins {
@@ -94,7 +93,7 @@ tasks.register<Jar>("sourcesJar") {
 java.withSourcesJar()
 
 afterEvaluate {
-	tasks.withType<JavaCompile>() {
+	tasks.withType<JavaCompile> {
 		val compileTask = this
 		val scope = name.removeSurrounding("compile", "Java")
 
