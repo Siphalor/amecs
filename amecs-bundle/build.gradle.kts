@@ -43,8 +43,9 @@ dependencies {
 		implementation(project(module, configuration = "namedElements"))
 	}
 
-	// The legacy module right now embeds all the other modules
+	// The legacy module right now embeds almost all the other modules
 	include(project(":amecs-api-legacy"))
+	include(project(":amecs-key-mapping-scopes"))
 
 	compileOnly(project(":nmuk", configuration = "namedElements"))
 

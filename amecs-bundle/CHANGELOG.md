@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed search bar not being centered when resizing the window. (#126)
 - Fixed an issue with key mappings being released earlier than they are supposed to when tapping other modifiers. (#125)
 - Re-enabled support for Controlling on Minecraft 26.1+.
+- Fixed compatibility issues with JEI by introducing key mapping scopes.
 
 
 ## [1.6.5] - 2026-03-25
