@@ -38,6 +38,7 @@ dependencies {
 	for (module in listOf(
 		":amecs-api-legacy",
 		":amecs-key-modifiers",
+		":amecs-key-mapping-matchers",
 		":amecs-priority-key-mappings",
 	)) {
 		implementation(project(module, configuration = "namedElements"))

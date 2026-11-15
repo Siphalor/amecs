@@ -24,10 +24,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import net.minecraft.resources.Identifier;
+//- import net.minecraft.resources.ResourceLocation;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AmecsKeyMappingScope {
+	//# if MC_VERSION_NUMBER >= 260100
 	private final Identifier id;
+	//# else
+	//- private final ResourceLocation id;
+	//# end
 
 	public static final AmecsKeyMappingScope IN_GAME = new AmecsKeyMappingScope(createId("in_game"));
 	public static final AmecsKeyMappingScope INVENTORY = new AmecsKeyMappingScope(createId("inventory"));
@@ -45,9 +50,9 @@ public class AmecsKeyMappingScope {
 	//# else
 	//- private static ResourceLocation createId(String path) {
 	//- 	//# if MC_VERSION_NUMBER >= 12100
-	//- 	return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	//- 	return ResourceLocation.fromNamespaceAndPath(AmecsKeyMappingScopesModule.MOD_ID, path);
 	//- 	//# else
-	//- 	return new ResourceLocation(MOD_ID, path);
+	//- 	return new ResourceLocation(AmecsKeyMappingScopesModule.MOD_ID, path);
 	//- 	//# end
 	//- }
 	//# end
