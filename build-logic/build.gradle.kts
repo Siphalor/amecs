@@ -23,6 +23,13 @@ repositories {
 		url = uri("https://maven.firstdark.dev/releases")
 		mavenContent {
 			includeGroupAndSubgroups("com.hypherionmc")
+			includeGroupAndSubgroups("me.hypherionmc")
+		}
+	}
+	maven {
+		url = uri("https://jitpack.io")
+		mavenContent {
+			includeGroupAndSubgroups("com.github")
 		}
 	}
 	gradlePluginPortal()
