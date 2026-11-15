@@ -310,7 +310,7 @@ public abstract class MixinKeyBindingEntry
 	}
 
 	//# if MC_VERSION_NUMBER >= 260100
-	@ModifyVariable(method = "extractContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
+	@ModifyVariable(method = "extractContent", at = @At(value = "STORE", ordinal = 0), name = "resetButtonX")
 	//# elif MC_VERSION_NUMBER >= 12109
 	//- @ModifyVariable(method = "renderContent", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
 	//# elif MC_VERSION_NUMBER >= 12005
@@ -344,10 +344,14 @@ public abstract class MixinKeyBindingEntry
 			//- int entryWidth,
 			//- int entryHeight,
 			//# end
-			int mouseX,
-			int mouseY,
+			//# if MC_VERSION_NUMBER < 260400
+			//- int mouseX,
+			//- int mouseY,
+			//# end
 			boolean hovered,
-			float tickDelta,
+			//# if MC_VERSION_NUMBER < 260400
+			//- float tickDelta,
+			//# end
 			CallbackInfo callbackInfo
 	) {
 		//# if MC_VERSION_NUMBER >= 11903
@@ -357,8 +361,10 @@ public abstract class MixinKeyBindingEntry
 		//- alternativesButton.y = resetButton.y;
 		//- alternativesButton.x = resetButton.x + resetButton.getWidth() + 10;
 		//# end
-		//# if MC_VERSION_NUMBER >= 260100
-		alternativesButton.extractRenderState(context, mouseX, mouseY, tickDelta);
+		//# if MC_VERSION_NUMBER >= 260400
+		alternativesButton.extractRenderState(context);
+		//# elif MC_VERSION_NUMBER >= 260100
+		//- alternativesButton.extractRenderState(context, mouseX, mouseY, tickDelta);
 		//# elif MC_VERSION_NUMBER >= 11600
 		//- alternativesButton.render(context, mouseX, mouseY, tickDelta);
 		//# else

@@ -138,14 +138,22 @@ public abstract class MixinKeyBindingEntry
 	@Inject(method = "extractContent", at = @At("RETURN"))
 	public void extractContext(
 			GuiGraphicsExtractor context,
-			int mouseX,
-			int mouseY,
+			//# if MC_VERSION_NUMBER < 260400
+			//- int mouseX,
+			//- int mouseY,
+			//# end
 			boolean hovered,
-			float delta,
+			//# if MC_VERSION_NUMBER < 260400
+			//- float delta,
+			//# end
 			CallbackInfo callbackInfo
 	) {
 		int x = getContentX();
 		int y = changeButton.getY();
+		//# if MC_VERSION_NUMBER >= 260400
+		int mouseX = context.mouseX();
+		int mouseY = context.mouseY();
+		//# end
 	//# elif MC_VERSION_NUMBER >= 12109
 	//- @Inject(method = "renderContent", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILSOFT)
 	//- public void onRendered(

@@ -19,7 +19,7 @@ package de.siphalor.nmuktestmod;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers;
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination;
 import de.siphalor.nmuk.api.NMUKAlternatives;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 //- import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 
@@ -28,11 +28,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 //- import net.minecraft.resources.ResourceLocation;
 
-public class NMUKTestMod implements ModInitializer {
+public class NMUKTestMod implements ClientModInitializer {
 	public static final String MOD_ID = "nmuk_testmod";
 
 	@Override
-	public void onInitialize() {
+	public void onInitializeClient() {
 		KeyMapping kbd =
 				//# if MC_VERSION_NUMBER >= 260100
 				KeyMappingHelper.registerKeyMapping

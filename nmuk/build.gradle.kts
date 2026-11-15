@@ -29,8 +29,10 @@ dependencies {
 		modImplementation(fabricApi.module(mod, mcLibs.versions.fabric.api.get()))
 	}
 
-	compileOnly(project(":amecs-key-mapping-matchers"))
-	compileOnly(project(":amecs-key-modifiers"))
+	compileOnly(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
+	compileOnly(project(":amecs-key-modifiers", configuration = "namedElements"))
+	testmodImplementation(project(":amecs-key-mapping-matchers", configuration = "namedElements"))
+	testmodImplementation(project(":amecs-key-modifiers", configuration = "namedElements"))
 }
 
 tasks.processResources {

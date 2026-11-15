@@ -315,12 +315,18 @@ public class SearchFieldControlsListWidget
 		searchField.setY(y);
 	}
 
-	//# if MC_VERSION_NUMBER >= 260100
+	//# if MC_VERSION_NUMBER >= 260400
 	@Override
-	public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+	public void extractContent(GuiGraphicsExtractor graphics, boolean hovered) {
 		updatePosition();
-		searchField.extractWidgetRenderState(graphics, mouseX, mouseY, tickDelta);
+		searchField.extractWidgetRenderState(graphics);
 	}
+	//# elif MC_VERSION_NUMBER >= 260100
+	//- @Override
+	//- public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+	//- 	updatePosition();
+	//- 	searchField.extractWidgetRenderState(graphics, mouseX, mouseY, tickDelta);
+	//- }
 	//# else
 	//- @Override
 	//- public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {

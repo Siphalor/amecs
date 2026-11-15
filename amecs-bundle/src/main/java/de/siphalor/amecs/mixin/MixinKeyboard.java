@@ -36,7 +36,14 @@ public class MixinKeyboard {
 	)
 	public KeyEvent modifyPressedKey(KeyEvent keyEvent) {
 		if (Amecs.ESCAPE_KEYBINDING.matches(keyEvent)) {
-			return new KeyEvent(InputConstants.KEY_ESCAPE, -1, keyEvent.modifiers());
+			return new KeyEvent(
+					InputConstants.KEY_ESCAPE,
+					-1,
+					keyEvent.modifiers()
+					//# if MC_VERSION_NUMBER >= 260400
+					, keyEvent.repeat()
+					//# end
+			);
 		}
 		return keyEvent;
 	}
