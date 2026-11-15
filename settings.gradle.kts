@@ -31,7 +31,7 @@ plugins {
 }
 
 smcmtk {
-	fabricLoomVersion = "1.18-SNAPSHOT"
+	fabricLoomVersion = "1.19-SNAPSHOT"
 }
 
 rootProject.name = "amecs"
