@@ -1,6 +1,7 @@
 import de.siphalor.amecs.gradle.ProjectInfoExtension
 import de.siphalor.jcyo.gradle.JcyoTask
 import de.siphalor.minecraft_modding_toolkit.gradle.project_plugin.filter.JsonMergeFilterReader
+import org.gradle.api.artifacts.component.ModuleComponentSelector
 import java.util.*
 
 plugins {
@@ -29,6 +30,23 @@ val compatibilityCheckSourceSet = sourceSets.register("compatibilityCheck") {
 	runtimeClasspath += testmodSourceSet.get().runtimeClasspath
 }
 
+val fabricLoaderVersion = libs.versions.fabric.loader.get()
+configurations.configureEach {
+	resolutionStrategy {
+		dependencySubstitution {
+			all {
+				val selector = requested
+				if (selector is ModuleComponentSelector
+					&& selector.group == "remapped.net.fabricmc"
+					&& selector.module.startsWith("fabric-loader")
+				) {
+					useTarget("net.fabricmc:fabric-loader:$fabricLoaderVersion")
+				}
+			}
+		}
+	}
+}
+
 smcmtk {
 	useMojangMappings()
 	createModConfigurations(listOf(sourceSets.main.get(), testmodSourceSet.get(), compatibilityCheckSourceSet.get()))
@@ -45,13 +63,20 @@ dependencies {
 	testCompileOnly(libs.lombok)
 
 	minecraft(mcLibs.minecraft)
-	"modImplementation"(libs.fabric.loader)
+	"modCompileOnly"(libs.fabric.loader)
+	"modLocalRuntime"(libs.fabric.loader)
 
 	"testmodImplementation"(sourceSets.main.map { it.output })
 	"compatibilityCheckImplementation"(sourceSets.named("testmod").map { it.output })
 
 	"modCompatibilityCheckImplementation"(mcLibs.bundles.compatibility) {
 		exclude(group = "net.fabricmc")
+	}
+
+	constraints {
+		"modCompileOnly"(libs.fabric.loader)
+		"modLocalRuntime"(libs.fabric.loader)
+		"modImplementation"(libs.fabric.loader)
 	}
 }
 
